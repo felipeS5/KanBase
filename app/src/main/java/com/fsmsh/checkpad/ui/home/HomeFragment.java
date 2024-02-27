@@ -74,6 +74,47 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // edit
+        binding.button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tarefa tarefa = new Tarefa();
+                tarefa.setId(2);
+                tarefa.setTarefaNome( "My test" );
+                tarefa.setDescricao( "dstest" );
+                tarefa.setProgresso( 2 );
+                tarefa.setTimeStart( "0000000" );
+                tarefa.setTimeLimit( "0002133" );
+                tarefa.setCategoria( "categ0" );
+                tarefa.setPrioridade( 1 );
+
+                boolean editado = Database.editTarefa(tarefa);
+
+                if (editado) {
+                    Toast.makeText(getActivity(), "Sucesso ao editar", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao editar", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // delete
+        binding.button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Tarefa tarefa = new Tarefa();
+                tarefa.setId(2);
+
+                boolean deletado = Database.deleteTarefa(tarefa);
+
+                if (deletado) {
+                    Toast.makeText(getActivity(), "Sucesso ao deletar", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao deletar", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     @Override

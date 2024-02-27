@@ -71,5 +71,32 @@ public class Database {
         return tarefas;
     }
 
+    public static boolean editTarefa(Tarefa t) {
+
+        String sqlAtt = String.format("tarefaNome = '%s', descricao = '%s', progresso = %d, timeStart = '%s', timeLimit = '%s', categoria = '%s', prioridade = %d",
+                t.getTarefaNome(), t.getDescricao(), t.getProgresso(), t.getTimeStart(), t.getTimeLimit(), t.getCategoria(), t.getPrioridade() );
+
+        try {
+            sql.execSQL("UPDATE tarefas SET " + sqlAtt + " WHERE id = "+ t.getId() +"");
+
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public static boolean deleteTarefa(Tarefa t) {
+
+        try {
+            sql.execSQL("DELETE FROM tarefas WHERE id = " + t.getId());
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
