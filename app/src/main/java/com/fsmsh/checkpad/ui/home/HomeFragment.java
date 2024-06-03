@@ -1,6 +1,8 @@
 package com.fsmsh.checkpad.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsmsh.checkpad.databinding.FragmentHomeBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
+import com.fsmsh.checkpad.util.HomeAdapter;
 
 import java.util.List;
 
@@ -27,6 +32,8 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        Database database = new Database(getActivity());
+
         start();
 
         return root;
@@ -34,31 +41,18 @@ public class HomeFragment extends Fragment {
 
     public void start() {
 
-        binding.textHome.setText("Hello Test");
+        List<Tarefa> tarefas = Database.getTarefas();
 
-        // Add
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Tarefa tarefa = new Tarefa();
-                tarefa.setTarefaNome( "Test" );
-                tarefa.setDescricao( "Desc" );
-                tarefa.setProgresso( 1 );
-                tarefa.setTimeStart( "1234567890" );
-                tarefa.setTimeLimit( "1234567890" );
-                tarefa.setCategoria( "categ" );
-                tarefa.setPrioridade( 3 );
+        // Recycler
+        HomeAdapter homeAdapter = new HomeAdapter( Database.getTarefas() );
 
-                boolean addSuccess = Database.addTarefa(tarefa);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setAdapter(homeAdapter);
 
-                if (addSuccess) {
-                    Toast.makeText(getActivity(), "Sucesso ao adicionar", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Erro ao adicionar", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
+        /*
         // get
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,11 +109,19 @@ public class HomeFragment extends Fragment {
             }
         });
 
+         */
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        start();
     }
 }

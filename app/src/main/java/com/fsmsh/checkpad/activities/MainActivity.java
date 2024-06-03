@@ -1,11 +1,13 @@
-package com.fsmsh.checkpad;
+package com.fsmsh.checkpad.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.util.Database;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -37,16 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         database = new Database(this);
 
-        //
-        long data = System.currentTimeMillis();
-        Log.i("TAG", Long.toString(data));
-
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(getApplicationContext(), EditActivity.class));
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_category, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
