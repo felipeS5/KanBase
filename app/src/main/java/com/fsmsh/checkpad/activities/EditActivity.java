@@ -27,7 +27,7 @@ public class EditActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         database = new Database(this);
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar(binding.toolbarEdit);
 
     }
 
