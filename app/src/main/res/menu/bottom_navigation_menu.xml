@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/item_naoIniciado"
         android:enabled="true"
         android:icon="@drawable/baseline_lightbulb_24"
-        android:title="Novas"/>
+        android:title="Novas"
+        android:checkable="true"/>
     <item
         android:id="@+id/item_iniciado"
         android:enabled="true"
         android:icon="@drawable/baseline_build_24"
-        android:title="Andamento"/>
+        android:title="Andamento"
+        android:checkable="true"/>
     <item
         android:id="@+id/item_feitas"
         android:enabled="true"
         android:icon="@drawable/baseline_check_circle_24"
-        android:title="Feitas"/>
+        android:title="Feitas"
+        android:checkable="true"/>
 </menu>

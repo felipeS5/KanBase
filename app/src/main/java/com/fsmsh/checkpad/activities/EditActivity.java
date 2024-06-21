@@ -4,13 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
@@ -19,6 +14,7 @@ public class EditActivity extends AppCompatActivity {
 
     ActivityEditBinding binding;
     Database database;
+    Bundle intencao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,25 +25,49 @@ public class EditActivity extends AppCompatActivity {
         database = new Database(this);
         setSupportActionBar(binding.toolbarEdit);
 
+        intencao = getIntent().getExtras();
+        if (intencao.getBoolean("isNovo")) salvar("adicionar", null);
+        else edit();
+
+
     }
 
-    public void salvar(View v) {
-        Tarefa tarefa = new Tarefa();
-        tarefa.setTarefaNome( binding.titulo.getText().toString() );
-        tarefa.setDescricao( binding.descricao.getText().toString() );
-        tarefa.setProgresso( 0 );
-        tarefa.setTimeStart( binding.dtInicio.getText().toString() );
-        tarefa.setTimeLimit( binding.dtFim.getText().toString() );
-        tarefa.setCategoria( binding.categoria.getText().toString() );
-        tarefa.setPrioridade( Integer.parseInt(binding.prioridade.getText().toString()) );
+    public void salvar(String acao, Tarefa tarefa) {
+        binding.btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tarefa.setTarefaNome( binding.titulo.getText().toString() );
+                tarefa.setDescricao( binding.descricao.getText().toString() );
+                tarefa.setTimeStart( binding.dtInicio.getText().toString() );
+                tarefa.setTimeLimit( binding.dtFim.getText().toString() );
+                tarefa.setCategoria( binding.categoria.getText().toString() );
+                tarefa.setPrioridade( Integer.parseInt(binding.prioridade.getText().toString()) );
 
-        boolean addSuccess = Database.addTarefa(tarefa);
+                boolean addSuccess;
+                if (acao.equals("adicionar")) addSuccess = Database.addTarefa(tarefa);
+                else addSuccess = Database.editTarefa(tarefa);
 
-        if (addSuccess) {
-            Toast.makeText(getApplicationContext(), "Sucesso ao adicionar", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            Toast.makeText(getApplicationContext(), "Erro ao adicionar", Toast.LENGTH_SHORT).show();
-        }
+                if (addSuccess) {
+                    Toast.makeText(getApplicationContext(), "Sucesso ao "+acao, Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Erro ao "+acao, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    public void edit() {
+        Tarefa tarefa = Database.getTarefa(intencao.getInt("id"));
+
+        binding.titulo.setText(tarefa.getTarefaNome());
+        binding.descricao.setText(tarefa.getDescricao());
+        binding.dtInicio.setText(tarefa.getTimeStart());
+        binding.dtFim.setText(tarefa.getTimeLimit());
+        binding.categoria.setText(tarefa.getCategoria());
+        binding.prioridade.setText(Integer.toString(tarefa.getPrioridade()));
+
+        salvar("editar", tarefa);
     }
 }

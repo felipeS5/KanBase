@@ -2,6 +2,7 @@ package com.fsmsh.checkpad.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -73,14 +74,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), EditActivity.class));
+                Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+                intent.putExtra("isNovo", true);
+                startActivity(intent);
             }
         });
-
-        //ColorStateList navItemColors = ContextCompat.getColorStateList(this, R.drawable.cor_menu);
-        //navigationView.setItemTextColor(navItemColors);
-        //navigationView.setItemIconTintList(navItemColors);
-
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -90,14 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (menuItem.getItemId() == R.id.nav_home) {
                     replaceFragment(new HomeFragment());
-                    navigationView.setCheckedItem(menuItem);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
                     replaceFragment(new CategoryFragment());
-                    navigationView.setCheckedItem(menuItem);
-                    menuItem.setChecked(true);
-
                 }else if (menuItem.getItemId() == R.id.nav_slideshow) {
                     replaceFragment(new SlideshowFragment());
                 }
@@ -121,13 +115,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.item_naoIniciado) {
                     replaceFragment(new HomeFragment());
-                    menuItem.setChecked(true);
                 } else if (menuItem.getItemId() == R.id.item_iniciado) {
                     replaceFragment(new AndamentoFragment());
-                    menuItem.setChecked(true);
                 } else if (menuItem.getItemId() == R.id.item_feitas) {
                     replaceFragment(new FinalizadasFragment());
-                    menuItem.setChecked(true);
                 }
                 return true;
             }
@@ -140,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.nav_host_fragment_content_main, fragment);
         transaction.commit();
     }
-
 
 
     @Override

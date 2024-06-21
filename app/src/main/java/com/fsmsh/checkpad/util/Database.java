@@ -39,7 +39,31 @@ public class Database {
         }
     }
 
-    public static List<Tarefa> getTarefas() {
+    public static Tarefa getTarefa(int id) {
+        Tarefa tarefa = new Tarefa();
+        String query = "id, tarefaNome, descricao, progresso, timeStart, timeLimit, categoria, prioridade";
+
+        try {
+            Cursor cursor = sql.rawQuery("SELECT " +query+ " FROM tarefas WHERE id="+ id +"", null);
+            cursor.moveToFirst();
+
+            tarefa.setId( cursor.getInt(0) );
+            tarefa.setTarefaNome( cursor.getString(1) );
+            tarefa.setDescricao( cursor.getString(2) );
+            tarefa.setProgresso( cursor.getInt(3) );
+            tarefa.setTimeStart( cursor.getString(4) );
+            tarefa.setTimeLimit( cursor.getString(5) );
+            tarefa.setCategoria( cursor.getString(6) );
+            tarefa.setPrioridade( cursor.getInt(7) );
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tarefa;
+    }
+
+    public static List<Tarefa> getTarefas(int progress) {
         List<Tarefa> tarefas = new ArrayList<>();
         String query = "id, tarefaNome, descricao, progresso, timeStart, timeLimit, categoria, prioridade";
 
@@ -59,7 +83,9 @@ public class Database {
                 tarefa.setCategoria( cursor.getString(6) );
                 tarefa.setPrioridade( cursor.getInt(7) );
 
-                tarefas.add(tarefa);
+                if (progress == tarefa.getProgresso()) {
+                    tarefas.add(tarefa);
+                }
 
                 cursor.moveToNext();
             }

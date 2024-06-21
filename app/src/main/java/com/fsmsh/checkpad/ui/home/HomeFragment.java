@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
     public void start() {
 
         // Recycler
-        HomeAdapter homeAdapter = new HomeAdapter( Database.getTarefas() );
+        HomeAdapter homeAdapter = new HomeAdapter( Database.getTarefas(0) );
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
         recyclerView.setLayoutManager(layoutManager);
@@ -56,47 +56,7 @@ public class HomeFragment extends Fragment {
 
         textView.setText(this.getChildFragmentManager().toString());
 
-        /*
-        // get
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<Tarefa> tarefas = Database.getTarefas();
-                String linha = "";
-
-                for (Tarefa tarefa : tarefas) {
-                    linha += tarefa.getId() +" - "+ tarefa.getTarefaNome()+"\n";
-                }
-
-                binding.textHome.setText(linha);
-            }
-        });
-
-        // edit
-        binding.button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Tarefa tarefa = new Tarefa();
-                tarefa.setId(2);
-                tarefa.setTarefaNome( "My test" );
-                tarefa.setDescricao( "dstest" );
-                tarefa.setProgresso( 2 );
-                tarefa.setTimeStart( "0000000" );
-                tarefa.setTimeLimit( "0002133" );
-                tarefa.setCategoria( "categ0" );
-                tarefa.setPrioridade( 1 );
-
-                boolean editado = Database.editTarefa(tarefa);
-
-                if (editado) {
-                    Toast.makeText(getActivity(), "Sucesso ao editar", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Erro ao editar", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        // delete
+        /*/ delete
         binding.button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

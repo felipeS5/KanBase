@@ -1,14 +1,17 @@
 package com.fsmsh.checkpad.util;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsmsh.checkpad.R;
+import com.fsmsh.checkpad.activities.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 
 import java.util.ArrayList;
@@ -39,6 +42,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         holder.titulo.setText(tarefa.getTarefaNome());
         holder.dataLimite.setText(tarefa.getTimeLimit());
 
+        holder.item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Funcao edit
+                Intent intent = new Intent(holder.itemView.getContext(), EditActivity.class);
+                intent.putExtra("isNovo", false);
+                intent.putExtra("id", tarefa.getId());
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -52,12 +66,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
 
         TextView titulo;
         TextView dataLimite;
+        ConstraintLayout item;
 
         public MeuVH(@NonNull View itemView) {
             super(itemView);
 
             titulo = itemView.findViewById(R.id.lblTitulo);
             dataLimite = itemView.findViewById(R.id.lblDataLimite);
+            item = itemView.findViewById(R.id.item_main);
 
         }
     }
