@@ -1,20 +1,38 @@
 package com.fsmsh.checkpad.activities;
 
 import android.os.Bundle;
+import android.os.Parcel;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
+import com.google.android.material.datepicker.DayViewDecorator;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class EditActivity extends AppCompatActivity {
 
     ActivityEditBinding binding;
     Database database;
     Bundle intencao;
+    TimeZone timeZone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +42,42 @@ public class EditActivity extends AppCompatActivity {
 
         database = new Database(this);
         setSupportActionBar(binding.toolbarEdit);
+        binding.dtFim.setKeyListener(null);
+        timeZone = TimeZone.getTimeZone("UTC-3");
 
         intencao = getIntent().getExtras();
         if (intencao.getBoolean("isNovo")) salvar("adicionar", null);
         else edit();
 
+
+    }
+
+    public void exibirDatePicker(View view) {
+
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Selecione a data")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+
+        datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long aLong) {
+                SimpleDateFormat dtf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.getDefault());
+                dtf.setTimeZone(timeZone);
+
+
+                binding.dtInicio.setText(dtf.format(new Date(aLong)));
+
+                LocalDate localDate = Instant.ofEpochMilli(aLong)
+                        .atZone(timeZone.toZoneId())
+                        .toLocalDate();
+
+
+                Log.i("tag", localDate.toString());
+            }
+        });
+
+        datePicker.show(getSupportFragmentManager(), "tag");
 
     }
 

@@ -65,49 +65,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/textInputLayout4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dtInicio"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Data de inicio" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textInputLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dtFim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Data de término" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/dtFim">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/categoria"
@@ -143,6 +109,59 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
+
+
+    <!-- Datas -->
+
+    <TextView
+        android:id="@+id/dtInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:drawableLeft="@drawable/baseline_today_24"
+        android:drawablePadding="6dp"
+        android:padding="8dp"
+        android:onClick="exibirDatePicker"
+        android:text="Hoje, 22 de jun de 2024"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
+    <TextView
+        android:id="@+id/timeInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:text="20:00"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dtInicio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dtInicio" />
+
+    <TextView
+        android:id="@+id/dtFim"
+        android:layout_margin="8dp"
+        android:drawableLeft="@drawable/baseline_add_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicione um prazo"
+        app:layout_constraintStart_toStartOf="@+id/dtInicio"
+        app:layout_constraintTop_toBottomOf="@+id/dtInicio" />
+
+    <TextView
+        android:id="@+id/timeFim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:text="20:00"
+        android:textSize="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dtFim"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dtFim" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

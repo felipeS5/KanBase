@@ -40,7 +40,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         Tarefa tarefa = tarefas.get(position);
 
         holder.titulo.setText(tarefa.getTarefaNome());
-        holder.dataLimite.setText(tarefa.getTimeLimit());
+        holder.data.setText(tarefa.getTimeStart());
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,14 +65,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
     public class MeuVH extends RecyclerView.ViewHolder {
 
         TextView titulo;
-        TextView dataLimite;
+        TextView data;
         ConstraintLayout item;
 
         public MeuVH(@NonNull View itemView) {
             super(itemView);
 
             titulo = itemView.findViewById(R.id.lblTitulo);
-            dataLimite = itemView.findViewById(R.id.lblDataLimite);
+            data = itemView.findViewById(R.id.lblInicio);
             item = itemView.findViewById(R.id.item_main);
 
         }
