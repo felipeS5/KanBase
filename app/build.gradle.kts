@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fsmsh.checkpad"
-        minSdk = 22
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

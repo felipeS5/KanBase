@@ -14,8 +14,12 @@ import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
 
@@ -40,7 +44,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         Tarefa tarefa = tarefas.get(position);
 
         holder.titulo.setText(tarefa.getTarefaNome());
-        holder.data.setText(tarefa.getTimeStart());
+
+        // Local Date
+        TimeZone timeZone = TimeZone.getTimeZone("UTC-3");
+        LocalDateTime timeStart = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeStart()))
+                .atZone(timeZone.toZoneId())
+                .toLocalDateTime();
+        String dataInicial = timeStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        holder.data.setText(dataInicial);
+
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
