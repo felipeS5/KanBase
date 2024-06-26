@@ -2,6 +2,7 @@ package com.fsmsh.checkpad.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
@@ -14,7 +15,10 @@ import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 
+import android.text.format.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -69,23 +73,24 @@ public class EditActivity extends AppCompatActivity {
 
     public void exibirDatePicker(View view) {
 
+        LocalDateTime local;
+        if (view.getId() == R.id.dtInicio) local = timeStart;
+        else local = timeLimit;
+
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Selecione a data")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setSelection(local.atZone(timeZone.toZoneId()).toInstant().toEpochMilli())
                 .build();
 
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long aLong) {
-                if (view.getId() == R.id.dtInicio) {
-                    timeStart = Instant.ofEpochMilli(aLong)
-                            .atZone(timeZone.toZoneId())
-                            .toLocalDateTime();
-                } else {
-                    timeLimit = Instant.ofEpochMilli(aLong)
-                            .atZone(timeZone.toZoneId())
-                            .toLocalDateTime();
-                }
+                LocalDateTime localNew = Instant.ofEpochMilli(aLong)
+                        .atZone(timeZone.toZoneId())
+                        .toLocalDateTime();
+
+                if (view.getId() == R.id.dtInicio) timeStart = localNew;
+                else timeLimit = localNew;
 
 
                 adjustCalendar();
@@ -93,6 +98,45 @@ public class EditActivity extends AppCompatActivity {
         });
 
         datePicker.show(getSupportFragmentManager(), "tag");
+
+    }
+
+
+    public void exibirTimePicker(View view) {
+
+        boolean is24H = DateFormat.is24HourFormat(getApplicationContext());
+        int format;
+        if (is24H) format = TimeFormat.CLOCK_24H;
+        else format = TimeFormat.CLOCK_12H;
+
+        LocalDateTime local;
+        if (view.getId() == R.id.timeInicio) local = timeStart;
+        else local = timeLimit;
+
+        MaterialTimePicker picker = new MaterialTimePicker.Builder()
+                .setTimeFormat(format)
+                .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
+                .setHour(local.getHour())
+                .setMinute(local.getMinute())
+                .setTitleText("Selecione o horário")
+                .build();
+        picker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (view.getId() == R.id.timeInicio) {
+                    LocalDate localDate = timeStart.toLocalDate();
+                    timeStart = localDate.atTime(picker.getHour(), picker.getMinute());
+                } else {
+                    LocalDate localDate = timeLimit.toLocalDate();
+                    timeLimit = localDate.atTime(picker.getHour(), picker.getMinute());
+                }
+
+                adjustCalendar();
+            }
+        });
+
+        picker.show(getSupportFragmentManager(), "tag");
 
     }
 
@@ -169,11 +213,18 @@ public class EditActivity extends AppCompatActivity {
 
     public void adjustCalendar() {
 
-        // Local Date
         DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy");
+        DateTimeFormatter formatoTempo = DateTimeFormatter.ofPattern("HH:mm");
+
+        // Time Start
         String dataInicial = timeStart.format(formatoData);
         binding.dtInicio.setText(dataInicial);
 
+        String tempoInicial = timeStart.format(formatoTempo);
+        binding.timeInicio.setText(tempoInicial);
+
+
+        // Time Limit
         if (timeLimit != null) {
             Drawable leftDrawable = getResources().getDrawable(R.drawable.baseline_today_24, null);
             binding.dtFim.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, null, null);
@@ -184,21 +235,23 @@ public class EditActivity extends AppCompatActivity {
             String dataFinal = timeLimit.format(formatoData);
             binding.dtFim.setText(dataFinal);
 
+            String tempoFinal = timeLimit.format(formatoTempo);
+            binding.timeFim.setText(tempoFinal);
+
             binding.dtFim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     exibirDatePicker(view);
                 }
             });
+
+            binding.timeFim.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    exibirTimePicker(view);
+                }
+            });
         }
 
-        //////////////////////////////////////
-        //     Falta exibir o date limit    //
-        //////////////////////////////////////
-
-
-        // Local Time
-        LocalTime localTimeStart = timeStart.toLocalTime();
-        //LocalTime localTimeLimit = timeLimit.toLocalTime();
     }
 }

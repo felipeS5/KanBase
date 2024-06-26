@@ -133,6 +133,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:onClick="exibirTimePicker"
         android:padding="8dp"
         android:text="20:00"
         android:textSize="16dp"
