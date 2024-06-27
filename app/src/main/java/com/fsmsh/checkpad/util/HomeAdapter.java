@@ -15,7 +15,9 @@ import com.fsmsh.checkpad.activities.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +48,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         holder.titulo.setText(tarefa.getTarefaNome());
 
         // Local Date
-        TimeZone timeZone = TimeZone.getTimeZone("UTC-3");
-        LocalDateTime timeStart = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeStart()))
-                .atZone(timeZone.toZoneId())
-                .toLocalDateTime();
+        LocalDate timeStart = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeStart()))
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
         String dataInicial = timeStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        if (timeStart.getDayOfMonth() == LocalDate.now().getDayOfMonth()) dataInicial = "Hoje";
         holder.data.setText(dataInicial);
 
 

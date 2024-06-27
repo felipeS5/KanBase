@@ -85,12 +85,13 @@ public class EditActivity extends AppCompatActivity {
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long aLong) {
-                LocalDateTime localNew = Instant.ofEpochMilli(aLong)
+                LocalDate localNew = Instant.ofEpochMilli(aLong)
                         .atZone(timeZone.toZoneId())
-                        .toLocalDateTime();
+                        .toLocalDate();
 
-                if (view.getId() == R.id.dtInicio) timeStart = localNew;
-                else timeLimit = localNew;
+
+                if (view.getId() == R.id.dtInicio) timeStart = localNew.atTime(timeStart.getHour(), timeStart.getMinute());
+                else timeLimit = localNew.atTime(timeLimit.getHour(), timeLimit.getMinute());
 
 
                 adjustCalendar();
@@ -193,12 +194,12 @@ public class EditActivity extends AppCompatActivity {
         Tarefa tarefa = Database.getTarefa(intencao.getInt("id"));
 
         timeStart = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeStart()))
-                .atZone(timeZone.toZoneId())
+                .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
 
         if (!tarefa.getTimeLimit().equals("")) {
             timeLimit = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeLimit()))
-                    .atZone(timeZone.toZoneId())
+                    .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
         }
 
@@ -218,6 +219,7 @@ public class EditActivity extends AppCompatActivity {
 
         // Time Start
         String dataInicial = timeStart.format(formatoData);
+        if (timeStart.getDayOfMonth() == LocalDate.now().getDayOfMonth()) dataInicial = "Hoje, "+dataInicial;
         binding.dtInicio.setText(dataInicial);
 
         String tempoInicial = timeStart.format(formatoTempo);
@@ -233,6 +235,7 @@ public class EditActivity extends AppCompatActivity {
             binding.timeFim.setVisibility(View.VISIBLE);
 
             String dataFinal = timeLimit.format(formatoData);
+            if (timeLimit.getDayOfMonth() == LocalDate.now().getDayOfMonth()) dataFinal = "Hoje, "+dataFinal;
             binding.dtFim.setText(dataFinal);
 
             String tempoFinal = timeLimit.format(formatoTempo);
