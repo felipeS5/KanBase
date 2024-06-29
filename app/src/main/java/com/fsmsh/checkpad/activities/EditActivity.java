@@ -52,6 +52,9 @@ public class EditActivity extends AppCompatActivity {
         intencao = getIntent().getExtras();
         if (intencao.getBoolean("isNovo")) {
             timeStart = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
+            timeStart = timeStart.plusMinutes(30);
+            // todo: arredondar tempo
+
             salvar("adicionar", new Tarefa());
         } else {
             edit();
@@ -63,6 +66,9 @@ public class EditActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     timeLimit = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
+                    timeLimit = timeLimit.plusHours(1);
+                    // todo: arredondar tempo
+
                     adjustCalendar();
                 }
             });
@@ -214,12 +220,23 @@ public class EditActivity extends AppCompatActivity {
 
     public void adjustCalendar() {
 
+        // Variáveis padrões
         DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy");
         DateTimeFormatter formatoTempo = DateTimeFormatter.ofPattern("HH:mm");
 
+        LocalDate hoje = LocalDate.now();
+        LocalDate amanha = hoje.plusDays(1);
+        LocalDate ontem = hoje.minusDays(1);
+
+
         // Time Start
         String dataInicial = timeStart.format(formatoData);
-        if (timeStart.getDayOfMonth() == LocalDate.now().getDayOfMonth()) dataInicial = "Hoje, "+dataInicial;
+
+        LocalDate localDateStart = timeStart.toLocalDate();
+
+        if (localDateStart.toString().equals(hoje.toString())) dataInicial = "Hoje, "+dataInicial;
+        else if (localDateStart.toString().equals(amanha.toString())) dataInicial = "Amanhã, "+dataInicial;
+        else if (localDateStart.toString().equals(ontem.toString())) dataInicial = "Ontem, "+dataInicial;
         binding.dtInicio.setText(dataInicial);
 
         String tempoInicial = timeStart.format(formatoTempo);
@@ -228,16 +245,24 @@ public class EditActivity extends AppCompatActivity {
 
         // Time Limit
         if (timeLimit != null) {
+
+            // Campo data/tempo final
             Drawable leftDrawable = getResources().getDrawable(R.drawable.baseline_today_24, null);
             binding.dtFim.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, null, null);
             binding.dtFim.setCompoundDrawablePadding(Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, this.getResources().getDisplayMetrics())));
             binding.dtFim.setTextSize(16);
             binding.timeFim.setVisibility(View.VISIBLE);
 
+            // Exibe data final
             String dataFinal = timeLimit.format(formatoData);
-            if (timeLimit.getDayOfMonth() == LocalDate.now().getDayOfMonth()) dataFinal = "Hoje, "+dataFinal;
+            LocalDate localDateEnd = timeLimit.toLocalDate();
+
+            if (localDateEnd.toString().equals(hoje.toString())) dataFinal = "Hoje, "+dataFinal;
+            else if (localDateEnd.toString().equals(amanha.toString())) dataFinal = "Amanhã, "+dataFinal;
+            else if (localDateEnd.toString().equals(ontem.toString())) dataFinal = "Ontem, "+dataFinal;
             binding.dtFim.setText(dataFinal);
 
+            // Exibe tempo final
             String tempoFinal = timeLimit.format(formatoTempo);
             binding.timeFim.setText(tempoFinal);
 

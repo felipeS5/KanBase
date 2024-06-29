@@ -51,8 +51,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         LocalDate timeStart = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeStart()))
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
+        LocalDate hoje = LocalDate.now();
+        LocalDate amanha = hoje.plusDays(1);
+        LocalDate ontem = hoje.minusDays(1);
         String dataInicial = timeStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        if (timeStart.getDayOfMonth() == LocalDate.now().getDayOfMonth()) dataInicial = "Hoje";
+
+        if (timeStart.toString().equals(hoje.toString())) dataInicial = "Hoje";
+        else if (timeStart.toString().equals(amanha.toString())) dataInicial = "Amanhã";
+        else if (timeStart.toString().equals(ontem.toString())) dataInicial = "Ontem";
         holder.data.setText(dataInicial);
 
 
