@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.fsmsh.checkpad.activities.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.HomeAdapter;
+import com.fsmsh.checkpad.util.Utilitarios;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.time.LocalDateTime;
@@ -34,20 +36,24 @@ public class HomeFragment extends Fragment {
 
     RecyclerView recyclerView;
     TextView textView;
+    Utilitarios utilitarios;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         textView = view.findViewById(R.id.textView2);
+        utilitarios = new Utilitarios(this);
 
         return view;
     }
 
     public void start() {
+        List<Tarefa> tarefas = Database.getTarefas(0);
+        utilitarios.setTarefas(tarefas);
 
         // Recycler
-        HomeAdapter homeAdapter = new HomeAdapter( Database.getTarefas(0) );
+        HomeAdapter homeAdapter = new HomeAdapter( tarefas );
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
         recyclerView.setLayoutManager(layoutManager);
@@ -56,24 +62,7 @@ public class HomeFragment extends Fragment {
 
         textView.setText(this.getChildFragmentManager().toString());
 
-        /*/ delete
-        binding.button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Tarefa tarefa = new Tarefa();
-                tarefa.setId(2);
-
-                boolean deletado = Database.deleteTarefa(tarefa);
-
-                if (deletado) {
-                    Toast.makeText(getActivity(), "Sucesso ao deletar", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Erro ao deletar", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-         */
+        utilitarios.swipe(recyclerView);
 
     }
 
