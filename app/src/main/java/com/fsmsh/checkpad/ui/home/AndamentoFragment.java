@@ -42,7 +42,7 @@ public class AndamentoFragment extends Fragment {
         utilitarios.setTarefas(tarefas);
 
         // Recycler
-        HomeAdapter homeAdapter = new HomeAdapter( tarefas );
+        HomeAdapter homeAdapter = new HomeAdapter( tarefas, getActivity(), null );
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
         recyclerView.setLayoutManager(layoutManager);

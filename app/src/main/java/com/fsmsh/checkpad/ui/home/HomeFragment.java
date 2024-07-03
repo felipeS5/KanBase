@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,8 @@ public class HomeFragment extends Fragment {
 
     RecyclerView recyclerView;
     TextView textView;
+    List<Tarefa> tarefas;
+    HomeAdapter homeAdapter;
     Utilitarios utilitarios;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,11 +53,11 @@ public class HomeFragment extends Fragment {
     }
 
     public void start() {
-        List<Tarefa> tarefas = Database.getTarefas(0);
+        tarefas = Database.getTarefas(0);
         utilitarios.setTarefas(tarefas);
 
         // Recycler
-        HomeAdapter homeAdapter = new HomeAdapter( tarefas );
+        homeAdapter = new HomeAdapter( tarefas, getActivity(), this );
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
         recyclerView.setLayoutManager(layoutManager);
