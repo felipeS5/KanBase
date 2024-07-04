@@ -1,51 +1,33 @@
 package com.fsmsh.checkpad.activities;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.ui.CategoryFragment;
-import com.fsmsh.checkpad.ui.home.AndamentoFragment;
-import com.fsmsh.checkpad.ui.home.FinalizadasFragment;
-import com.fsmsh.checkpad.ui.home.HomeFragment;
+import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;
 import com.fsmsh.checkpad.util.Database;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.menu.ActionMenuItem;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.fsmsh.checkpad.databinding.ActivityMainBinding;
-
-import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.LocalDateTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     private Database database;
+    private int TELA_HOME_ATUAL = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 fab.setVisibility(View.GONE);
 
                 if (menuItem.getItemId() == R.id.nav_home) {
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
@@ -106,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            replaceFragment(new HomeFragment());
+            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
@@ -114,11 +97,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.item_naoIniciado) {
-                    replaceFragment(new HomeFragment());
+                    TELA_HOME_ATUAL = 0;
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
                 } else if (menuItem.getItemId() == R.id.item_iniciado) {
-                    replaceFragment(new AndamentoFragment());
+                    TELA_HOME_ATUAL = 1;
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
                 } else if (menuItem.getItemId() == R.id.item_feitas) {
-                    replaceFragment(new FinalizadasFragment());
+                    TELA_HOME_ATUAL = 2;
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
                 }
                 return true;
             }
