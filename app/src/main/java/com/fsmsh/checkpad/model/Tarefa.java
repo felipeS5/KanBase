@@ -5,7 +5,9 @@ public class Tarefa {
     private String tarefaNome;
     private String descricao;
     private int progresso;
+    private String dateStart;
     private String timeStart;
+    private String dateLimit;
     private String timeLimit;
     private String categoria;
     private int prioridade;
@@ -56,6 +58,22 @@ public class Tarefa {
 
     public void setTimeLimit(String timeLimit) {
         this.timeLimit = timeLimit;
+    }
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateLimit() {
+        return dateLimit;
+    }
+
+    public void setDateLimit(String dateLimit) {
+        this.dateLimit = dateLimit;
     }
 
     public String getCategoria() {

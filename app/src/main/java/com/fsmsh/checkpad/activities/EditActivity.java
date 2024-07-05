@@ -36,8 +36,10 @@ public class EditActivity extends AppCompatActivity {
     Database database;
     Bundle intencao;
     TimeZone timeZone;
-    LocalDateTime timeStart;
-    LocalDateTime timeLimit;
+    LocalDate dateStart;
+    LocalTime timeStart;
+    LocalDate dateLimit;
+    LocalTime timeLimit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +53,34 @@ public class EditActivity extends AppCompatActivity {
 
         intencao = getIntent().getExtras();
         if (intencao.getBoolean("isNovo")) {
-            timeStart = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
-            timeStart = timeStart.plusMinutes(30);
+            LocalDateTime agora = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
+            agora.plusMinutes(15);
             // todo: arredondar tempo
+            dateStart = agora.toLocalDate();
+            timeStart = agora.toLocalTime();
 
             salvar("adicionar", new Tarefa());
         } else {
             edit();
         }
 
-        // checagem pra verificar se o dt limit deve alterar timelimit para now() ou não
+        /*/ checagem pra verificar se o dt limit deve alterar timelimit para now() ou não
         if (timeLimit == null) {
             binding.dtFim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    timeLimit = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
-                    timeLimit = timeLimit.plusHours(1);
+                    LocalDateTime agora = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
+                    agora.plusMinutes(30);
                     // todo: arredondar tempo
+                    dateLimit = agora.toLocalDate();
+                    timeLimit = agora.toLocalTime();
 
                     adjustCalendar();
                 }
             });
         }
+
+         */
 
 
     }
@@ -80,8 +88,8 @@ public class EditActivity extends AppCompatActivity {
     public void exibirDatePicker(View view) {
 
         LocalDateTime local;
-        if (view.getId() == R.id.dtInicio) local = timeStart;
-        else local = timeLimit;
+        if (view.getId() == R.id.dtInicio) local = dateStart.atStartOfDay();
+        else local = dateLimit.atStartOfDay();
 
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Selecione a data")
@@ -96,8 +104,8 @@ public class EditActivity extends AppCompatActivity {
                         .toLocalDate();
 
 
-                if (view.getId() == R.id.dtInicio) timeStart = localNew.atTime(timeStart.getHour(), timeStart.getMinute());
-                else timeLimit = localNew.atTime(timeLimit.getHour(), timeLimit.getMinute());
+                if (view.getId() == R.id.dtInicio) dateStart = localNew;
+                else dateLimit = localNew;
 
 
                 adjustCalendar();
@@ -116,7 +124,7 @@ public class EditActivity extends AppCompatActivity {
         if (is24H) format = TimeFormat.CLOCK_24H;
         else format = TimeFormat.CLOCK_12H;
 
-        LocalDateTime local;
+        LocalTime local;
         if (view.getId() == R.id.timeInicio) local = timeStart;
         else local = timeLimit;
 
@@ -131,13 +139,10 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (view.getId() == R.id.timeInicio) {
-                    LocalDate localDate = timeStart.toLocalDate();
-                    timeStart = localDate.atTime(picker.getHour(), picker.getMinute());
-                } else {
-                    LocalDate localDate = timeLimit.toLocalDate();
-                    timeLimit = localDate.atTime(picker.getHour(), picker.getMinute());
-                }
+                if (view.getId() == R.id.timeInicio)
+                    timeStart = LocalTime.of(picker.getHour(), picker.getMinute());
+                else
+                    timeLimit = LocalTime.of(picker.getHour(), picker.getMinute());
 
                 adjustCalendar();
             }
@@ -153,33 +158,29 @@ public class EditActivity extends AppCompatActivity {
         binding.btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tarefa.setTarefaNome( binding.titulo.getText().toString() );
-                tarefa.setDescricao( binding.descricao.getText().toString() );
-                tarefa.setCategoria( binding.categoria.getText().toString() );
+                tarefa.setTarefaNome(binding.titulo.getText().toString());
+                tarefa.setDescricao(binding.descricao.getText().toString());
+                tarefa.setCategoria(binding.categoria.getText().toString());
                 //tarefa.setPrioridade( Integer.parseInt(binding.prioridade.getText().toString()) );
 
                 // o set prioridade está assim para testes
                 // vou concertar em breve
                 ////////////////////////////////////////////////
-                tarefa.setPrioridade( 0 );
+                tarefa.setPrioridade(-1);
                 ////////////////////////////////////////////////
 
-                long timeSt = timeStart
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()
-                        .toEpochMilli();
-                tarefa.setTimeStart(Long.toString(timeSt));
+                tarefa.setDateStart(dateStart.toString());
+                tarefa.setTimeStart(timeStart.toString());
 
-                long timeLim;
-                if (timeLimit != null) {
-                    timeLim = timeLimit
-                            .atZone(ZoneId.systemDefault())
-                            .toInstant()
-                            .toEpochMilli();
-                    tarefa.setTimeLimit(Long.toString(timeLim));
-                } else {
+                if (dateLimit != null) {
+                    tarefa.setDateLimit(dateLimit.toString());
+                    tarefa.setTimeLimit(timeLimit.toString());
+                }
+                else {
+                    tarefa.setDateLimit("");
                     tarefa.setTimeLimit("");
                 }
+
 
                 boolean addSuccess;
                 if (acao.equals("adicionar")) addSuccess = Database.addTarefa(tarefa);
@@ -199,14 +200,23 @@ public class EditActivity extends AppCompatActivity {
     public void edit() {
         Tarefa tarefa = Database.getTarefa(intencao.getInt("id"));
 
-        timeStart = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeStart()))
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
+        // Config data
+        String[] dtTemp = tarefa.getDateStart().split("-");
+        int[] dtI = {Integer.parseInt(dtTemp[0]), Integer.parseInt(dtTemp[1]), Integer.parseInt(dtTemp[2])};
+        String[] tiTemp = tarefa.getTimeStart().split(":");
+        int[] tiI = {Integer.parseInt(tiTemp[0]), Integer.parseInt(tiTemp[1])};
 
-        if (!tarefa.getTimeLimit().equals("")) {
-            timeLimit = Instant.ofEpochMilli(Long.parseLong(tarefa.getTimeLimit()))
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
+        dateStart = LocalDate.of(dtI[0], dtI[1], dtI[2]);
+        timeStart = LocalTime.of(tiI[0], tiI[1]);
+
+        if (!tarefa.getDateLimit().equals("")) {
+            String[] dtTemp2 = tarefa.getDateLimit().split("-");
+            int[] dtI2 = {Integer.parseInt(dtTemp2[0]), Integer.parseInt(dtTemp2[1]), Integer.parseInt(dtTemp2[2])};
+            String[] tiTemp2 = tarefa.getTimeLimit().split(":");
+            int[] tiI2 = {Integer.parseInt(tiTemp2[0]), Integer.parseInt(tiTemp2[1])};
+
+            dateLimit = LocalDate.of(dtI2[0], dtI2[1], dtI2[2]);
+            timeLimit = LocalTime.of(tiI2[0], tiI2[1]);
         }
 
 
@@ -215,13 +225,15 @@ public class EditActivity extends AppCompatActivity {
         binding.categoria.setText(tarefa.getCategoria());
         binding.prioridade.setText(Integer.toString(tarefa.getPrioridade()));
 
+        checkDetails(tarefa);
+
         salvar("editar", tarefa);
     }
 
     public void adjustCalendar() {
 
         // Variáveis padrões
-        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy");
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd 'de' MMM 'de' yyyy");
         DateTimeFormatter formatoTempo = DateTimeFormatter.ofPattern("HH:mm");
 
         LocalDate hoje = LocalDate.now();
@@ -230,13 +242,11 @@ public class EditActivity extends AppCompatActivity {
 
 
         // Time Start
-        String dataInicial = timeStart.format(formatoData);
+        String dataInicial = dateStart.format(formatoData);
 
-        LocalDate localDateStart = timeStart.toLocalDate();
-
-        if (localDateStart.toString().equals(hoje.toString())) dataInicial = "Hoje, "+dataInicial;
-        else if (localDateStart.toString().equals(amanha.toString())) dataInicial = "Amanhã, "+dataInicial;
-        else if (localDateStart.toString().equals(ontem.toString())) dataInicial = "Ontem, "+dataInicial;
+        if (dateStart.toString().equals(hoje.toString())) dataInicial = "Hoje, "+dataInicial;
+        else if (dateStart.toString().equals(amanha.toString())) dataInicial = "Amanhã, "+dataInicial;
+        else if (dateStart.toString().equals(ontem.toString())) dataInicial = "Ontem, "+dataInicial;
         binding.dtInicio.setText(dataInicial);
 
         String tempoInicial = timeStart.format(formatoTempo);
@@ -244,22 +254,14 @@ public class EditActivity extends AppCompatActivity {
 
 
         // Time Limit
-        if (timeLimit != null) {
-
-            // Campo data/tempo final
-            Drawable leftDrawable = getResources().getDrawable(R.drawable.baseline_today_24, null);
-            binding.dtFim.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, null, null);
-            binding.dtFim.setCompoundDrawablePadding(Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, this.getResources().getDisplayMetrics())));
-            binding.dtFim.setTextSize(16);
-            binding.timeFim.setVisibility(View.VISIBLE);
+        if (dateLimit != null) {
 
             // Exibe data final
-            String dataFinal = timeLimit.format(formatoData);
-            LocalDate localDateEnd = timeLimit.toLocalDate();
+            String dataFinal = dateLimit.format(formatoData);
 
-            if (localDateEnd.toString().equals(hoje.toString())) dataFinal = "Hoje, "+dataFinal;
-            else if (localDateEnd.toString().equals(amanha.toString())) dataFinal = "Amanhã, "+dataFinal;
-            else if (localDateEnd.toString().equals(ontem.toString())) dataFinal = "Ontem, "+dataFinal;
+            if (dateLimit.toString().equals(hoje.toString())) dataFinal = "Hoje, "+dataFinal;
+            else if (dateLimit.toString().equals(amanha.toString())) dataFinal = "Amanhã, "+dataFinal;
+            else if (dateLimit.toString().equals(ontem.toString())) dataFinal = "Ontem, "+dataFinal;
             binding.dtFim.setText(dataFinal);
 
             // Exibe tempo final
@@ -281,5 +283,17 @@ public class EditActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    public void checkDetails(Tarefa tarefa) {
+        if (!tarefa.getDescricao().equals("")) binding.descricao.setVisibility(View.VISIBLE);
+        if (!tarefa.getCategoria().equals("")) binding.categoria.setVisibility(View.VISIBLE);
+        if (tarefa.getPrioridade() != -1) binding.prioridade.setVisibility(View.VISIBLE);
+
+        if (!tarefa.getTimeStart().equals("")) binding.dtInicio.setVisibility(View.VISIBLE);
+        if (!tarefa.getTimeStart().equals("")) binding.timeInicio.setVisibility(View.VISIBLE);
+
+        if (!tarefa.getTimeLimit().equals("")) binding.dtFim.setVisibility(View.VISIBLE);
+        if (!tarefa.getTimeLimit().equals("")) binding.timeFim.setVisibility(View.VISIBLE);
     }
 }

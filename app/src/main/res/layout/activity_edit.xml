@@ -45,124 +45,104 @@
             android:hint="Titulo" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+    <Button
+        android:id="@+id/btnSalvar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textNome">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descricao"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:hint="Descrição" />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dtFim">
+        <TextView
+            android:id="@+id/dtInicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="76dp"
+            android:drawableLeft="@drawable/baseline_today_24"
+            android:drawablePadding="6dp"
+            android:onClick="exibirDatePicker"
+            android:padding="8dp"
+            android:text="Hoje, 22 de jun de 2024"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/categoria"
+        <TextView
+            android:id="@+id/timeInicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="exibirTimePicker"
+            android:padding="8dp"
+            android:text="20:00"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/dtFim"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Categoria" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="76dp"
+            android:drawableLeft="@drawable/baseline_today_24"
+            android:drawablePadding="6dp"
+            android:onClick="exibirDatePicker"
+            android:padding="8dp"
+            android:text="Hoje, 22 de jun de 2024"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
+        <TextView
+            android:id="@+id/timeFim"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:onClick="exibirTimePicker"
+            android:padding="8dp"
+            android:text="20:00"
+            android:textSize="16dp" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/prioridade"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:hint="Prioridade" />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnSalvar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Salvar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/categoria"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="Categoria" />
 
-
-    <!-- Datas -->
-
-    <TextView
-        android:id="@+id/dtInicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:drawableLeft="@drawable/baseline_today_24"
-        android:drawablePadding="6dp"
-        android:padding="8dp"
-        android:onClick="exibirDatePicker"
-        android:text="Hoje, 22 de jun de 2024"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
-
-    <TextView
-        android:id="@+id/timeInicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:onClick="exibirTimePicker"
-        android:padding="8dp"
-        android:text="20:00"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/dtInicio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dtInicio" />
-
-    <TextView
-        android:id="@+id/dtFim"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:drawableLeft="@drawable/baseline_add_24"
-        android:text="Adicione um prazo"
-        app:layout_constraintStart_toStartOf="@+id/dtInicio"
-        app:layout_constraintTop_toBottomOf="@+id/dtInicio" />
-
-    <TextView
-        android:id="@+id/timeFim"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:padding="8dp"
-        android:text="20:00"
-        android:textSize="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/dtFim"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dtFim" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
