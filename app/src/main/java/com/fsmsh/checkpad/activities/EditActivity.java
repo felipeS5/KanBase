@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsmsh.checkpad.R;
+import com.fsmsh.checkpad.activities.edit.ModalBottomSheet;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
@@ -35,11 +36,12 @@ public class EditActivity extends AppCompatActivity {
     ActivityEditBinding binding;
     Database database;
     Bundle intencao;
-    TimeZone timeZone;
-    LocalDate dateStart;
-    LocalTime timeStart;
-    LocalDate dateLimit;
-    LocalTime timeLimit;
+    public TimeZone timeZone;
+    public LocalDate dateStart;
+    public LocalTime timeStart;
+    public LocalDate dateLimit;
+    public LocalTime timeLimit;
+    Tarefa tarefa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,7 +200,7 @@ public class EditActivity extends AppCompatActivity {
 
 
     public void edit() {
-        Tarefa tarefa = Database.getTarefa(intencao.getInt("id"));
+        tarefa = Database.getTarefa(intencao.getInt("id"));
 
         // Config data
         String[] dtTemp = tarefa.getDateStart().split("-");
@@ -244,9 +246,9 @@ public class EditActivity extends AppCompatActivity {
         // Time Start
         String dataInicial = dateStart.format(formatoData);
 
-        if (dateStart.toString().equals(hoje.toString())) dataInicial = "Hoje, "+dataInicial;
-        else if (dateStart.toString().equals(amanha.toString())) dataInicial = "Amanhã, "+dataInicial;
-        else if (dateStart.toString().equals(ontem.toString())) dataInicial = "Ontem, "+dataInicial;
+        if (dateStart.toString().equals(hoje.toString())) dataInicial = "Hoje";
+        else if (dateStart.toString().equals(amanha.toString())) dataInicial = "Amanhã";
+        else if (dateStart.toString().equals(ontem.toString())) dataInicial = "Ontem";
         binding.dtInicio.setText(dataInicial);
 
         String tempoInicial = timeStart.format(formatoTempo);
@@ -259,9 +261,9 @@ public class EditActivity extends AppCompatActivity {
             // Exibe data final
             String dataFinal = dateLimit.format(formatoData);
 
-            if (dateLimit.toString().equals(hoje.toString())) dataFinal = "Hoje, "+dataFinal;
-            else if (dateLimit.toString().equals(amanha.toString())) dataFinal = "Amanhã, "+dataFinal;
-            else if (dateLimit.toString().equals(ontem.toString())) dataFinal = "Ontem, "+dataFinal;
+            if (dateLimit.toString().equals(hoje.toString())) dataFinal = "Hoje";
+            else if (dateLimit.toString().equals(amanha.toString())) dataFinal = "Amanhã";
+            else if (dateLimit.toString().equals(ontem.toString())) dataFinal = "Ontem";
             binding.dtFim.setText(dataFinal);
 
             // Exibe tempo final
@@ -285,15 +287,26 @@ public class EditActivity extends AppCompatActivity {
 
     }
 
+    public void showModalBottomSheet(View view) {
+        boolean inicio = false;
+        boolean limite = false;
+        boolean prioridade = false;
+        boolean categoria = false;
+
+        if(dateStart != null) inicio = true;
+        if(dateLimit != null) limite = true;
+        if(Integer.parseInt(binding.prioridade.getText().toString()) != -1) prioridade = true;
+        if( !binding.categoria.getText().toString().equals("") ) categoria = true;
+
+        ModalBottomSheet modalBottomSheet = new ModalBottomSheet(inicio, limite, prioridade, categoria, this, binding);
+        modalBottomSheet.show(getSupportFragmentManager(), ModalBottomSheet.TAG);
+    }
+
     public void checkDetails(Tarefa tarefa) {
-        if (!tarefa.getDescricao().equals("")) binding.descricao.setVisibility(View.VISIBLE);
         if (!tarefa.getCategoria().equals("")) binding.categoria.setVisibility(View.VISIBLE);
         if (tarefa.getPrioridade() != -1) binding.prioridade.setVisibility(View.VISIBLE);
 
-        if (!tarefa.getTimeStart().equals("")) binding.dtInicio.setVisibility(View.VISIBLE);
-        if (!tarefa.getTimeStart().equals("")) binding.timeInicio.setVisibility(View.VISIBLE);
-
-        if (!tarefa.getTimeLimit().equals("")) binding.dtFim.setVisibility(View.VISIBLE);
-        if (!tarefa.getTimeLimit().equals("")) binding.timeFim.setVisibility(View.VISIBLE);
+        if (!tarefa.getDateStart().equals("")) binding.dateStartConteiner.setVisibility(View.VISIBLE);
+        if (!tarefa.getDateLimit().equals("")) binding.dateLimitConteiner.setVisibility(View.VISIBLE);
     }
 }
