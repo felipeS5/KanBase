@@ -58,20 +58,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         holder.titulo.setText(tarefa.getTarefaNome());
 
         // Local Date
-        String[] dtTemp = tarefa.getDateStart().split("-");
-        int[] dtI = {Integer.parseInt(dtTemp[0]), Integer.parseInt(dtTemp[1]), Integer.parseInt(dtTemp[2])};
+        LocalDate dateStart = DateUtilities.toLocalDate(tarefa.getDateStart());
 
-        LocalDate dateStart = LocalDate.of(dtI[0], dtI[1], dtI[2]);
-
-        LocalDate hoje = LocalDate.now();
-        LocalDate amanha = hoje.plusDays(1);
-        LocalDate ontem = hoje.minusDays(1);
-        String dataInicial = dateStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-        if (dateStart.toString().equals(hoje.toString())) dataInicial = "Hoje";
-        else if (dateStart.toString().equals(amanha.toString())) dataInicial = "Amanhã";
-        else if (dateStart.toString().equals(ontem.toString())) dataInicial = "Ontem";
-        holder.data.setText(dataInicial);
+        holder.data.setText( DateUtilities.getFormattedDate(dateStart, true) );
 
 
         holder.item.setOnClickListener(new View.OnClickListener() {

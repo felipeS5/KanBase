@@ -14,6 +14,7 @@ import com.fsmsh.checkpad.activities.edit.ModalBottomSheet;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
+import com.fsmsh.checkpad.util.DateUtilities;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -55,11 +56,9 @@ public class EditActivity extends AppCompatActivity {
 
         intencao = getIntent().getExtras();
         if (intencao.getBoolean("isNovo")) {
-            LocalDateTime agora = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
-            agora.plusMinutes(15);
             // todo: arredondar tempo
-            dateStart = agora.toLocalDate();
-            timeStart = agora.toLocalTime();
+            dateStart = LocalDate.now();
+            timeStart = LocalTime.now();
 
             salvar("adicionar", new Tarefa());
         } else {
@@ -203,22 +202,12 @@ public class EditActivity extends AppCompatActivity {
         tarefa = Database.getTarefa(intencao.getInt("id"));
 
         // Config data
-        String[] dtTemp = tarefa.getDateStart().split("-");
-        int[] dtI = {Integer.parseInt(dtTemp[0]), Integer.parseInt(dtTemp[1]), Integer.parseInt(dtTemp[2])};
-        String[] tiTemp = tarefa.getTimeStart().split(":");
-        int[] tiI = {Integer.parseInt(tiTemp[0]), Integer.parseInt(tiTemp[1])};
-
-        dateStart = LocalDate.of(dtI[0], dtI[1], dtI[2]);
-        timeStart = LocalTime.of(tiI[0], tiI[1]);
+        dateStart = DateUtilities.toLocalDate( tarefa.getDateStart() );
+        timeStart = DateUtilities.toLocalTime( tarefa.getTimeStart() );
 
         if (!tarefa.getDateLimit().equals("")) {
-            String[] dtTemp2 = tarefa.getDateLimit().split("-");
-            int[] dtI2 = {Integer.parseInt(dtTemp2[0]), Integer.parseInt(dtTemp2[1]), Integer.parseInt(dtTemp2[2])};
-            String[] tiTemp2 = tarefa.getTimeLimit().split(":");
-            int[] tiI2 = {Integer.parseInt(tiTemp2[0]), Integer.parseInt(tiTemp2[1])};
-
-            dateLimit = LocalDate.of(dtI2[0], dtI2[1], dtI2[2]);
-            timeLimit = LocalTime.of(tiI2[0], tiI2[1]);
+            dateLimit = DateUtilities.toLocalDate( tarefa.getDateLimit() );
+            timeLimit = DateUtilities.toLocalTime( tarefa.getTimeLimit() );
         }
 
 
@@ -234,22 +223,10 @@ public class EditActivity extends AppCompatActivity {
 
     public void adjustCalendar() {
 
-        // Variáveis padrões
-        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd 'de' MMM 'de' yyyy");
         DateTimeFormatter formatoTempo = DateTimeFormatter.ofPattern("HH:mm");
 
-        LocalDate hoje = LocalDate.now();
-        LocalDate amanha = hoje.plusDays(1);
-        LocalDate ontem = hoje.minusDays(1);
-
-
-        // Time Start
-        String dataInicial = dateStart.format(formatoData);
-
-        if (dateStart.toString().equals(hoje.toString())) dataInicial = "Hoje";
-        else if (dateStart.toString().equals(amanha.toString())) dataInicial = "Amanhã";
-        else if (dateStart.toString().equals(ontem.toString())) dataInicial = "Ontem";
-        binding.dtInicio.setText(dataInicial);
+        String dataFormatada = DateUtilities.getFormattedDate(dateStart, false);
+        binding.dtInicio.setText( dataFormatada );
 
         String tempoInicial = timeStart.format(formatoTempo);
         binding.timeInicio.setText(tempoInicial);
@@ -259,12 +236,8 @@ public class EditActivity extends AppCompatActivity {
         if (dateLimit != null) {
 
             // Exibe data final
-            String dataFinal = dateLimit.format(formatoData);
-
-            if (dateLimit.toString().equals(hoje.toString())) dataFinal = "Hoje";
-            else if (dateLimit.toString().equals(amanha.toString())) dataFinal = "Amanhã";
-            else if (dateLimit.toString().equals(ontem.toString())) dataFinal = "Ontem";
-            binding.dtFim.setText(dataFinal);
+            String dataFinalFormatada = DateUtilities.getFormattedDate(dateLimit, false);
+            binding.dtFim.setText( dataFinalFormatada );
 
             // Exibe tempo final
             String tempoFinal = timeLimit.format(formatoTempo);
@@ -302,9 +275,33 @@ public class EditActivity extends AppCompatActivity {
         modalBottomSheet.show(getSupportFragmentManager(), ModalBottomSheet.TAG);
     }
 
+    public void clearConteiner(View view) {
+        if (view.getId() == R.id.btnCancelDateSt) {
+            binding.dateStartConteiner.setVisibility(View.GONE);
+            dateStart = null;
+            timeStart = null;
+        }
+
+        if (view.getId() == R.id.btnCancelDateLm) {
+            binding.dateLimitConteiner.setVisibility(View.GONE);
+            dateLimit = null;
+            timeLimit = null;
+        }
+
+        if (view.getId() == R.id.btnCancelPriority) {
+            binding.priorityConteiner.setVisibility(View.GONE);
+            binding.prioridade.setText("-1");
+        }
+
+        if (view.getId() == R.id.btnCancelCategory) {
+            binding.categoryConteiner.setVisibility(View.GONE);
+            binding.categoria.setText("");
+        }
+    }
+
     public void checkDetails(Tarefa tarefa) {
-        if (!tarefa.getCategoria().equals("")) binding.categoria.setVisibility(View.VISIBLE);
-        if (tarefa.getPrioridade() != -1) binding.prioridade.setVisibility(View.VISIBLE);
+        if (!tarefa.getCategoria().equals("")) binding.categoryConteiner.setVisibility(View.VISIBLE);
+        if (tarefa.getPrioridade() != -1) binding.priorityConteiner.setVisibility(View.VISIBLE);
 
         if (!tarefa.getDateStart().equals("")) binding.dateStartConteiner.setVisibility(View.VISIBLE);
         if (!tarefa.getDateLimit().equals("")) binding.dateLimitConteiner.setVisibility(View.VISIBLE);

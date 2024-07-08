@@ -12,8 +12,12 @@ import androidx.annotation.Nullable;
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.EditActivity;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
+import com.fsmsh.checkpad.util.DateUtilities;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ModalBottomSheet extends BottomSheetDialogFragment {
 
@@ -63,21 +67,40 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
 
     public void confirmChips() {
 
-        if (inicioChip.isChecked()) binding.dateStartConteiner.setVisibility(View.VISIBLE);
-        else binding.dateStartConteiner.setVisibility(View.GONE);
+        if (inicioChip.isChecked()) {
+            if ( !(inicio && inicioChip.isChecked()) ) {
+                parent.dateStart = LocalDate.now();
+                parent.timeStart = LocalTime.now();
+            }
+            binding.dateStartConteiner.setVisibility(View.VISIBLE);
+        } else {
+            binding.dateStartConteiner.setVisibility(View.GONE);
+            parent.dateStart = null;
+        }
 
-        if (limiteChip.isChecked()) binding.dateLimitConteiner.setVisibility(View.VISIBLE);
-        else binding.dateLimitConteiner.setVisibility(View.GONE);
+        if (limiteChip.isChecked()) {
+            if ( !(limite && limiteChip.isChecked()) ) {
+                parent.dateLimit = LocalDate.now();
+                parent.timeLimit = LocalTime.now();
+            }
+            binding.dateLimitConteiner.setVisibility(View.VISIBLE);
+        } else{
+            binding.dateLimitConteiner.setVisibility(View.GONE);
+            parent.dateLimit = null;
+        }
 
-        if (prioridadeChip.isChecked()) binding.prioridade.setVisibility(View.VISIBLE);
+        parent.adjustCalendar();
+
+
+        if (prioridadeChip.isChecked()) binding.priorityConteiner.setVisibility(View.VISIBLE);
         else {
-            binding.prioridade.setVisibility(View.GONE);
+            binding.priorityConteiner.setVisibility(View.GONE);
             binding.prioridade.setText("-1");
         }
 
-        if (categoriaChip.isChecked()) binding.categoria.setVisibility(View.VISIBLE);
+        if (categoriaChip.isChecked()) binding.categoryConteiner.setVisibility(View.VISIBLE);
         else {
-            binding.categoria.setVisibility(View.GONE);
+            binding.categoryConteiner.setVisibility(View.GONE);
             binding.categoria.setText("");
         }
 
