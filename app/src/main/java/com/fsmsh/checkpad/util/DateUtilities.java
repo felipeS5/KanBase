@@ -19,6 +19,8 @@ public class DateUtilities {
     }
 
     public static String getFormattedDate(LocalDate localDate, boolean abreviar) {
+        if (localDate == null) return "";
+
         // Variáveis padrões
         DateTimeFormatter formatoData;
 

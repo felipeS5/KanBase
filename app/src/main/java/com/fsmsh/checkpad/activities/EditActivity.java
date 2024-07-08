@@ -59,6 +59,7 @@ public class EditActivity extends AppCompatActivity {
             // todo: arredondar tempo
             dateStart = LocalDate.now();
             timeStart = LocalTime.now();
+            binding.dateStartConteiner.setVisibility(View.VISIBLE);
 
             salvar("adicionar", new Tarefa());
         } else {
@@ -170,14 +171,18 @@ public class EditActivity extends AppCompatActivity {
                 tarefa.setPrioridade(-1);
                 ////////////////////////////////////////////////
 
-                tarefa.setDateStart(dateStart.toString());
-                tarefa.setTimeStart(timeStart.toString());
+                if (dateStart != null) {
+                    tarefa.setDateStart(dateStart.toString());
+                    tarefa.setTimeStart(timeStart.toString());
+                } else {
+                    tarefa.setDateStart("");
+                    tarefa.setTimeStart("");
+                }
 
                 if (dateLimit != null) {
                     tarefa.setDateLimit(dateLimit.toString());
                     tarefa.setTimeLimit(timeLimit.toString());
-                }
-                else {
+                } else {
                     tarefa.setDateLimit("");
                     tarefa.setTimeLimit("");
                 }
@@ -202,8 +207,10 @@ public class EditActivity extends AppCompatActivity {
         tarefa = Database.getTarefa(intencao.getInt("id"));
 
         // Config data
-        dateStart = DateUtilities.toLocalDate( tarefa.getDateStart() );
-        timeStart = DateUtilities.toLocalTime( tarefa.getTimeStart() );
+        if (!tarefa.getDateStart().equals("")) {
+            dateStart = DateUtilities.toLocalDate(tarefa.getDateStart());
+            timeStart = DateUtilities.toLocalTime(tarefa.getTimeStart());
+        }
 
         if (!tarefa.getDateLimit().equals("")) {
             dateLimit = DateUtilities.toLocalDate( tarefa.getDateLimit() );
@@ -225,37 +232,24 @@ public class EditActivity extends AppCompatActivity {
 
         DateTimeFormatter formatoTempo = DateTimeFormatter.ofPattern("HH:mm");
 
-        String dataFormatada = DateUtilities.getFormattedDate(dateStart, false);
-        binding.dtInicio.setText( dataFormatada );
+        // Time Start
+        if (dateStart != null) {
+            String dataFormatada = DateUtilities.getFormattedDate(dateStart, false);
+            binding.dtInicio.setText(dataFormatada);
 
-        String tempoInicial = timeStart.format(formatoTempo);
-        binding.timeInicio.setText(tempoInicial);
+            String tempoInicial = timeStart.format(formatoTempo);
+            binding.timeInicio.setText(tempoInicial);
+        }
 
 
         // Time Limit
         if (dateLimit != null) {
 
-            // Exibe data final
             String dataFinalFormatada = DateUtilities.getFormattedDate(dateLimit, false);
             binding.dtFim.setText( dataFinalFormatada );
 
-            // Exibe tempo final
             String tempoFinal = timeLimit.format(formatoTempo);
             binding.timeFim.setText(tempoFinal);
-
-            binding.dtFim.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    exibirDatePicker(view);
-                }
-            });
-
-            binding.timeFim.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    exibirTimePicker(view);
-                }
-            });
         }
 
     }

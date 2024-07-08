@@ -58,9 +58,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         holder.titulo.setText(tarefa.getTarefaNome());
 
         // Local Date
-        LocalDate dateStart = DateUtilities.toLocalDate(tarefa.getDateStart());
+        LocalDate localDate = null;
 
-        holder.data.setText( DateUtilities.getFormattedDate(dateStart, true) );
+        if (!tarefa.getDateStart().equals("")) localDate = DateUtilities.toLocalDate(tarefa.getDateStart());
+        else if (!tarefa.getDateLimit().equals("")) localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
+
+        if ( tarefa.getDateStart().equals("") && !tarefa.getDateLimit().equals("") )
+            holder.data.setText("prazo: " + DateUtilities.getFormattedDate(localDate, true));
+        else
+            holder.data.setText( DateUtilities.getFormattedDate(localDate, true) );
 
 
         holder.item.setOnClickListener(new View.OnClickListener() {
