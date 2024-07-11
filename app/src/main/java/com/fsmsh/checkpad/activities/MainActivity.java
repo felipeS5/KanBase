@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Menu;
 
 import com.fsmsh.checkpad.R;
+import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.ui.CategoryFragment;
 import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;

@@ -5,14 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 
 import com.fsmsh.checkpad.R;
-import com.fsmsh.checkpad.activities.EditActivity;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
-import com.fsmsh.checkpad.util.DateUtilities;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 
@@ -95,7 +90,8 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         if (prioridadeChip.isChecked()) binding.priorityConteiner.setVisibility(View.VISIBLE);
         else {
             binding.priorityConteiner.setVisibility(View.GONE);
-            binding.prioridade.setText("-1");
+            binding.prioridade.setText("Nenhuma Prioridade");
+            parent.prioridade = -1;
         }
 
         if (categoriaChip.isChecked()) binding.categoryConteiner.setVisibility(View.VISIBLE);

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".activities.EditActivity">
+    tools:context=".activities.edit.EditActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarEdit"
@@ -201,15 +201,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_priority_high_24" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
                 android:id="@+id/prioridade"
+                android:onClick="showPriorityBottomSheet"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
-                android:hint="Prioridade"
+                android:text="Nenhuma Prioridade"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnCancelPriority"
                 app:layout_constraintHorizontal_bias="0.929"

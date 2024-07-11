@@ -1,16 +1,12 @@
-package com.fsmsh.checkpad.activities;
+package com.fsmsh.checkpad.activities.edit;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsmsh.checkpad.R;
-import com.fsmsh.checkpad.activities.edit.ModalBottomSheet;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
@@ -21,15 +17,12 @@ import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
 import android.text.format.DateFormat;
-import java.text.SimpleDateFormat;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class EditActivity extends AppCompatActivity {
@@ -42,6 +35,7 @@ public class EditActivity extends AppCompatActivity {
     public LocalTime timeStart;
     public LocalDate dateLimit;
     public LocalTime timeLimit;
+    int prioridade = -1;
     Tarefa tarefa;
 
     @Override
@@ -163,13 +157,7 @@ public class EditActivity extends AppCompatActivity {
                 tarefa.setTarefaNome(binding.titulo.getText().toString());
                 tarefa.setDescricao(binding.descricao.getText().toString());
                 tarefa.setCategoria(binding.categoria.getText().toString());
-                //tarefa.setPrioridade( Integer.parseInt(binding.prioridade.getText().toString()) );
-
-                // o set prioridade está assim para testes
-                // vou concertar em breve
-                ////////////////////////////////////////////////
-                tarefa.setPrioridade(-1);
-                ////////////////////////////////////////////////
+                tarefa.setPrioridade(prioridade);
 
                 if (dateStart != null) {
                     tarefa.setDateStart(dateStart.toString());
@@ -221,7 +209,13 @@ public class EditActivity extends AppCompatActivity {
         binding.titulo.setText(tarefa.getTarefaNome());
         binding.descricao.setText(tarefa.getDescricao());
         binding.categoria.setText(tarefa.getCategoria());
-        binding.prioridade.setText(Integer.toString(tarefa.getPrioridade()));
+
+        prioridade = tarefa.getPrioridade();
+        if (prioridade == 0) binding.prioridade.setText("Urgente");
+        if (prioridade == 1) binding.prioridade.setText("Importante");
+        if (prioridade == 2) binding.prioridade.setText("Prioridade média");
+        if (prioridade == 3) binding.prioridade.setText("Prioridade baixa");
+        if (prioridade == -1) binding.prioridade.setText("Nenhuma prioridade");
 
         checkDetails(tarefa);
 
@@ -262,11 +256,16 @@ public class EditActivity extends AppCompatActivity {
 
         if(dateStart != null) inicio = true;
         if(dateLimit != null) limite = true;
-        if(Integer.parseInt(binding.prioridade.getText().toString()) != -1) prioridade = true;
+        if(this.prioridade != -1) prioridade = true;
         if( !binding.categoria.getText().toString().equals("") ) categoria = true;
 
         ModalBottomSheet modalBottomSheet = new ModalBottomSheet(inicio, limite, prioridade, categoria, this, binding);
         modalBottomSheet.show(getSupportFragmentManager(), ModalBottomSheet.TAG);
+    }
+
+    public void showPriorityBottomSheet(View view) {
+        PriorityBottomSheet priorityBottomSheet = new PriorityBottomSheet(prioridade, this, binding);
+        priorityBottomSheet.show(getSupportFragmentManager(), PriorityBottomSheet.TAG);
     }
 
     public void clearConteiner(View view) {
@@ -284,7 +283,8 @@ public class EditActivity extends AppCompatActivity {
 
         if (view.getId() == R.id.btnCancelPriority) {
             binding.priorityConteiner.setVisibility(View.GONE);
-            binding.prioridade.setText("-1");
+            binding.prioridade.setText("Nenhuma Prioridade");
+            prioridade = -1;
         }
 
         if (view.getId() == R.id.btnCancelCategory) {

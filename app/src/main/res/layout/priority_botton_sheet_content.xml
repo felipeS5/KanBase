@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/bottomSheetDragHandleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.bottomsheet.BottomSheetDragHandleView>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Qual a prioridade da tarefa?"
+        android:textSize="20dp" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:textColor="#E94747"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_priority_high_24"
+        android:button="@null"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Urgente" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:textColor="#D7440B"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_priority_high_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Importante" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:textColor="#D39E17"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_priority_high_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prioridade média" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:textColor="#34B300"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_priority_high_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prioridade baixa" />
+    <CheckBox
+        android:id="@+id/checkBox4"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_clear_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sem prioridade" />
+
+
+
+
+</LinearLayout>
