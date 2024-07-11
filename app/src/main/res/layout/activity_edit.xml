@@ -92,9 +92,10 @@
                 android:id="@+id/dtInicio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirDatePicker"
                 android:padding="8dp"
                 android:text="22 de jun de 2024"
@@ -105,9 +106,10 @@
 
             <TextView
                 android:id="@+id/timeInicio"
-                android:layout_marginStart="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirTimePicker"
                 android:padding="8dp"
                 android:text="20:00"
@@ -118,10 +120,10 @@
 
             <ImageButton
                 android:id="@+id/btnCancelDateSt"
-                android:onClick="clearConteiner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:onClick="clearConteiner"
                 android:src="@drawable/baseline_clear_24"
                 app:layout_constraintBottom_toBottomOf="@+id/timeInicio"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -148,9 +150,10 @@
                 android:id="@+id/dtFim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirDatePicker"
                 android:padding="8dp"
                 android:text="22 de jun de 2024"
@@ -161,9 +164,10 @@
 
             <TextView
                 android:id="@+id/timeFim"
-                android:layout_marginStart="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirTimePicker"
                 android:padding="8dp"
                 android:text="20:00"
@@ -174,10 +178,10 @@
 
             <ImageButton
                 android:id="@+id/btnCancelDateLm"
-                android:onClick="clearConteiner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:onClick="clearConteiner"
                 android:src="@drawable/baseline_clear_24"
                 app:layout_constraintBottom_toBottomOf="@+id/timeFim"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accet</item>
         <item name="colorPrimaryContainer">@color/container</item>
+        <item name="android:colorBackground">@color/appBg</item>
     </style>
 
     <style name="Theme.CheckPad" parent="Base.Theme.CheckPad" />
