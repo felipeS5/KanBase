@@ -5,19 +5,19 @@
     <item
         android:id="@+id/item_naoIniciado"
         android:enabled="true"
-        android:icon="@drawable/baseline_lightbulb_24"
+        android:icon="@drawable/icon_lightbulb"
         android:title="Novas"
         android:checkable="true"/>
     <item
         android:id="@+id/item_iniciado"
         android:enabled="true"
-        android:icon="@drawable/baseline_build_24"
+        android:icon="@drawable/icon_build"
         android:title="Andamento"
         android:checkable="true"/>
     <item
         android:id="@+id/item_feitas"
         android:enabled="true"
-        android:icon="@drawable/baseline_check_circle_24"
+        android:icon="@drawable/icon_check"
         android:title="Feitas"
         android:checkable="true"/>
 </menu>

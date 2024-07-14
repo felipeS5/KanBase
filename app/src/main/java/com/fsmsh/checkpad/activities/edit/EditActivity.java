@@ -151,7 +151,7 @@ public class EditActivity extends AppCompatActivity {
     public void salvar(String acao, Tarefa tarefa) {
         adjustCalendar();
 
-        binding.btnSalvar.setOnClickListener(new View.OnClickListener() {
+        binding.fabSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tarefa.setTarefaNome(binding.titulo.getText().toString());
