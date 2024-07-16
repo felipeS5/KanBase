@@ -2,6 +2,7 @@ package com.fsmsh.checkpad.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private Database database;
     private int TELA_HOME_ATUAL = 0;
+    private MenuItem menuItemHomeAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
                 fab.setVisibility(View.GONE);
 
                 if (menuItem.getItemId() == R.id.nav_home) {
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL),false, false, false);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
-                    replaceFragment(new CategoryFragment());
+                    replaceFragment(new CategoryFragment(), false, false, false);
                 }else if (menuItem.getItemId() == R.id.nav_slideshow) {
-                    replaceFragment(new SlideshowFragment());
+                    replaceFragment(new SlideshowFragment(), false, false, false);
                 }
 
                 drawerLayout.close();
@@ -90,31 +92,55 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
+            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), false, false, false);
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.item_naoIniciado) {
-                    TELA_HOME_ATUAL = 0;
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
-                } else if (menuItem.getItemId() == R.id.item_iniciado) {
-                    TELA_HOME_ATUAL = 1;
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
-                } else if (menuItem.getItemId() == R.id.item_feitas) {
-                    TELA_HOME_ATUAL = 2;
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL));
+                if (menuItemHomeAtual != menuItem) {
+                    boolean leftToRight = false;
+                    boolean highSpeed = false;
+                    if (menuItem.getItemId() == R.id.item_naoIniciado) {
+                        if (TELA_HOME_ATUAL == 2) highSpeed = true;
+                        TELA_HOME_ATUAL = 0;
+                        leftToRight = false;
+                    } else if (menuItem.getItemId() == R.id.item_iniciado) {
+                        if (TELA_HOME_ATUAL == 0) leftToRight = true;
+                        else leftToRight = false;
+                        TELA_HOME_ATUAL = 1;
+
+                    } else if (menuItem.getItemId() == R.id.item_feitas) {
+                        if (TELA_HOME_ATUAL == 0) highSpeed = true;
+                        TELA_HOME_ATUAL = 2;
+                        leftToRight = true;
+                    }
+
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), true, leftToRight, highSpeed);
                 }
+
+                menuItemHomeAtual = menuItem;
                 return true;
             }
         });
     }
 
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment, boolean animar, boolean leftToRight, boolean highSpeed) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Anims
+        if (animar) {
+            if (!highSpeed) {
+                if (leftToRight) transaction.setCustomAnimations(R.anim.enter_right_left, R.anim.exit_right_left);
+                else transaction.setCustomAnimations(R.anim.enter_left_right, R.anim.exit_left_right);
+            } else {
+                if (leftToRight) transaction.setCustomAnimations(R.anim.enter_speed_right_left, R.anim.exit_speed_right_left);
+                else transaction.setCustomAnimations(R.anim.enter_speed_left_right, R.anim.exit_speed_left_right);
+            }
+        }
+
         transaction.replace(R.id.nav_host_fragment_content_main, fragment);
         transaction.commit();
     }
