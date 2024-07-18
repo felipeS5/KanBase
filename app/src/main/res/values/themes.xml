@@ -12,6 +12,10 @@
         <item name="popupMenuBackground">@drawable/bg_light_gray</item>
     </style>
 
+    <style name="CustomPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/bg_small_gray</item>
+    </style>
+
     <style name="Theme.CheckPad" parent="Base.Theme.CheckPad" />
 
     <style name="Theme.CheckPad.NoActionBar">

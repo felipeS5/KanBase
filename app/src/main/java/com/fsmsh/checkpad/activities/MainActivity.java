@@ -1,17 +1,28 @@
 package com.fsmsh.checkpad.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.PopupMenu;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.ui.CategoryFragment;
 import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;
+import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,7 +31,10 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -31,7 +45,10 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawerLayout;
@@ -42,11 +59,13 @@ public class MainActivity extends AppCompatActivity {
     private Database database;
     private int TELA_HOME_ATUAL = 0;
     private MenuItem menuItemHomeAtual;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        view = getLayoutInflater().inflate(R.layout.activity_main, null);
+        setContentView(view);
 
         database = new Database(this);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -73,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
                 fab.setVisibility(View.GONE);
 
                 if (menuItem.getItemId() == R.id.nav_home) {
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL),false, false, false);
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL),null);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
-                    replaceFragment(new CategoryFragment(), false, false, false);
+                    replaceFragment(new CategoryFragment(), null);
                 }else if (menuItem.getItemId() == R.id.nav_slideshow) {
-                    replaceFragment(new SlideshowFragment(), false, false, false);
+                    replaceFragment(new SlideshowFragment(), null);
                 }
 
                 drawerLayout.close();
@@ -92,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), false, false, false);
+            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), null);
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
@@ -100,24 +119,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItemHomeAtual != menuItem) {
-                    boolean leftToRight = false;
-                    boolean highSpeed = false;
+                    AnimationRes animationRes = null;
                     if (menuItem.getItemId() == R.id.item_naoIniciado) {
-                        if (TELA_HOME_ATUAL == 2) highSpeed = true;
+                        if (TELA_HOME_ATUAL == 2) animationRes = new AnimationRes(false, true);
+                        else animationRes = new AnimationRes(false, false);
                         TELA_HOME_ATUAL = 0;
-                        leftToRight = false;
                     } else if (menuItem.getItemId() == R.id.item_iniciado) {
-                        if (TELA_HOME_ATUAL == 0) leftToRight = true;
-                        else leftToRight = false;
+                        if (TELA_HOME_ATUAL == 0) animationRes = new AnimationRes(true, false);
+                        else animationRes = new AnimationRes(false, false);
                         TELA_HOME_ATUAL = 1;
 
                     } else if (menuItem.getItemId() == R.id.item_feitas) {
-                        if (TELA_HOME_ATUAL == 0) highSpeed = true;
+                        if (TELA_HOME_ATUAL == 0) animationRes = new AnimationRes(true, true);
+                        else animationRes = new AnimationRes(true, false);
                         TELA_HOME_ATUAL = 2;
-                        leftToRight = true;
                     }
 
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), true, leftToRight, highSpeed);
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), animationRes);
                 }
 
                 menuItemHomeAtual = menuItem;
@@ -126,19 +144,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void replaceFragment(Fragment fragment, boolean animar, boolean leftToRight, boolean highSpeed) {
+    public void replaceFragment(Fragment fragment, AnimationRes animationRes) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         // Anims
-        if (animar) {
-            if (!highSpeed) {
-                if (leftToRight) transaction.setCustomAnimations(R.anim.enter_right_left, R.anim.exit_right_left);
-                else transaction.setCustomAnimations(R.anim.enter_left_right, R.anim.exit_left_right);
-            } else {
-                if (leftToRight) transaction.setCustomAnimations(R.anim.enter_speed_right_left, R.anim.exit_speed_right_left);
-                else transaction.setCustomAnimations(R.anim.enter_speed_left_right, R.anim.exit_speed_left_right);
-            }
+        if (animationRes != null) {
+            transaction.setCustomAnimations(animationRes.getAnimResEnter(), animationRes.getAnimResExit());
         }
 
         transaction.replace(R.id.nav_host_fragment_content_main, fragment);
@@ -151,6 +163,23 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.test) {
+            //Context wrapper = new ContextThemeWrapper(this, R.style.CustomPopupMenu);
+
+            PopupMenu popupMenu = new PopupMenu(getApplicationContext(), findViewById(R.id.test));
+            popupMenu.inflate(R.menu.filter_menu);
+
+            popupMenu.show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
     }
 
     @Override
