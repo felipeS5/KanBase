@@ -24,7 +24,7 @@
 
     <CheckBox
         android:id="@+id/checkBox"
-        android:textColor="#E94747"
+        android:textColor="@color/red"
         android:paddingLeft="4dp"
         android:drawablePadding="4dp"
         android:drawableLeft="@drawable/baseline_priority_high_24"
@@ -37,7 +37,7 @@
 
     <CheckBox
         android:id="@+id/checkBox1"
-        android:textColor="#D7440B"
+        android:textColor="@color/orangeRed"
         android:button="@null"
         android:paddingLeft="4dp"
         android:drawablePadding="4dp"
@@ -50,7 +50,7 @@
 
     <CheckBox
         android:id="@+id/checkBox2"
-        android:textColor="#D39E17"
+        android:textColor="@color/yellow"
         android:button="@null"
         android:paddingLeft="4dp"
         android:drawablePadding="4dp"
@@ -63,7 +63,7 @@
 
     <CheckBox
         android:id="@+id/checkBox3"
-        android:textColor="#34B300"
+        android:textColor="@color/green"
         android:button="@null"
         android:paddingLeft="4dp"
         android:drawablePadding="4dp"

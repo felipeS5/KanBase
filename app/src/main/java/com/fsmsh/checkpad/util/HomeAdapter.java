@@ -63,6 +63,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         else
             holder.data.setText( DateUtilities.getFormattedDate(localDate, true) );
 
+        // Prioridade
+        if (tarefa.getPrioridade() != -1) {
+            holder.prioridade.setVisibility(View.VISIBLE);
+            if (tarefa.getPrioridade() == 0) {
+                holder.prioridade.setText("Urgente!!");
+                holder.prioridade.setTextColor(context.getColor(R.color.red));
+            } else if (tarefa.getPrioridade() == 1) {
+                holder.prioridade.setText("Importante!");
+                holder.prioridade.setTextColor(context.getColor(R.color.orangeRed));
+            } else if (tarefa.getPrioridade() == 2) {
+                holder.prioridade.setText("Prioridade média");
+                holder.prioridade.setTextColor(context.getColor(R.color.yellow));
+            } else if (tarefa.getPrioridade() == 3) {
+                holder.prioridade.setText("Baixa prioridade");
+                holder.prioridade.setTextColor(context.getColor(R.color.green));
+            }
+        }
+
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +113,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
 
         TextView titulo;
         TextView data;
+        TextView prioridade;
         ConstraintLayout item;
 
         public MeuVH(@NonNull View itemView) {
@@ -102,6 +121,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
 
             titulo = itemView.findViewById(R.id.lblTitulo);
             data = itemView.findViewById(R.id.lblInicio);
+            prioridade = itemView.findViewById(R.id.itemViewPrioridade);
             item = itemView.findViewById(R.id.item_main);
 
             itemView.setOnCreateContextMenuListener(this);

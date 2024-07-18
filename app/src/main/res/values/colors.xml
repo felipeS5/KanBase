@@ -5,6 +5,10 @@
     <color name="gray">#CECECE</color>
     <color name="lightGray">#E0E2EC</color>
     <color name="lightGray2">#EbEdf2</color>
+    <color name="red">#E94747</color>
+    <color name="orangeRed">#D7440B</color>
+    <color name="yellow">#D39E17</color>
+    <color name="green">#34B300</color>
 
     <color name="appBg">#FDFBFF</color>
 
