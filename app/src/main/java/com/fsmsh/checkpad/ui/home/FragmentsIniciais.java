@@ -55,6 +55,19 @@ public class FragmentsIniciais extends Fragment {
 
     }
 
+    public void start(List<Tarefa> tarefas) {
+        this.tarefas = tarefas;
+
+        // Recycler
+        homeAdapter = new HomeAdapter( tarefas, getActivity(), this );
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(homeAdapter);
+
+    }
+
     public void swipe() {
         // todo: fazer bg de item ao mover com cor diferente e texto (se foi para andamento, finalizadas...)
         ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
@@ -104,5 +117,9 @@ public class FragmentsIniciais extends Fragment {
     public void onResume() {
         super.onResume();
         start();
+    }
+
+    public List<Tarefa> getTarefas() {
+        return tarefas;
     }
 }

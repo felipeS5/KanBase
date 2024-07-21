@@ -35,7 +35,7 @@ public class EditActivity extends AppCompatActivity {
     public LocalTime timeStart;
     public LocalDate dateLimit;
     public LocalTime timeLimit;
-    int prioridade = -1;
+    int prioridade = 4;
     Tarefa tarefa;
 
     @Override
@@ -215,7 +215,7 @@ public class EditActivity extends AppCompatActivity {
         if (prioridade == 1) binding.prioridade.setText("Importante");
         if (prioridade == 2) binding.prioridade.setText("Prioridade média");
         if (prioridade == 3) binding.prioridade.setText("Prioridade baixa");
-        if (prioridade == -1) binding.prioridade.setText("Nenhuma prioridade");
+        if (prioridade == 4) binding.prioridade.setText("Nenhuma prioridade");
 
         checkDetails(tarefa);
 
@@ -256,7 +256,7 @@ public class EditActivity extends AppCompatActivity {
 
         if(dateStart != null) inicio = true;
         if(dateLimit != null) limite = true;
-        if(this.prioridade != -1) prioridade = true;
+        if(this.prioridade != 4) prioridade = true;
         if( !binding.categoria.getText().toString().equals("") ) categoria = true;
 
         ModalBottomSheet modalBottomSheet = new ModalBottomSheet(inicio, limite, prioridade, categoria, this, binding);
@@ -284,7 +284,7 @@ public class EditActivity extends AppCompatActivity {
         if (view.getId() == R.id.btnCancelPriority) {
             binding.priorityConteiner.setVisibility(View.GONE);
             binding.prioridade.setText("Nenhuma Prioridade");
-            prioridade = -1;
+            prioridade = 4;
         }
 
         if (view.getId() == R.id.btnCancelCategory) {
@@ -295,7 +295,7 @@ public class EditActivity extends AppCompatActivity {
 
     public void checkDetails(Tarefa tarefa) {
         if (!tarefa.getCategoria().equals("")) binding.categoryConteiner.setVisibility(View.VISIBLE);
-        if (tarefa.getPrioridade() != -1) binding.priorityConteiner.setVisibility(View.VISIBLE);
+        if (tarefa.getPrioridade() != 4) binding.priorityConteiner.setVisibility(View.VISIBLE);
 
         if (!tarefa.getDateStart().equals("")) binding.dateStartConteiner.setVisibility(View.VISIBLE);
         if (!tarefa.getDateLimit().equals("")) binding.dateLimitConteiner.setVisibility(View.VISIBLE);

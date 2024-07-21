@@ -64,7 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
             holder.data.setText( DateUtilities.getFormattedDate(localDate, true) );
 
         // Prioridade
-        if (tarefa.getPrioridade() != -1) {
+        if (tarefa.getPrioridade() != 4) {
             holder.prioridade.setVisibility(View.VISIBLE);
             if (tarefa.getPrioridade() == 0) {
                 holder.prioridade.setText("Urgente!!");

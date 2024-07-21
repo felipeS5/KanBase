@@ -19,11 +19,13 @@ import android.widget.PopupMenu;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
+import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.ui.CategoryFragment;
 import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
+import com.fsmsh.checkpad.util.Sort;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -47,6 +49,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
 
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     private int TELA_HOME_ATUAL = 0;
     private MenuItem menuItemHomeAtual;
     private View view;
+    FragmentsIniciais homeAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         transaction.replace(R.id.nav_host_fragment_content_main, fragment);
         transaction.commit();
+
+        if (fragment instanceof FragmentsIniciais) homeAtual = (FragmentsIniciais) fragment;
     }
 
 
@@ -173,6 +179,20 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
             PopupMenu popupMenu = new PopupMenu(getApplicationContext(), findViewById(R.id.test));
             popupMenu.inflate(R.menu.filter_menu);
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    if (menuItem.getItemId() == R.id.menuClassifyMostImportants) {
+                        List<Tarefa> tarefas = Sort.sortByPriority(homeAtual.getTarefas(), Sort.ORDEM_DECRESCENTE);
+                        homeAtual.start(tarefas);
+                    } else if (menuItem.getItemId() == R.id.menuClassifyLessImportants) {
+                        List<Tarefa> tarefas = Sort.sortByPriority(homeAtual.getTarefas(), Sort.ORDEM_CRESCENTE);
+                        homeAtual.start(tarefas);
+                    }
+
+                    return true;
+                }
+            });
 
             popupMenu.show();
             return true;

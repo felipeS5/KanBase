@@ -47,7 +47,7 @@ public class PriorityBottomSheet extends BottomSheetDialogFragment {
         if (prioridadeAtual == 1) importanteCheck.setChecked(true);
         if (prioridadeAtual == 2) mediaCheck.setChecked(true);
         if (prioridadeAtual == 3) baixaCheck.setChecked(true);
-        if (prioridadeAtual == -1) nenhumaCheck.setChecked(true);
+        if (prioridadeAtual == 4) nenhumaCheck.setChecked(true);
 
         urgenteCheck.setOnCheckedChangeListener((compoundButton, b) -> confirmPriority(compoundButton, b));
         importanteCheck.setOnCheckedChangeListener((compoundButton, b) -> confirmPriority(compoundButton, b));
@@ -83,7 +83,7 @@ public class PriorityBottomSheet extends BottomSheetDialogFragment {
         if (button.getId() == nenhumaCheck.getId()) {
             Log.i("tag", "no "+button.getId());
             binding.prioridade.setText("Nenhuma prioridade");
-            parent.prioridade = -1;
+            parent.prioridade = 4;
             button.setChecked(true);
             binding.priorityConteiner.setVisibility(View.GONE);
         }
