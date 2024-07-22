@@ -3,6 +3,7 @@ package com.fsmsh.checkpad.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -160,7 +161,9 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         transaction.replace(R.id.nav_host_fragment_content_main, fragment);
         transaction.commit();
 
-        if (fragment instanceof FragmentsIniciais) homeAtual = (FragmentsIniciais) fragment;
+        if (fragment instanceof FragmentsIniciais) {
+            homeAtual = (FragmentsIniciais) fragment;
+        }
     }
 
 
@@ -185,9 +188,13 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                     if (menuItem.getItemId() == R.id.menuClassifyMostImportants) {
                         List<Tarefa> tarefas = Sort.sortByPriority(homeAtual.getTarefas(), Sort.ORDEM_DECRESCENTE);
                         homeAtual.start(tarefas);
+                        salvarPreferenciasClassify("priority", Sort.ORDEM_DECRESCENTE);
+
                     } else if (menuItem.getItemId() == R.id.menuClassifyLessImportants) {
                         List<Tarefa> tarefas = Sort.sortByPriority(homeAtual.getTarefas(), Sort.ORDEM_CRESCENTE);
                         homeAtual.start(tarefas);
+                        salvarPreferenciasClassify("priority", Sort.ORDEM_CRESCENTE);
+
                     }
 
                     return true;
@@ -208,4 +215,15 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    private void salvarPreferenciasClassify(String classifyType, int ordem) {
+        SharedPreferences preferences = getSharedPreferences("classify.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putString("classifyType", classifyType);
+        prefEditor.putInt("ordem", ordem);
+
+        prefEditor.apply();
+    }
+
 }

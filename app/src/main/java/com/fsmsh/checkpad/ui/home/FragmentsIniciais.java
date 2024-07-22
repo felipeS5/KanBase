@@ -1,5 +1,6 @@
 package com.fsmsh.checkpad.ui.home;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.HomeAdapter;
+import com.fsmsh.checkpad.util.Sort;
 
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class FragmentsIniciais extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(homeAdapter);
 
+        autoClassify();
     }
 
     public void start(List<Tarefa> tarefas) {
@@ -111,6 +114,23 @@ public class FragmentsIniciais extends Fragment {
 
         if (isMovida) return true;
         else return false;
+    }
+
+    private void autoClassify() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("classify.pref", getContext().MODE_PRIVATE);
+
+        if (preferences.contains("classifyType")) {
+            String classifyType = preferences.getString("classifyType", "default");
+            int ordem = preferences.getInt("ordem", 0);
+
+            //Log.d("tag", homeAtual.getTarefas()+"");
+
+            if (classifyType.equals("priority")) {
+                List<Tarefa> tarefas = Sort.sortByPriority(this.tarefas, ordem);
+                start(tarefas);
+            }
+
+        }
     }
 
     @Override

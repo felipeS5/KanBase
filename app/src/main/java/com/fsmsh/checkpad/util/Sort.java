@@ -11,11 +11,9 @@ public class Sort {
     public static final int ORDEM_DECRESCENTE = -1;
 
     public static List<Tarefa> sortByPriority(List<Tarefa> tarefas, int ordem) {
-        if (ordem == ORDEM_DECRESCENTE) tarefas.sort(Comparator.comparing(Tarefa::getPrioridade));
-        else {
-            tarefas.sort(Comparator.comparing(Tarefa::getPrioridade));
-            Collections.reverse(tarefas);
-        }
+        tarefas.sort(Comparator.comparing(Tarefa::getPrioridade));
+
+        if (ordem == ORDEM_CRESCENTE) Collections.reverse(tarefas);
 
         return tarefas;
     }
