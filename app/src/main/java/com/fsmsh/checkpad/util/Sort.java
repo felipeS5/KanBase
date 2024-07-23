@@ -13,7 +13,14 @@ public class Sort {
     public static List<Tarefa> sortByPriority(List<Tarefa> tarefas, int ordem) {
         tarefas.sort(Comparator.comparing(Tarefa::getPrioridade));
 
-        if (ordem == ORDEM_CRESCENTE) Collections.reverse(tarefas);
+        if (ordem == ORDEM_DECRESCENTE) Collections.reverse(tarefas);
+
+        return tarefas;
+    }
+
+    public static List<Tarefa> sortByCreation(List<Tarefa> tarefas, int ordem) {
+
+        if (ordem == ORDEM_DECRESCENTE) Collections.reverse(tarefas);
 
         return tarefas;
     }

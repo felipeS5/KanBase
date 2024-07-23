@@ -185,15 +185,21 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    if (menuItem.getItemId() == R.id.menuClassifyMostImportants) {
-                        List<Tarefa> tarefas = Sort.sortByPriority(homeAtual.getTarefas(), Sort.ORDEM_DECRESCENTE);
-                        homeAtual.start(tarefas);
-                        salvarPreferenciasClassify("priority", Sort.ORDEM_DECRESCENTE);
+                    if (menuItem.getItemId() == R.id.menuClassifyFirs) {
+                        salvarPreferenciasClassify("creation", Sort.ORDEM_CRESCENTE);
+                        homeAtual.start();
+
+                    } else if (menuItem.getItemId() == R.id.menuClassifyLast) {
+                        salvarPreferenciasClassify("creation", Sort.ORDEM_DECRESCENTE);
+                        homeAtual.start();
+
+                    } else if (menuItem.getItemId() == R.id.menuClassifyMostImportants) {
+                        salvarPreferenciasClassify("priority", Sort.ORDEM_CRESCENTE);
+                        homeAtual.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLessImportants) {
-                        List<Tarefa> tarefas = Sort.sortByPriority(homeAtual.getTarefas(), Sort.ORDEM_CRESCENTE);
-                        homeAtual.start(tarefas);
-                        salvarPreferenciasClassify("priority", Sort.ORDEM_CRESCENTE);
+                        salvarPreferenciasClassify("priority", Sort.ORDEM_DECRESCENTE);
+                        homeAtual.start();
 
                     }
 

@@ -46,20 +46,7 @@ public class FragmentsIniciais extends Fragment {
 
     public void start() {
         tarefas = Database.getTarefas(PROGRESSO);
-
-        // Recycler
-        homeAdapter = new HomeAdapter( tarefas, getActivity(), this );
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(homeAdapter);
-
         autoClassify();
-    }
-
-    public void start(List<Tarefa> tarefas) {
-        this.tarefas = tarefas;
 
         // Recycler
         homeAdapter = new HomeAdapter( tarefas, getActivity(), this );
@@ -68,7 +55,6 @@ public class FragmentsIniciais extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(homeAdapter);
-
     }
 
     public void swipe() {
@@ -116,18 +102,17 @@ public class FragmentsIniciais extends Fragment {
         else return false;
     }
 
-    private void autoClassify() {
+    public void autoClassify() {
         SharedPreferences preferences = getActivity().getSharedPreferences("classify.pref", getContext().MODE_PRIVATE);
 
         if (preferences.contains("classifyType")) {
             String classifyType = preferences.getString("classifyType", "default");
             int ordem = preferences.getInt("ordem", 0);
 
-            //Log.d("tag", homeAtual.getTarefas()+"");
-
             if (classifyType.equals("priority")) {
-                List<Tarefa> tarefas = Sort.sortByPriority(this.tarefas, ordem);
-                start(tarefas);
+                tarefas = Sort.sortByPriority(tarefas, ordem);
+            } else if (classifyType.equals("creation")) {
+                tarefas = Sort.sortByCreation(tarefas, ordem);
             }
 
         }
@@ -139,7 +124,4 @@ public class FragmentsIniciais extends Fragment {
         start();
     }
 
-    public List<Tarefa> getTarefas() {
-        return tarefas;
-    }
 }

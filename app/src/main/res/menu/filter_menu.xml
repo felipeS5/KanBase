@@ -2,12 +2,16 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="Criadas primeiro"
+        android:id="@+id/menuClassifyFirs"/>
+
+    <item android:title="Criadas último"
+        android:id="@+id/menuClassifyLast"/>
+
     <item android:title="Mais importantes"
         android:id="@+id/menuClassifyMostImportants"/>
 
     <item android:title="Menos importantes"
         android:id="@+id/menuClassifyLessImportants"/>
 
-    <item android:title="Item 2"
-        android:id="@+id/testIt3"/>
 </menu>
