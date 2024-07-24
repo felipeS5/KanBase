@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
+import com.fsmsh.checkpad.util.DateUtilities;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 
@@ -28,7 +29,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
     Chip categoriaChip;
     Button button;
     View view;
-    EditActivity parent;
+    public EditActivity parent;
     ActivityEditBinding binding;
 
     public ModalBottomSheet(boolean inicio, boolean limite, boolean prioridade, boolean categoria, EditActivity parent, ActivityEditBinding binding) {
@@ -64,24 +65,27 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
 
         if (inicioChip.isChecked()) {
             if ( !(inicio && inicioChip.isChecked()) ) {
-                parent.dateStart = LocalDate.now();
-                parent.timeStart = LocalTime.now();
+                parent.dateStart = DateUtilities.getNextTime().toLocalDate();
+                parent.timeStart = DateUtilities.getNextTime().toLocalTime();
             }
             binding.dateStartConteiner.setVisibility(View.VISIBLE);
         } else {
             binding.dateStartConteiner.setVisibility(View.GONE);
             parent.dateStart = null;
+            parent.timeStart = null;
         }
 
         if (limiteChip.isChecked()) {
             if ( !(limite && limiteChip.isChecked()) ) {
-                parent.dateLimit = LocalDate.now();
-                parent.timeLimit = LocalTime.now();
+                // time limit adiciona uma hora do inicio caso haja ou um dia caso não haja
+                parent.dateLimit = DateUtilities.getNextLimitTime(this).toLocalDate();
+                parent.timeLimit = DateUtilities.getNextLimitTime(this).toLocalTime();
             }
             binding.dateLimitConteiner.setVisibility(View.VISIBLE);
         } else{
             binding.dateLimitConteiner.setVisibility(View.GONE);
             parent.dateLimit = null;
+            parent.timeLimit = null;
         }
 
         parent.adjustCalendar();

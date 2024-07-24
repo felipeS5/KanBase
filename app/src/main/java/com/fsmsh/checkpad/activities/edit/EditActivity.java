@@ -51,33 +51,14 @@ public class EditActivity extends AppCompatActivity {
         intencao = getIntent().getExtras();
         if (intencao.getBoolean("isNovo")) {
             // todo: arredondar tempo
-            dateStart = LocalDate.now();
-            timeStart = LocalTime.now();
+            dateStart = DateUtilities.getNextTime().toLocalDate();
+            timeStart = DateUtilities.getNextTime().toLocalTime();
             binding.dateStartConteiner.setVisibility(View.VISIBLE);
 
             salvar("adicionar", new Tarefa());
         } else {
             edit();
         }
-
-        /*/ checagem pra verificar se o dt limit deve alterar timelimit para now() ou não
-        if (timeLimit == null) {
-            binding.dtFim.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    LocalDateTime agora = LocalDateTime.now().atZone(timeZone.toZoneId()).toLocalDateTime();
-                    agora.plusMinutes(30);
-                    // todo: arredondar tempo
-                    dateLimit = agora.toLocalDate();
-                    timeLimit = agora.toLocalTime();
-
-                    adjustCalendar();
-                }
-            });
-        }
-
-         */
-
 
     }
 
