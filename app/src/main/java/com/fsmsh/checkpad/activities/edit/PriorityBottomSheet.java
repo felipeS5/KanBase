@@ -81,7 +81,6 @@ public class PriorityBottomSheet extends BottomSheetDialogFragment {
             button.setChecked(true);
         }
         if (button.getId() == nenhumaCheck.getId()) {
-            Log.i("tag", "no "+button.getId());
             binding.prioridade.setText("Nenhuma prioridade");
             parent.prioridade = 4;
             button.setChecked(true);

@@ -1,21 +1,12 @@
-package com.fsmsh.checkpad.activities;
+package com.fsmsh.checkpad.activities.main;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.PopupMenu;
 
 import com.fsmsh.checkpad.R;
@@ -26,7 +17,9 @@ import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
+import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.Sort;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -34,10 +27,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,8 +38,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
@@ -97,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 fab.setVisibility(View.GONE);
 
                 if (menuItem.getItemId() == R.id.nav_home) {
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL),null);
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this),null);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
@@ -116,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), null);
+            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), null);
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
@@ -140,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                         TELA_HOME_ATUAL = 2;
                     }
 
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL), animationRes);
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), animationRes);
                 }
 
                 menuItemHomeAtual = menuItem;
@@ -232,4 +221,66 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         prefEditor.apply();
     }
 
+    public void setBadges() {
+        int[] badges = getBadges();
+
+        BadgeDrawable badgeNovas = bottomNavigationView.getOrCreateBadge(R.id.item_naoIniciado);
+        BadgeDrawable badgeIniciadas = bottomNavigationView.getOrCreateBadge(R.id.item_iniciado);
+        BadgeDrawable badgeFinalizadas = bottomNavigationView.getOrCreateBadge(R.id.item_feitas);
+
+
+        if (badges[0] > 0) {
+            //badgeDrawable = BadgeDrawable.create(this);
+            badgeNovas.setVisible(true);
+            badgeNovas.setNumber(badges[0]);
+            //BadgeUtils.attachBadgeDrawable(badgeDrawable, findViewById(R.id.item_iniciado));
+        } else {
+            badgeNovas.setVisible(false);
+        }
+
+        if (badges[1] > 0) {
+            badgeIniciadas.setVisible(true);
+            badgeIniciadas.setNumber(badges[1]);
+
+        } else {
+            badgeIniciadas.setVisible(false);
+        }
+
+        if (badges[2] > 0) {
+            badgeFinalizadas.setVisible(true);
+            badgeFinalizadas.setNumber(badges[2]);
+
+        } else {
+            badgeFinalizadas.setVisible(false);
+        }
+
+    }
+
+    public int[] getBadges() {
+        int[] badges = new int[3];
+
+        // loop que percorre os 3 estados possíveis
+        for (int progressoAtual = 0; progressoAtual <= 2; progressoAtual++) {
+            List<Tarefa> tarefas = Database.getTarefas(progressoAtual);
+
+            // loop que percorre a lista do estado atual
+            for (Tarefa tarefa : tarefas) {
+                if (!tarefa.getDateLimit().equals("")) {// verifica se tem limite
+                    LocalDate dateLimit = DateUtilities.toLocalDate(tarefa.getDateLimit());
+
+                    if (DateUtilities.isToday(dateLimit, 0)) {// aumenta a contagem de badges caso vença hoje
+                        badges[progressoAtual]++;
+                    }
+                }
+            }
+
+        }
+
+        return badges;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

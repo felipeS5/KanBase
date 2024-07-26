@@ -1,5 +1,6 @@
 package com.fsmsh.checkpad.ui.home;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsmsh.checkpad.R;
+import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.HomeAdapter;
@@ -29,9 +31,11 @@ public class FragmentsIniciais extends Fragment {
     private final int NAO_INICIADAS = 0;
     private final int INICIADAS = 1;
     private final int FINALIZADAS = 2;
+    MainActivity parent;
 
-    public FragmentsIniciais(int PROGRESSO) {
+    public FragmentsIniciais(int PROGRESSO, MainActivity parent) {
         this.PROGRESSO = PROGRESSO;
+        this.parent = parent;
     }
 
 
@@ -47,6 +51,7 @@ public class FragmentsIniciais extends Fragment {
     public void start() {
         tarefas = Database.getTarefas(PROGRESSO);
         autoClassify();
+        parent.setBadges();
 
         // Recycler
         homeAdapter = new HomeAdapter( tarefas, getActivity(), this );
