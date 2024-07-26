@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -81,6 +82,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
             }
         }
 
+        // Vencendo hoje
+        if (!tarefa.getDateLimit().equals("")) {
+            LocalDate dateLimit = DateUtilities.toLocalDate(tarefa.getDateLimit());
+
+            if (DateUtilities.isToday(dateLimit, 0)) {
+                holder.vencendoHoje.setVisibility(View.VISIBLE);
+                holder.vencendoHoje.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+            }
+        }
+
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +125,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         TextView titulo;
         TextView data;
         TextView prioridade;
+        TextView vencendoHoje;
         ConstraintLayout item;
 
         public MeuVH(@NonNull View itemView) {
@@ -122,6 +134,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
             titulo = itemView.findViewById(R.id.lblTitulo);
             data = itemView.findViewById(R.id.lblInicio);
             prioridade = itemView.findViewById(R.id.itemViewPrioridade);
+            vencendoHoje = itemView.findViewById(R.id.itemViewVencendo);
             item = itemView.findViewById(R.id.item_main);
 
             itemView.setOnCreateContextMenuListener(this);
