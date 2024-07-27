@@ -3,6 +3,7 @@ package com.fsmsh.checkpad.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,7 +61,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         else if (!tarefa.getDateLimit().equals("")) localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
 
         if ( tarefa.getDateStart().equals("") && !tarefa.getDateLimit().equals("") )
-            holder.data.setText("prazo: " + DateUtilities.getFormattedDate(localDate, true));
+            holder.data.setText("Prazo: " + DateUtilities.getFormattedDate(localDate, true));
         else
             holder.data.setText( DateUtilities.getFormattedDate(localDate, true) );
 
@@ -83,13 +84,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         }
 
         // Vencendo hoje
-        if (!tarefa.getDateLimit().equals("")) {
-            LocalDate dateLimit = DateUtilities.toLocalDate(tarefa.getDateLimit());
+        if (tarefa.getProgresso() != FragmentsIniciais.FINALIZADAS) {
+            if (!tarefa.getDateLimit().equals("")) {
+                LocalDate dateLimit = DateUtilities.toLocalDate(tarefa.getDateLimit());
 
-            if (DateUtilities.isToday(dateLimit, 0)) {
-                holder.vencendoHoje.setVisibility(View.VISIBLE);
-                holder.vencendoHoje.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+                if (DateUtilities.isToday(dateLimit, 0)) {
+                    holder.infoAdicional.setVisibility(View.VISIBLE);
+                    holder.infoAdicional.setText("Vencendo hoje!");
+                    holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+                }
             }
+        } else { //caso esteja completo exibe uma informação visual positiva :)
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_green));
+            holder.infoAdicional.setVisibility(View.VISIBLE);
+            holder.infoAdicional.setText("Tarefa completa :)");
         }
 
 
@@ -125,7 +133,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         TextView titulo;
         TextView data;
         TextView prioridade;
-        TextView vencendoHoje;
+        TextView infoAdicional;
         ConstraintLayout item;
 
         public MeuVH(@NonNull View itemView) {
@@ -134,7 +142,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
             titulo = itemView.findViewById(R.id.lblTitulo);
             data = itemView.findViewById(R.id.lblInicio);
             prioridade = itemView.findViewById(R.id.itemViewPrioridade);
-            vencendoHoje = itemView.findViewById(R.id.itemViewVencendo);
+            infoAdicional = itemView.findViewById(R.id.itemViewInfoAdicional);
             item = itemView.findViewById(R.id.item_main);
 
             itemView.setOnCreateContextMenuListener(this);

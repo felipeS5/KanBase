@@ -3,7 +3,6 @@ package com.fsmsh.checkpad.activities.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     private Database database;
-    private int TELA_HOME_ATUAL = 0;
+    private int TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
     private MenuItem menuItemHomeAtual;
     private View view;
     FragmentsIniciais homeAtual;
@@ -114,19 +113,22 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItemHomeAtual != menuItem) {
                     AnimationRes animationRes = null;
+
                     if (menuItem.getItemId() == R.id.item_naoIniciado) {
-                        if (TELA_HOME_ATUAL == 2) animationRes = new AnimationRes(false, true);
+                        if (TELA_HOME_ATUAL == FragmentsIniciais.FINALIZADAS) animationRes = new AnimationRes(false, true);
                         else animationRes = new AnimationRes(false, false);
-                        TELA_HOME_ATUAL = 0;
+                        TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
+
                     } else if (menuItem.getItemId() == R.id.item_iniciado) {
-                        if (TELA_HOME_ATUAL == 0) animationRes = new AnimationRes(true, false);
+                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS) animationRes = new AnimationRes(true, false);
                         else animationRes = new AnimationRes(false, false);
-                        TELA_HOME_ATUAL = 1;
+                        TELA_HOME_ATUAL = FragmentsIniciais.INICIADAS;
 
                     } else if (menuItem.getItemId() == R.id.item_feitas) {
-                        if (TELA_HOME_ATUAL == 0) animationRes = new AnimationRes(true, true);
+                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS) animationRes = new AnimationRes(true, true);
                         else animationRes = new AnimationRes(true, false);
-                        TELA_HOME_ATUAL = 2;
+                        TELA_HOME_ATUAL = FragmentsIniciais.FINALIZADAS;
+
                     }
 
                     replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), animationRes);
@@ -226,8 +228,6 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         BadgeDrawable badgeNovas = bottomNavigationView.getOrCreateBadge(R.id.item_naoIniciado);
         BadgeDrawable badgeIniciadas = bottomNavigationView.getOrCreateBadge(R.id.item_iniciado);
-        BadgeDrawable badgeFinalizadas = bottomNavigationView.getOrCreateBadge(R.id.item_feitas);
-
 
         if (badges[0] > 0) {
             //badgeDrawable = BadgeDrawable.create(this);
@@ -245,14 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         } else {
             badgeIniciadas.setVisible(false);
         }
-
-        if (badges[2] > 0) {
-            badgeFinalizadas.setVisible(true);
-            badgeFinalizadas.setNumber(badges[2]);
-
-        } else {
-            badgeFinalizadas.setVisible(false);
-        }
+        // As badges não serão exibidas na aba de finalizadas... (já foram finalizadas)
 
     }
 

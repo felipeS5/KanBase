@@ -1,6 +1,5 @@
 package com.fsmsh.checkpad.ui.home;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,9 +27,9 @@ public class FragmentsIniciais extends Fragment {
     private List<Tarefa> tarefas;
     private HomeAdapter homeAdapter;
     private int PROGRESSO;
-    private final int NAO_INICIADAS = 0;
-    private final int INICIADAS = 1;
-    private final int FINALIZADAS = 2;
+    public static final int NOVAS = 0;
+    public static final int INICIADAS = 1;
+    public static final int FINALIZADAS = 2;
     MainActivity parent;
 
     public FragmentsIniciais(int PROGRESSO, MainActivity parent) {
@@ -67,7 +66,7 @@ public class FragmentsIniciais extends Fragment {
         ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                if (PROGRESSO == NAO_INICIADAS) return makeMovementFlags(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.END);
+                if (PROGRESSO == NOVAS) return makeMovementFlags(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.END);
                 else if (PROGRESSO == INICIADAS) return makeMovementFlags(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.START | ItemTouchHelper.END);
                 else return makeMovementFlags(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.START);
             }
@@ -92,7 +91,7 @@ public class FragmentsIniciais extends Fragment {
     public boolean mover(RecyclerView.ViewHolder viewHolder, int direction) {
         Tarefa tarefa = tarefas.get(viewHolder.getAdapterPosition());
 
-        if (PROGRESSO == NAO_INICIADAS) {
+        if (PROGRESSO == NOVAS) {
             tarefa.setProgresso(1);
         } else if (PROGRESSO == INICIADAS) {
             if (direction == 16) tarefa.setProgresso(0);

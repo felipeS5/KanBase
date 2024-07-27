@@ -33,11 +33,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/itemViewVencendo"
+        android:id="@+id/itemViewInfoAdicional"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Vencendo hoje!"
+        android:text="adicional info"
         android:textSize="13sp"
         android:background="@drawable/bg_small_red"
         android:textColor="@color/white"
