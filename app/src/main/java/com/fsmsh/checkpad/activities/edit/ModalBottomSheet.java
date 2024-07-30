@@ -14,6 +14,7 @@ import com.google.android.material.chip.Chip;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class ModalBottomSheet extends BottomSheetDialogFragment {
 
@@ -101,7 +102,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         if (categoriaChip.isChecked()) binding.categoryConteiner.setVisibility(View.VISIBLE);
         else {
             binding.categoryConteiner.setVisibility(View.GONE);
-            binding.categoria.setText("");
+            parent.tags = new ArrayList<>();
         }
 
         this.dismiss();

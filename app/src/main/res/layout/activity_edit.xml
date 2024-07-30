@@ -183,7 +183,7 @@
             android:id="@+id/priorityConteiner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -227,32 +227,31 @@
             android:id="@+id/categoryConteiner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_label_24" />
 
             <TextView
                 android:id="@+id/categoria"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
                 android:onClick="showTagsBottomSheet"
-                android:text="Categoria"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="Adicione tags"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
                 app:layout_constraintEnd_toStartOf="@+id/btnCancelCategory"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
             <ImageButton
                 android:id="@+id/btnCancelCategory"
@@ -261,9 +260,37 @@
                 android:layout_marginEnd="8dp"
                 android:onClick="clearConteiner"
                 android:src="@drawable/baseline_clear_24"
-                app:layout_constraintBottom_toBottomOf="@+id/categoria"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/categoria" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <HorizontalScrollView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnCancelCategory"
+                app:layout_constraintStart_toStartOf="@+id/categoria"
+                app:layout_constraintTop_toBottomOf="@+id/categoria">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/editTagsChipGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:singleLine="true">
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

@@ -1,6 +1,7 @@
 package com.fsmsh.checkpad.activities.edit;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -18,12 +20,14 @@ import com.google.android.material.timepicker.TimeFormat;
 
 import android.text.format.DateFormat;
 
+import java.lang.reflect.Array;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -39,6 +43,7 @@ public class EditActivity extends AppCompatActivity {
     public LocalTime timeLimit;
     int prioridade = 4;
     Tarefa tarefa;
+    List<String> tags = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +144,22 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 tarefa.setTarefaNome(binding.titulo.getText().toString());
                 tarefa.setDescricao(binding.descricao.getText().toString());
-                tarefa.setCategoria(binding.categoria.getText().toString());
                 tarefa.setPrioridade(prioridade);
+
+                if (tags.size() != 0) {
+                    String temp = "";
+
+                    for (String s : tags) {
+                        if (!s.equals("")) {
+                            temp += s + "‖";
+                        }
+                    }
+
+                    tarefa.setCategoria(temp);
+
+                } else {
+                    tarefa.setCategoria("");
+                }
 
                 if (dateStart != null) {
                     tarefa.setDateStart(dateStart.toString());
@@ -191,7 +210,13 @@ public class EditActivity extends AppCompatActivity {
 
         binding.titulo.setText(tarefa.getTarefaNome());
         binding.descricao.setText(tarefa.getDescricao());
-        binding.categoria.setText(tarefa.getCategoria());
+
+        if (!tarefa.getCategoria().equals("")) {
+            String[] tagsArr = tarefa.getCategoria().split("‖");
+            tags = Arrays.asList(tagsArr);
+
+            setChipTags();
+        }
 
         prioridade = tarefa.getPrioridade();
         if (prioridade == 0) binding.prioridade.setText("Urgente");
@@ -203,6 +228,22 @@ public class EditActivity extends AppCompatActivity {
         checkDetails(tarefa);
 
         salvar("editar", tarefa);
+    }
+
+    public void setChipTags() {
+        if (tags.size() != 0) binding.editTagsChipGroup.setVisibility(View.VISIBLE);
+
+        binding.editTagsChipGroup.removeAllViews();
+        for (String s : tags) {
+            Chip chip = new Chip(this);
+            chip.setCheckable(false);
+            chip.setChecked(true);
+            chip.setText(s);
+
+            if (!s.equals("")) binding.editTagsChipGroup.addView(chip);
+
+        }
+        
     }
 
     public void adjustCalendar() {
@@ -240,7 +281,7 @@ public class EditActivity extends AppCompatActivity {
         if(dateStart != null) inicio = true;
         if(dateLimit != null) limite = true;
         if(this.prioridade != 4) prioridade = true;
-        if( !binding.categoria.getText().toString().equals("") ) categoria = true;
+        if(tags.size() != 0) categoria = true;
 
         ModalBottomSheet modalBottomSheet = new ModalBottomSheet(inicio, limite, prioridade, categoria, this, binding);
         modalBottomSheet.show(getSupportFragmentManager(), ModalBottomSheet.TAG);
@@ -252,7 +293,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void showTagsBottomSheet(View view) {
-        TagsBottomSheet tagsBottomSheet = new TagsBottomSheet(this, binding);
+        TagsBottomSheet tagsBottomSheet = new TagsBottomSheet(this, binding, tags);
         tagsBottomSheet.show(getSupportFragmentManager(), TagsBottomSheet.TAG);
     }
 
@@ -277,7 +318,7 @@ public class EditActivity extends AppCompatActivity {
 
         if (view.getId() == R.id.btnCancelCategory) {
             binding.categoryConteiner.setVisibility(View.GONE);
-            binding.categoria.setText("");
+            tags = new ArrayList<>();
         }
     }
 

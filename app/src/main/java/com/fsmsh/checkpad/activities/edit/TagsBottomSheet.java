@@ -35,11 +35,12 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
 
     EditActivity parent;
     ActivityEditBinding binding;
-    List<String> tags;
+    List<String> tagsPresentes;
 
-    public TagsBottomSheet(EditActivity parent, ActivityEditBinding binding) {
+    public TagsBottomSheet(EditActivity parent, ActivityEditBinding binding, List<String> tagsPresentes) {
         this.parent = parent;
         this.binding = binding;
+        this.tagsPresentes = tagsPresentes;
     }
 
     @Override
@@ -51,6 +52,8 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
         chipGroup = view.findViewById(R.id.chipGroup);
 
         criarChips();
+
+        button.setOnClickListener(view -> select());
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,15 +87,35 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
+    public void select() {
+        List<String> tags = new ArrayList<>();
+
+        for (Chip chip : chips) {
+            if (chip.isChecked()) {
+                tags.add(chip.getText().toString());
+            }
+        }
+
+        parent.tags = tags;
+        parent.setChipTags();
+
+        this.dismiss();
+    }
+
     public void criarChips() {
         chipGroup.removeAllViews();
 
-        List<String> tags = Database.getTags();
+        chips = new ArrayList<>();
+        List<String> allTags = Database.getTags();
 
-        for (String s : tags) {
+        for (String s : allTags) {
             Chip chip = new Chip(getContext());
             chip.setText(s);
             chip.setCheckable(true);
+
+            for (String tagPresente : tagsPresentes) { // verificar se o chip gerado está entre as tags presentes na tarefa
+                if (s.equals(tagPresente)) chip.setChecked(true);
+            }
 
             chips.add(chip);
             chipGroup.addView(chip);
