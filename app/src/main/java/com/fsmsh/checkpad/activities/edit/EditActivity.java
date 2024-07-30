@@ -23,6 +23,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 public class EditActivity extends AppCompatActivity {
@@ -247,6 +249,11 @@ public class EditActivity extends AppCompatActivity {
     public void showPriorityBottomSheet(View view) {
         PriorityBottomSheet priorityBottomSheet = new PriorityBottomSheet(prioridade, this, binding);
         priorityBottomSheet.show(getSupportFragmentManager(), PriorityBottomSheet.TAG);
+    }
+
+    public void showTagsBottomSheet(View view) {
+        TagsBottomSheet tagsBottomSheet = new TagsBottomSheet(this, binding);
+        tagsBottomSheet.show(getSupportFragmentManager(), TagsBottomSheet.TAG);
     }
 
     public void clearConteiner(View view) {

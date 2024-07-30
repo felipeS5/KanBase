@@ -23,6 +23,7 @@ public class Database {
 
         sql = context.openOrCreateDatabase("Dados.db", Context.MODE_PRIVATE, null);
         sql.execSQL("CREATE TABLE IF NOT EXISTS tarefas (id INTEGER PRIMARY KEY AUTOINCREMENT, tarefaNome VARCHAR, descricao VARCHAR, progresso INT(1), dateStart VARCHAR, timeStart VARCHAR, dateLimit VARCHAR, timeLimit VARCHAR, categoria VARCHAR, prioridade INT(1))");
+        sql.execSQL("CREATE TABLE IF NOT EXISTS tags (tagName VARCHAR)");
     }
 
     public static boolean addTarefa(Tarefa tarefa) {
@@ -121,6 +122,50 @@ public class Database {
 
         try {
             sql.execSQL("DELETE FROM tarefas WHERE id = " + t.getId());
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Categorias
+    public static boolean addTag(String tag) {
+        try {
+            sql.execSQL("INSERT INTO tags (tagName) VALUES ('"+ tag +"')");
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static List<String> getTags() {
+        List<String> tags = new ArrayList<>();
+
+        try {
+            Cursor cursor = sql.rawQuery("SELECT tagName FROM tags", null);
+            cursor.moveToFirst();
+
+            while (cursor.getPosition() < cursor.getCount()) {
+
+                tags.add(0, cursor.getString(0));
+
+                cursor.moveToNext();
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tags;
+    }
+
+    public static boolean deleteTag(String tag) {
+        try {
+            sql.execSQL("DELETE FROM tags WHERE tagName = " + tag);
 
             return true;
         }catch (Exception e){

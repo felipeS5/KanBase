@@ -183,7 +183,7 @@
             android:id="@+id/priorityConteiner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -197,13 +197,13 @@
 
             <TextView
                 android:id="@+id/prioridade"
-                android:onClick="showPriorityBottomSheet"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
+                android:onClick="showPriorityBottomSheet"
                 android:text="Nenhuma Prioridade"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnCancelPriority"
@@ -213,10 +213,10 @@
 
             <ImageButton
                 android:id="@+id/btnCancelPriority"
-                android:onClick="clearConteiner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:onClick="clearConteiner"
                 android:src="@drawable/baseline_clear_24"
                 app:layout_constraintBottom_toBottomOf="@+id/prioridade"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -227,7 +227,7 @@
             android:id="@+id/categoryConteiner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView5"
@@ -239,7 +239,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_label_24" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
                 android:id="@+id/categoria"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -247,7 +247,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
-                android:hint="Categoria"
+                android:onClick="showTagsBottomSheet"
+                android:text="Categoria"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnCancelCategory"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
@@ -255,10 +256,10 @@
 
             <ImageButton
                 android:id="@+id/btnCancelCategory"
-                android:onClick="clearConteiner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:onClick="clearConteiner"
                 android:src="@drawable/baseline_clear_24"
                 app:layout_constraintBottom_toBottomOf="@+id/categoria"
                 app:layout_constraintEnd_toEndOf="parent"
