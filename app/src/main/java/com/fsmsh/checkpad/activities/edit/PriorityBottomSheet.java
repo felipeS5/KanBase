@@ -1,13 +1,11 @@
 package com.fsmsh.checkpad.activities.edit;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
@@ -35,7 +33,7 @@ public class PriorityBottomSheet extends BottomSheetDialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.priority_botton_sheet_content, container, false);
+        view = inflater.inflate(R.layout.bottom_sheet_priority, container, false);
 
         urgenteCheck = view.findViewById(R.id.checkBox);
         importanteCheck = view.findViewById(R.id.checkBox1);

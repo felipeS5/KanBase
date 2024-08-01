@@ -11,7 +11,6 @@ import android.widget.PopupMenu;
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
-import com.fsmsh.checkpad.ui.CategoryFragment;
 import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
@@ -49,10 +48,16 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     private Database database;
+    private View view;
+
     private int TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
     private MenuItem menuItemHomeAtual;
-    private View view;
     FragmentsIniciais homeAtual;
+
+    Fragment fragmentAtual;
+    Menu menu;
+    boolean hasMenu = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
-                    replaceFragment(new CategoryFragment(), null);
+                    replaceFragment(new com.fsmsh.checkpad.ui.tags.TagsFragment(), null);
                 }else if (menuItem.getItemId() == R.id.nav_slideshow) {
                     replaceFragment(new SlideshowFragment(), null);
                 }
@@ -155,13 +160,24 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         if (fragment instanceof FragmentsIniciais) {
             homeAtual = (FragmentsIniciais) fragment;
         }
+
+        // Destinado a atualizar o optionsMenu
+        this.fragmentAtual = fragment;
+        if (hasMenu) onCreateOptionsMenu(menu);
+        hasMenu = true;
+
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
+        menu.clear();
+
+        if (fragmentAtual instanceof FragmentsIniciais) getMenuInflater().inflate(R.menu.main, menu);
+        else getMenuInflater().inflate(R.menu.main_tags, menu);
+
         return true;
     }
 

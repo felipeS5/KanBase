@@ -1,7 +1,6 @@
 package com.fsmsh.checkpad.activities.edit;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,7 +19,6 @@ import com.google.android.material.timepicker.TimeFormat;
 
 import android.text.format.DateFormat;
 
-import java.lang.reflect.Array;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

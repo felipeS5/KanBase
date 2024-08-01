@@ -12,8 +12,6 @@ import com.fsmsh.checkpad.util.DateUtilities;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ModalBottomSheet extends BottomSheetDialogFragment {
@@ -44,7 +42,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.modal_bottom_sheet_content, container, false);
+        view = inflater.inflate(R.layout.bottom_sheet_modal, container, false);
 
         inicioChip = view.findViewById(R.id.chip_start);
         limiteChip = view.findViewById(R.id.chip_limit);

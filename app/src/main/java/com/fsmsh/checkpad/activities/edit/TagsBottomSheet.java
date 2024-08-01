@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.fsmsh.checkpad.R;
@@ -45,7 +43,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.tags_bottom_sheet_content, container, false);
+        view = inflater.inflate(R.layout.bottom_sheet_tags, container, false);
 
         button = view.findViewById(R.id.tags_select_sheet_buttom);
         buttonCreate = view.findViewById(R.id.tags_create_sheet_buttom);
