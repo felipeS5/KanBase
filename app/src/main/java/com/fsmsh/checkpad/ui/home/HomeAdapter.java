@@ -1,4 +1,4 @@
-package com.fsmsh.checkpad.util;
+package com.fsmsh.checkpad.ui.home;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
-import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
+import com.fsmsh.checkpad.util.Database;
+import com.fsmsh.checkpad.util.DateUtilities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
