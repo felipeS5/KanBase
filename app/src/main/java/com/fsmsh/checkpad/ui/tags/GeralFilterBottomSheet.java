@@ -93,6 +93,7 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
         parent.estadosAtivos = new boolean[] {estadosChips[0].isChecked(), estadosChips[1].isChecked(), estadosChips[2].isChecked()};
         parent.tagsAtivas = tags;
         parent.setChipTags();
+        parent.start();
 
         this.dismiss();
     }

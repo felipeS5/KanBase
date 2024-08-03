@@ -6,18 +6,18 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="@string/menu_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home"
         android:checkable="true"/>
     <item
         android:id="@+id/nav_category"
-        android:icon="@drawable/ic_menu_gallery"
-        android:title="@string/menu_category"
+        android:icon="@drawable/baseline_label_24"
+        android:title="Tags"
         android:checkable="true"/>
     <item
         android:id="@+id/nav_slideshow"
-        android:icon="@drawable/ic_menu_slideshow"
-        android:title="@string/menu_slideshow"
+        android:icon="@drawable/baseline_info_24"
+        android:title="Sobre o app"
         android:checkable="true"/>
 
 

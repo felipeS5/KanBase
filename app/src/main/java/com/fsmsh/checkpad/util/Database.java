@@ -12,10 +12,11 @@ import java.util.List;
 
 public class Database {
     private static SQLiteDatabase sql;
-    private static final int PROGRESS_NAO_INICIADO = 0;
-    private static final int PROGRESS_INICIADO = 1;
-    private static final int PROGRESS_COMPLETO = 2;
-    private static final int PROGRESS_FALHO = -1;
+    public static final int PROGRESS_NAO_INICIADO = 0;
+    public static final int PROGRESS_INICIADO = 1;
+    public static final int PROGRESS_COMPLETO = 2;
+    public static final int PROGRESS_FALHO = -1;
+    public static final int PROGRESS_TODOS = -10;
     private Context context;
 
     public Database(Context context) {
@@ -88,7 +89,7 @@ public class Database {
                 tarefa.setCategoria( cursor.getString(8) );
                 tarefa.setPrioridade( cursor.getInt(9) );
 
-                if (progress == tarefa.getProgresso()) {
+                if (progress == tarefa.getProgresso() || progress == PROGRESS_TODOS) {
                     tarefas.add(tarefa);
                 }
 
