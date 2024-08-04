@@ -35,6 +35,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="Estado"
+        android:textColor="@color/black"
         android:textSize="16dp" />
 
     <com.google.android.material.chip.ChipGroup
@@ -75,13 +76,23 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="Tags"
+        android:textColor="@color/black"
         android:textSize="16dp" />
+
+    <CheckBox
+        android:id="@+id/check_noTag_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Exibir tarefas sem tags"/>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"/>
 

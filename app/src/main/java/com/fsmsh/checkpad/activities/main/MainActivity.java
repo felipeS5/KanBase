@@ -13,6 +13,7 @@ import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;
+import com.fsmsh.checkpad.ui.tags.TagsFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     private int TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
     private MenuItem menuItemHomeAtual;
     FragmentsIniciais homeAtual;
+    TagsFragment tagsFragment;
 
     Fragment fragmentAtual;
     Menu menu;
@@ -157,14 +159,13 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         transaction.replace(R.id.nav_host_fragment_content_main, fragment);
         transaction.commit();
 
-        if (fragment instanceof FragmentsIniciais) {
-            homeAtual = (FragmentsIniciais) fragment;
-        }
+        if (fragment instanceof FragmentsIniciais) homeAtual = (FragmentsIniciais) fragment;
+        else if (fragment instanceof TagsFragment) tagsFragment = (TagsFragment) fragment;
 
-        // Destinado a atualizar o optionsMenu
+            // Destinado a atualizar o optionsMenu
         this.fragmentAtual = fragment;
-        if (hasMenu) onCreateOptionsMenu(menu);
-        hasMenu = true;
+        //if (hasMenu) onCreateOptionsMenu(menu);
+        //hasMenu = true;
 
 
     }
@@ -172,11 +173,13 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu = menu;
-        menu.clear();
+        //this.menu = menu;
+        //menu.clear();
 
-        if (fragmentAtual instanceof FragmentsIniciais) getMenuInflater().inflate(R.menu.main, menu);
-        else getMenuInflater().inflate(R.menu.main_tags, menu);
+        //if (fragmentAtual instanceof FragmentsIniciais) getMenuInflater().inflate(R.menu.main, menu);
+        //else getMenuInflater().inflate(R.menu.main_tags, menu);
+
+        getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
     }
@@ -194,19 +197,23 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     if (menuItem.getItemId() == R.id.menuClassifyFirs) {
                         salvarPreferenciasClassify("creation", Sort.ORDEM_CRESCENTE);
-                        homeAtual.start();
+                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
+                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLast) {
                         salvarPreferenciasClassify("creation", Sort.ORDEM_DECRESCENTE);
-                        homeAtual.start();
+                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
+                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyMostImportants) {
                         salvarPreferenciasClassify("priority", Sort.ORDEM_CRESCENTE);
-                        homeAtual.start();
+                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
+                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLessImportants) {
                         salvarPreferenciasClassify("priority", Sort.ORDEM_DECRESCENTE);
-                        homeAtual.start();
+                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
+                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     }
 

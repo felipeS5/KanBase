@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.util.Database;
@@ -23,6 +24,7 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
     TagsFragment parent;
     Button confirmButton;
 
+    CheckBox checkBox;
     ChipGroup chipGroup;
     List<Chip> chips;
     Chip[] estadosChips;
@@ -44,6 +46,7 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
                 view.findViewById(R.id.chip_filter_started),
                 view.findViewById(R.id.chip_filter_finished)};
 
+        checkBox = view.findViewById(R.id.check_noTag_filter);
         chipGroup = view.findViewById(R.id.chip_group_filter);
         confirmButton = view.findViewById(R.id.geral_filter_confirm_buttom);
         confirmButton.setOnClickListener(v -> confirmFilter());
@@ -53,6 +56,7 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
         }
 
         criarChips();
+        checkBox.setChecked(parent.aceitarSemTags);
 
         return view;
     }
@@ -92,6 +96,7 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
 
         parent.estadosAtivos = new boolean[] {estadosChips[0].isChecked(), estadosChips[1].isChecked(), estadosChips[2].isChecked()};
         parent.tagsAtivas = tags;
+        parent.aceitarSemTags = checkBox.isChecked();
         parent.setChipTags();
         parent.start();
 

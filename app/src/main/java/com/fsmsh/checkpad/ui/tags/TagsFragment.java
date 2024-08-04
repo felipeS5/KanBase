@@ -1,5 +1,6 @@
 package com.fsmsh.checkpad.ui.tags;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -63,7 +64,8 @@ public class TagsFragment extends Fragment {
     public void start() {
         tarefas = Database.getTarefas(Database.PROGRESS_TODOS);
         tarefas = Sort.sortByCreation(tarefas, Sort.ORDEM_DECRESCENTE);
-        filtro();
+        tarefas = Sort.filtrar(tarefas, estadosAtivos, tagsAtivas, aceitarSemTags);
+        autoClassify();
 
         // Recycler
         adapter = new TagsFilterAdapter( tarefas, getActivity(), this );
@@ -74,50 +76,20 @@ public class TagsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public void filtro() {
-        List<Tarefa> tarefasFiltradas = new ArrayList<>();
+    public void autoClassify() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("classify.pref", getContext().MODE_PRIVATE);
 
-        for (Tarefa tarefa : tarefas) {
-            boolean isProgressOK = false;
-            boolean isTagOK = false;
+        if (preferences.contains("classifyType")) {
+            String classifyType = preferences.getString("classifyType", "default");
+            int ordem = preferences.getInt("ordem", 0);
 
-            // estado notStarted
-            if ( (tarefa.getProgresso() == Database.PROGRESS_NAO_INICIADO) && estadosAtivos[Database.PROGRESS_NAO_INICIADO]) {
-                isProgressOK = true;
+            if (classifyType.equals("priority")) {
+                tarefas = Sort.sortByPriority(tarefas, ordem);
+            } else if (classifyType.equals("creation")) {
+                tarefas = Sort.sortByCreation(tarefas, ordem);
             }
-            // estado started
-            if ( (tarefa.getProgresso() == Database.PROGRESS_INICIADO) && estadosAtivos[Database.PROGRESS_INICIADO]) {
-                isProgressOK = true;
-            }
-            // estado finished
-            if ( (tarefa.getProgresso() == Database.PROGRESS_COMPLETO) && estadosAtivos[Database.PROGRESS_COMPLETO]) {
-                isProgressOK = true;
-            }
-
-            // Checagem de tags
-            // todo: add opção de exibir tarefas sem tags no filterBottomSheet
-            if (isProgressOK) {
-                String[] tagsArr = tarefa.getCategoria().split("‖");
-                List<String> tagsDaTarefa = new ArrayList<>();
-                for (String s : tagsArr) if (!s.equals("")) tagsDaTarefa.add(s);
-
-                if ((tagsDaTarefa.size() == 0) && aceitarSemTags) isTagOK = true;
-
-                for (String tagTarefa : tagsDaTarefa) {
-                    for (String tagAtiva : tagsAtivas) {
-                        if (tagTarefa.equals(tagAtiva)) isTagOK = true;
-                    }
-                }
-
-            }
-
-            // Checagem para ver se passou pelo filtro
-            if (isProgressOK && isTagOK) tarefasFiltradas.add(tarefa);
 
         }
-
-        tarefas = tarefasFiltradas;
-
     }
 
     public void setChipTags() {
