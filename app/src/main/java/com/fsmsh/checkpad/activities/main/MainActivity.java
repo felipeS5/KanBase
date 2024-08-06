@@ -9,10 +9,11 @@ import android.view.Menu;
 import android.widget.PopupMenu;
 
 import com.fsmsh.checkpad.R;
+import com.fsmsh.checkpad.activities.about.AboutActivity;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
+import com.fsmsh.checkpad.activities.settings.SettingsActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
-import com.fsmsh.checkpad.ui.slideshow.SlideshowFragment;
 import com.fsmsh.checkpad.ui.tags.TagsFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
@@ -97,8 +98,12 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
                     replaceFragment(new com.fsmsh.checkpad.ui.tags.TagsFragment(), null);
-                }else if (menuItem.getItemId() == R.id.nav_slideshow) {
-                    replaceFragment(new SlideshowFragment(), null);
+                }else if (menuItem.getItemId() == R.id.nav_config) {
+                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                    startActivity(intent);
+                }else if (menuItem.getItemId() == R.id.nav_about) {
+                    Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                    startActivity(intent);
                 }
 
                 drawerLayout.close();
@@ -162,24 +167,23 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         if (fragment instanceof FragmentsIniciais) homeAtual = (FragmentsIniciais) fragment;
         else if (fragment instanceof TagsFragment) tagsFragment = (TagsFragment) fragment;
 
-            // Destinado a atualizar o optionsMenu
+        // Destinado a atualizar o optionsMenu
         this.fragmentAtual = fragment;
-        //if (hasMenu) onCreateOptionsMenu(menu);
-        //hasMenu = true;
-
+        if (hasMenu) onCreateOptionsMenu(menu);
+        hasMenu = true;
 
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //this.menu = menu;
-        //menu.clear();
+        this.menu = menu;
+        menu.clear();
 
-        //if (fragmentAtual instanceof FragmentsIniciais) getMenuInflater().inflate(R.menu.main, menu);
-        //else getMenuInflater().inflate(R.menu.main_tags, menu);
-
-        getMenuInflater().inflate(R.menu.main, menu);
+        if (fragmentAtual instanceof FragmentsIniciais || fragmentAtual instanceof TagsFragment)
+            getMenuInflater().inflate(R.menu.main, menu);
+        else
+            getMenuInflater().inflate(R.menu.main_tags, menu);
 
         return true;
     }

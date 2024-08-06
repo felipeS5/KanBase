@@ -14,11 +14,18 @@
         android:icon="@drawable/baseline_label_24"
         android:title="Tags"
         android:checkable="true"/>
+
     <item
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_config"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Configurações"
+        android:checkable="false"/>
+
+    <item
+        android:id="@+id/nav_about"
         android:icon="@drawable/baseline_info_24"
         android:title="Sobre o app"
-        android:checkable="true"/>
+        android:checkable="false"/>
 
 
 </menu>
