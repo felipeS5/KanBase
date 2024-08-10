@@ -1,6 +1,10 @@
 package com.fsmsh.checkpad.activities.about;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,5 +29,36 @@ public class AboutActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolBarAbout);
         getSupportActionBar().setTitle("Sobre o app");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Linkedin
+        findViewById(R.id.imageView7).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/felipe-santos-0571ba2b2/"));
+                startActivity(intent);
+            }
+        });
+
+        // Github
+        findViewById(R.id.imageView8).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/felipeS5"));
+                startActivity(intent);
+            }
+        });
+
+        // Site
+        Toast.makeText(this, "Não implementado", Toast.LENGTH_SHORT).show();
+        /*
+        findViewById(R.id.imageView7).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));
+                startActivity(intent);
+            }
+        });
+         */
     }
+
 }

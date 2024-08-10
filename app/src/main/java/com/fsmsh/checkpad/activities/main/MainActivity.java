@@ -3,6 +3,7 @@ package com.fsmsh.checkpad.activities.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -11,19 +12,30 @@ import android.widget.PopupMenu;
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.about.AboutActivity;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
+import com.fsmsh.checkpad.activities.profile.ProfileActivity;
 import com.fsmsh.checkpad.activities.settings.SettingsActivity;
 import com.fsmsh.checkpad.model.Tarefa;
+import com.fsmsh.checkpad.model.Usuario;
 import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.ui.tags.TagsFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.Sort;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.Timestamp;
+import com.google.firebase.encoders.annotations.Encodable;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ServerTimestamp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -38,7 +50,11 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
@@ -150,6 +166,47 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 return true;
             }
         });
+
+        /*/ todo Add
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Create a new user with a first and last name
+
+        List<Tarefa> tarefas = Database.getTarefas(Database.PROGRESS_TODOS);
+
+        Usuario usuario = new Usuario();
+        usuario.setTarefas(tarefas);
+
+        // Add a new document with a generated ID
+        //db.collection("users").document(usuario.getFirestoreDocId())
+        //        .set(usuario);
+
+
+
+        // todo Update
+        DocumentReference docUserRes = db.collection("users").document(usuario.getFirestoreDocId());
+
+        List<Tarefa> newTarefas = Database.getTarefas(Database.PROGRESS_COMPLETO);
+        //docUserRes.update("tarefas", newTarefas);
+
+
+        // todo TimeStamp
+        //docUserRes.update("timeStamp", FieldValue.serverTimestamp());
+
+        db.collection("users").document(usuario.getFirestoreDocId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Timestamp timestamp = (Timestamp) documentSnapshot.getData().get("timeStamp");
+                        LocalDateTime localDateTime = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.of("UTC-3"));
+
+                        Log.d("TAGd", "onSuccess: "+localDateTime.toString());
+                    }
+                });
+
+         */
+
+
     }
 
     public void replaceFragment(Fragment fragment, AnimationRes animationRes) {
@@ -224,8 +281,13 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                     return true;
                 }
             });
-
             popupMenu.show();
+            return true;
+
+        } else if (item.getItemId() == R.id.action_profile) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+
             return true;
         }
 
