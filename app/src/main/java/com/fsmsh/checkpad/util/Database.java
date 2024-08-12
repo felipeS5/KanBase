@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fsmsh.checkpad.model.Tarefa;
+import com.fsmsh.checkpad.model.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,38 @@ public class Database {
         sql = context.openOrCreateDatabase("Dados.db", Context.MODE_PRIVATE, null);
         sql.execSQL("CREATE TABLE IF NOT EXISTS tarefas (id INTEGER PRIMARY KEY AUTOINCREMENT, tarefaNome VARCHAR, descricao VARCHAR, progresso INT(1), dateStart VARCHAR, timeStart VARCHAR, dateLimit VARCHAR, timeLimit VARCHAR, categoria VARCHAR, prioridade INT(1))");
         sql.execSQL("CREATE TABLE IF NOT EXISTS tags (tagName VARCHAR)");
+        sql.execSQL("CREATE TABLE IF NOT EXISTS usuario (nome VARCHAR, email VARCHAR)");
+    }
+
+    public static boolean setUsuario(Usuario usuario) {
+        try {
+            String valores = "'"+ usuario.getNome() +"', '"+usuario.getEmail() +"'";
+
+            sql.execSQL("DELETE FROM usuario");
+            sql.execSQL("INSERT INTO usuario (nome, email) VALUES (" +valores+ ")");
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static Usuario getUsuario() {
+        Usuario usuario = new Usuario();
+
+        try {
+            Cursor cursor = sql.rawQuery("SELECT nome, email FROM usuario", null);
+            cursor.moveToFirst();
+
+            usuario.setNome( cursor.getString(0) );
+            usuario.setEmail( cursor.getString(1) );
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return usuario;
     }
 
     public static boolean addTarefa(Tarefa tarefa) {

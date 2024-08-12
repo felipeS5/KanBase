@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.model.Credenciais;
+import com.fsmsh.checkpad.util.Database;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class CadastroFragment extends Fragment {
@@ -47,7 +48,7 @@ public class CadastroFragment extends Fragment {
                     credenciais.setSenha(editSenha.getText().toString());
                     credenciais.setTipo(Credenciais.TYPE_REGISTER);
 
-                    Toast.makeText(getContext(), credenciais.getNome() + "\n" + credenciais.getEmail() + "\n" + credenciais.getSenha(), Toast.LENGTH_SHORT).show();
+                    parent.firebaseHelper.criarConta(credenciais);
                 } else {
                     Toast.makeText(getContext(), "Insira as credenciais", Toast.LENGTH_SHORT).show();
                 }

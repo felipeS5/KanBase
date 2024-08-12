@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment {
                     credenciais.setSenha(editSenha.getText().toString());
                     credenciais.setTipo(Credenciais.TYPE_LOGIN);
 
-                    Toast.makeText(getContext(), credenciais.getEmail() + "\n" + credenciais.getSenha(), Toast.LENGTH_SHORT).show();
+                    parent.firebaseHelper.logar(credenciais);
                 } else {
                     Toast.makeText(getContext(), "Insira as credenciais", Toast.LENGTH_SHORT).show();
                 }

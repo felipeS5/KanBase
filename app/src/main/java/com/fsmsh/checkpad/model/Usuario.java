@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Usuario {
 
-    List<Tarefa> tarefas = Database.getTarefas(Database.PROGRESS_TODOS);
-    String nome = "Felipe S";
-    Integer idade = 23;
-    String firestoreDocId = "dcjkhf737hd";
+    List<Tarefa> tarefas;
+    String nome;
+    String email;
+    String firestoreDocId;
 
     public List<Tarefa> getTarefas() {
         return tarefas;
@@ -27,19 +27,19 @@ public class Usuario {
         this.firestoreDocId = firestoreDocId;
     }
 
-    public Integer getIdade() {
-        return idade;
-    }
-
-    public void setIdade(Integer idade) {
-        this.idade = idade;
-    }
-
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
