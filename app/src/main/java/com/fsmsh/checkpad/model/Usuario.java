@@ -7,6 +7,7 @@ import java.util.List;
 public class Usuario {
 
     List<Tarefa> tarefas;
+    List<String> tags;
     String nome;
     String email;
     String firestoreDocId;
@@ -17,6 +18,14 @@ public class Usuario {
 
     public void setTarefas(List<Tarefa> tarefas) {
         this.tarefas = tarefas;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public String getFirestoreDocId() {

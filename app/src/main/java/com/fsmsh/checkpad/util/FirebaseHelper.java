@@ -12,8 +12,10 @@ import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.TagsBottomSheet;
 import com.fsmsh.checkpad.activities.profile.ProfileActivity;
 import com.fsmsh.checkpad.model.Credenciais;
+import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthCredential;
@@ -25,6 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 
 public class FirebaseHelper {
@@ -50,13 +53,30 @@ public class FirebaseHelper {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(parent, "Sucesso ao logar", Toast.LENGTH_LONG).show();
 
-                            Usuario usuario = new Usuario();
-                            usuario.setNome(c.getNome());
-                            usuario.setEmail(c.getEmail());
+                            // Pegar dados do usuário remoto
+                            DocumentReference documentReference = firestore.collection("users").document(auth.getUid());
+                            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    Usuario usuario = documentSnapshot.toObject(Usuario.class);
+                                    Database.setUsuario(usuario);
 
-                            Database.setUsuario(usuario);
+                                    // Recupera tarefas do servidor
+                                    Database.deleteAllTarefas();            // todo Dar um jeito de adicionar as tarefas e tags do server e local juntas sem conflito de ids
+                                    for (Tarefa t : usuario.getTarefas()) {
+                                        Database.addTarefa(t);
+                                    }
 
-                            parent.checarUser();
+                                    // Recupera tags do servidor
+                                    Database.deleteAllTags();
+                                    for (String s : usuario.getTags()) {
+                                        Database.addTag(s);
+                                    }
+
+                                    parent.checarUser();
+                                }
+                            });
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(parent, "Erro: "+task.getException(), Toast.LENGTH_LONG).show();
@@ -78,6 +98,7 @@ public class FirebaseHelper {
                             Usuario usuario = new Usuario();
 
                             usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
+                            usuario.setTags(Database.getTags());
                             usuario.setNome(c.getNome());
                             usuario.setEmail(c.getEmail());
                             usuario.setFirestoreDocId(auth.getUid());
@@ -159,6 +180,27 @@ public class FirebaseHelper {
         });
 
 
+    }
+
+    public void atualizarDados() {
+        Usuario usuario = Database.getUsuario();
+
+        usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
+        usuario.setTags(Database.getTags());
+        usuario.setFirestoreDocId(auth.getUid());
+
+        // Salva os dados no Firestore
+        firestore.collection("users").document(usuario.getFirestoreDocId())
+                .set(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(parent, "Dados atualizados", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(parent, "Erro ao atualizar: "+task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 }

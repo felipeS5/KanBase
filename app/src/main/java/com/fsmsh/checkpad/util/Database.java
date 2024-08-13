@@ -152,6 +152,17 @@ public class Database {
 
     }
 
+    public static boolean deleteAllTarefas() {
+        try {
+            sql.execSQL("DELETE FROM tarefas");
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean deleteTarefa(Tarefa t) {
 
         try {
@@ -195,6 +206,17 @@ public class Database {
         }
 
         return tags;
+    }
+
+    public static boolean deleteAllTags() {
+        try {
+            sql.execSQL("DELETE FROM tags");
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static boolean deleteTag(String tag) {

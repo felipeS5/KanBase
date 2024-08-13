@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.model.Usuario;
@@ -38,6 +39,24 @@ public class AccountFragment extends Fragment {
 
         EditText txtEmail = view.findViewById(R.id.txt_email_perfil);
         txtEmail.setText(Database.getUsuario().getEmail());
+
+        view.findViewById(R.id.btn_salvar_alteracoes_perfil)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!txtNome.getText().toString().equals("") && !txtEmail.getText().toString().equals("")) {
+                            Usuario usuarioLocal = new Usuario();
+                            usuarioLocal.setNome(txtNome.getText().toString());
+                            usuarioLocal.setEmail(txtEmail.getText().toString());
+
+                            Database.setUsuario(usuarioLocal);
+                            parent.firebaseHelper.atualizarDados();
+
+                        } else {
+                            Toast.makeText(getContext(), "Insira as credenciais", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
         return view;
     }
