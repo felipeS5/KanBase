@@ -6,10 +6,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.fsmsh.checkpad.R;
-import com.fsmsh.checkpad.activities.edit.TagsBottomSheet;
+import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.activities.profile.ProfileActivity;
 import com.fsmsh.checkpad.model.Credenciais;
 import com.fsmsh.checkpad.model.Tarefa;
@@ -25,18 +26,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class FirebaseHelper {
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
-    ProfileActivity parent;
+    ProfileActivity parentProfile;
+    MainActivity parentMain;
 
-    public FirebaseHelper(ProfileActivity parent) {
-        this.parent = parent;
+    public FirebaseHelper(ProfileActivity parentProfile) {
+        this.parentProfile = parentProfile;
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+
+    }
+
+    public FirebaseHelper(MainActivity parentMain) {
+        this.parentMain = parentMain;
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
@@ -51,7 +62,7 @@ public class FirebaseHelper {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(parent, "Sucesso ao logar", Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, "Sucesso ao logar", Toast.LENGTH_LONG).show();
 
                             // Pegar dados do usuário remoto
                             DocumentReference documentReference = firestore.collection("users").document(auth.getUid());
@@ -73,13 +84,13 @@ public class FirebaseHelper {
                                         Database.addTag(s);
                                     }
 
-                                    parent.checarUser();
+                                    parentProfile.checarUser();
                                 }
                             });
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(parent, "Erro: "+task.getException(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, "Erro: "+task.getException(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -94,7 +105,7 @@ public class FirebaseHelper {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(parent, "Sucesso ao cadastrar usuário", Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, "Sucesso ao cadastrar usuário", Toast.LENGTH_LONG).show();
                             Usuario usuario = new Usuario();
 
                             usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
@@ -109,10 +120,10 @@ public class FirebaseHelper {
 
                             Database.setUsuario(usuario);
 
-                            parent.checarUser();
+                            parentProfile.checarUser();
                         } else {
                             // If sign in fails, return error message
-                            Toast.makeText(parent, "Erro: "+task.getException(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, "Erro: "+task.getException(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -125,13 +136,13 @@ public class FirebaseHelper {
 
     public void deslogar() {
         auth.signOut();
-        parent.checarUser();
+        parentProfile.checarUser();
     }
 
     public void excluirConta() {
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(parent);
-        View dialog = parent.getLayoutInflater().inflate(R.layout.dialog_confirm_exclude_account, null);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(parentProfile);
+        View dialog = parentProfile.getLayoutInflater().inflate(R.layout.dialog_confirm_exclude_account, null);
         builder.setView(dialog);
 
         AlertDialog alertDialog = builder.show();
@@ -161,8 +172,8 @@ public class FirebaseHelper {
                                                 firestore.collection("users").document(userUid)
                                                         .delete();
 
-                                                Toast.makeText(parent, "Conta deletada", Toast.LENGTH_LONG).show();
-                                                parent.checarUser();
+                                                Toast.makeText(parentProfile, "Conta deletada", Toast.LENGTH_LONG).show();
+                                                parentProfile.checarUser();
 
                                             }
 
@@ -171,7 +182,7 @@ public class FirebaseHelper {
                                     });
 
                         } else {
-                            Toast.makeText(parent, "Verifique sua senha", Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, "Verifique sua senha", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -182,7 +193,7 @@ public class FirebaseHelper {
 
     }
 
-    public void atualizarDados() {
+    public void atualizarRemoto() {
         Usuario usuario = Database.getUsuario();
 
         usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
@@ -195,12 +206,36 @@ public class FirebaseHelper {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(parent, "Dados atualizados", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(parent, "Erro ao atualizar: "+task.getException(), Toast.LENGTH_SHORT).show();
+                            MyPreferences.isSincronizado(true);
+                            Log.d("TAG", "onComplete: sync");
                         }
                     }
                 });
+    }
+
+    public void atualizarLocal() { //todo Fazer esse listenner pausar e continuar ao sair da activity
+        firestore.collection("users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Usuario usuarioRemoto = value.toObject(Usuario.class);
+
+                Database.setUsuario(usuarioRemoto);
+
+                // Recupera tarefas do servidor
+                Database.deleteAllTarefas();
+                for (Tarefa t : usuarioRemoto.getTarefas()) {
+                    Database.addTarefa(t);
+                }
+
+                // Recupera tags do servidor
+                Database.deleteAllTags();
+                for (String s : usuarioRemoto.getTags()) {
+                    Database.addTag(s);
+                }
+
+            }
+        });
+
     }
 
 }

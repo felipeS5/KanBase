@@ -11,6 +11,7 @@ import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
+import com.fsmsh.checkpad.util.MyPreferences;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -33,6 +34,7 @@ public class EditActivity extends AppCompatActivity {
 
     ActivityEditBinding binding;
     Database database;
+    MyPreferences myPreferences;
     Bundle intencao;
     public TimeZone timeZone;
     public LocalDate dateStart;
@@ -50,6 +52,7 @@ public class EditActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         database = new Database(this);
+        myPreferences = new MyPreferences(this);
         setSupportActionBar(binding.toolbarEdit);
         timeZone = TimeZone.getTimeZone("UTC-3");
 
@@ -143,6 +146,7 @@ public class EditActivity extends AppCompatActivity {
                 tarefa.setTarefaNome(binding.titulo.getText().toString());
                 tarefa.setDescricao(binding.descricao.getText().toString());
                 tarefa.setPrioridade(prioridade);
+                myPreferences.isSincronizado(false);
 
                 if (tags.size() != 0) {
                     String temp = "";

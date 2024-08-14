@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class AccountFragment extends Fragment {
                             usuarioLocal.setEmail(txtEmail.getText().toString());
 
                             Database.setUsuario(usuarioLocal);
-                            parent.firebaseHelper.atualizarDados();
+                            parent.firebaseHelper.atualizarRemoto();
 
                         } else {
                             Toast.makeText(getContext(), "Insira as credenciais", Toast.LENGTH_SHORT).show();

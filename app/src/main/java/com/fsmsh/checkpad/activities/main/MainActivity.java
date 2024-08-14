@@ -21,6 +21,8 @@ import com.fsmsh.checkpad.ui.tags.TagsFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
+import com.fsmsh.checkpad.util.FirebaseHelper;
+import com.fsmsh.checkpad.util.MyPreferences;
 import com.fsmsh.checkpad.util.Sort;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     private Database database;
+    private FirebaseHelper firebaseHelper;
+    private MyPreferences myPreferences;
     private View view;
 
     private int TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         setContentView(view);
 
         database = new Database(this);
+        myPreferences = new MyPreferences(this);
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
@@ -167,31 +172,14 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             }
         });
 
-        /*/ todo Add
+        // Adiciona o firestore attListener
+        firebaseHelper = new FirebaseHelper(this);
+        if (firebaseHelper.getFirebaseUser() != null) {
+            firebaseHelper.atualizarLocal();
+        }
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // Create a new user with a first and last name
-
-        List<Tarefa> tarefas = Database.getTarefas(Database.PROGRESS_TODOS);
-
-        Usuario usuario = new Usuario();
-        usuario.setTarefas(tarefas);
-
-        // Add a new document with a generated ID
-        //db.collection("users").document(usuario.getFirestoreDocId())
-        //        .set(usuario);
-
-
-
-        // todo Update
-        DocumentReference docUserRes = db.collection("users").document(usuario.getFirestoreDocId());
-
-        List<Tarefa> newTarefas = Database.getTarefas(Database.PROGRESS_COMPLETO);
-        //docUserRes.update("tarefas", newTarefas);
-
-
-        // todo TimeStamp
-        //docUserRes.update("timeStamp", FieldValue.serverTimestamp());
+        /*/ todo TimeStamp
+        docUserRes.update("timeStamp", FieldValue.serverTimestamp());
 
         db.collection("users").document(usuario.getFirestoreDocId()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -257,22 +245,22 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     if (menuItem.getItemId() == R.id.menuClassifyFirs) {
-                        salvarPreferenciasClassify("creation", Sort.ORDEM_CRESCENTE);
+                        myPreferences.salvarPreferenciasClassify("creation", Sort.ORDEM_CRESCENTE);
                         if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
                         else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLast) {
-                        salvarPreferenciasClassify("creation", Sort.ORDEM_DECRESCENTE);
+                        myPreferences.salvarPreferenciasClassify("creation", Sort.ORDEM_DECRESCENTE);
                         if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
                         else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyMostImportants) {
-                        salvarPreferenciasClassify("priority", Sort.ORDEM_CRESCENTE);
+                        myPreferences.salvarPreferenciasClassify("priority", Sort.ORDEM_CRESCENTE);
                         if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
                         else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLessImportants) {
-                        salvarPreferenciasClassify("priority", Sort.ORDEM_DECRESCENTE);
+                        myPreferences.salvarPreferenciasClassify("priority", Sort.ORDEM_DECRESCENTE);
                         if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
                         else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
@@ -300,16 +288,6 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    private void salvarPreferenciasClassify(String classifyType, int ordem) {
-        SharedPreferences preferences = getSharedPreferences("classify.pref", MODE_PRIVATE);
-        SharedPreferences.Editor prefEditor = preferences.edit();
-
-        prefEditor.putString("classifyType", classifyType);
-        prefEditor.putInt("ordem", ordem);
-
-        prefEditor.apply();
     }
 
     public void setBadges() {
@@ -364,5 +342,12 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Vrifica se falta fazer upload de alguma tarefa
+        if (firebaseHelper.getFirebaseUser() != null) {
+            if (!MyPreferences.getIsSincronizado()) {
+                firebaseHelper.atualizarRemoto();
+            }
+        }
     }
 }
