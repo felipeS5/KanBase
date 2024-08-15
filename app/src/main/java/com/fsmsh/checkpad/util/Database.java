@@ -8,6 +8,7 @@ import android.util.Log;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.model.Usuario;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Database {
         this.context = context;
 
         sql = context.openOrCreateDatabase("Dados.db", Context.MODE_PRIVATE, null);
-        sql.execSQL("CREATE TABLE IF NOT EXISTS tarefas (id INTEGER PRIMARY KEY AUTOINCREMENT, tarefaNome VARCHAR, descricao VARCHAR, progresso INT(1), dateStart VARCHAR, timeStart VARCHAR, dateLimit VARCHAR, timeLimit VARCHAR, categoria VARCHAR, prioridade INT(1))");
+        sql.execSQL("CREATE TABLE IF NOT EXISTS tarefas (id VARCHAR, tarefaNome VARCHAR, descricao VARCHAR, progresso INT(1), dateStart VARCHAR, timeStart VARCHAR, dateLimit VARCHAR, timeLimit VARCHAR, categoria VARCHAR, prioridade INT(1))");
         sql.execSQL("CREATE TABLE IF NOT EXISTS tags (tagName VARCHAR)");
         sql.execSQL("CREATE TABLE IF NOT EXISTS usuario (nome VARCHAR, email VARCHAR)");
     }
@@ -62,8 +63,8 @@ public class Database {
 
     public static boolean addTarefa(Tarefa tarefa) {
         try {
-            String campos = "tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade";
-            String valores = "'"+ tarefa.getTarefaNome() +"', '"+tarefa.getDescricao() +"', "+ tarefa.getProgresso() +", '"+ tarefa.getDateStart() +"', '"+ tarefa.getTimeStart() +"', '"+ tarefa.getDateLimit() +"', '"+ tarefa.getTimeLimit() +"', '"+ tarefa.getCategoria() +"', "+ tarefa.getPrioridade();
+            String campos = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade";
+            String valores = "'"+ tarefa.getId() +"', '"+ tarefa.getTarefaNome() +"', '"+tarefa.getDescricao() +"', "+ tarefa.getProgresso() +", '"+ tarefa.getDateStart() +"', '"+ tarefa.getTimeStart() +"', '"+ tarefa.getDateLimit() +"', '"+ tarefa.getTimeLimit() +"', '"+ tarefa.getCategoria() +"', "+ tarefa.getPrioridade();
 
             sql.execSQL("INSERT INTO tarefas ("+ campos +") VALUES (" +valores+ ")");
 
@@ -74,15 +75,15 @@ public class Database {
         }
     }
 
-    public static Tarefa getTarefa(int id) {
+    public static Tarefa getTarefa(String id) {
         Tarefa tarefa = new Tarefa();
         String query = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade";
 
         try {
-            Cursor cursor = sql.rawQuery("SELECT " +query+ " FROM tarefas WHERE id="+ id +"", null);
+            Cursor cursor = sql.rawQuery("SELECT " +query+ " FROM tarefas WHERE id='"+ id +"'", null);
             cursor.moveToFirst();
 
-            tarefa.setId( cursor.getInt(0) );
+            tarefa.setId( cursor.getString(0) );
             tarefa.setTarefaNome( cursor.getString(1) );
             tarefa.setDescricao( cursor.getString(2) );
             tarefa.setProgresso( cursor.getInt(3) );
@@ -111,7 +112,7 @@ public class Database {
 
             while (cursor.getPosition() < cursor.getCount()) {
                 Tarefa tarefa = new Tarefa();
-                tarefa.setId( cursor.getInt(0) );
+                tarefa.setId( cursor.getString(0) );
                 tarefa.setTarefaNome( cursor.getString(1) );
                 tarefa.setDescricao( cursor.getString(2) );
                 tarefa.setProgresso( cursor.getInt(3) );
@@ -142,7 +143,7 @@ public class Database {
                 t.getTarefaNome(), t.getDescricao(), t.getProgresso(), t.getDateStart(), t.getTimeStart(), t.getDateLimit(), t.getTimeLimit(), t.getCategoria(), t.getPrioridade() );
 
         try {
-            sql.execSQL("UPDATE tarefas SET " + sqlAtt + " WHERE id = "+ t.getId() +"");
+            sql.execSQL("UPDATE tarefas SET " + sqlAtt + " WHERE id = '"+ t.getId() +"'");
 
             return true;
         }catch (Exception e) {
@@ -166,7 +167,7 @@ public class Database {
     public static boolean deleteTarefa(Tarefa t) {
 
         try {
-            sql.execSQL("DELETE FROM tarefas WHERE id = " + t.getId());
+            sql.execSQL("DELETE FROM tarefas WHERE id = '" + t.getId()+"'");
 
             return true;
         }catch (Exception e){

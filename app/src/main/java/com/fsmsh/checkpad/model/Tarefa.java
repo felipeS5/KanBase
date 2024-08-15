@@ -1,7 +1,7 @@
 package com.fsmsh.checkpad.model;
 
 public class Tarefa {
-    private int id;
+    private String id;
     private String tarefaNome;
     private String descricao;
     private int progresso;
@@ -12,11 +12,11 @@ public class Tarefa {
     private String categoria;
     private int prioridade;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

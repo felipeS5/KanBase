@@ -174,9 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         // Adiciona o firestore attListener
         firebaseHelper = new FirebaseHelper(this);
-        if (firebaseHelper.getFirebaseUser() != null) {
-            firebaseHelper.atualizarLocal();
-        }
 
         /*/ todo TimeStamp
         docUserRes.update("timeStamp", FieldValue.serverTimestamp());
@@ -347,7 +344,16 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         if (firebaseHelper.getFirebaseUser() != null) {
             if (!MyPreferences.getIsSincronizado()) {
                 firebaseHelper.atualizarRemoto();
+            } else {
+                firebaseHelper.atualizarLocal();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        firebaseHelper.removerListener();
     }
 }

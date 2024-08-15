@@ -22,6 +22,8 @@ import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
+import com.fsmsh.checkpad.util.FirebaseHelper;
+import com.fsmsh.checkpad.util.MyPreferences;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -179,6 +181,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
                     // Funcao delete
                     Tarefa tarefa = tarefas.get(position);
                     Database.deleteTarefa(tarefa);
+                    MyPreferences.isSincronizado(false);
+                    FirebaseHelper.atualizarRemoto();
 
                     fragmentsIniciais.start();
 

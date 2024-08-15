@@ -1,6 +1,5 @@
 package com.fsmsh.checkpad.util;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,15 +28,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseHelper {
-    private FirebaseAuth auth;
-    private FirebaseFirestore firestore;
-    ProfileActivity parentProfile;
-    MainActivity parentMain;
+    private static FirebaseAuth auth;
+    private static FirebaseFirestore firestore;
+    private static ProfileActivity parentProfile;
+    private static MainActivity parentMain;
+    private static ListenerRegistration listenerRegistration;
 
     public FirebaseHelper(ProfileActivity parentProfile) {
         this.parentProfile = parentProfile;
@@ -193,7 +194,7 @@ public class FirebaseHelper {
 
     }
 
-    public void atualizarRemoto() {
+    public static void atualizarRemoto() {
         Usuario usuario = Database.getUsuario();
 
         usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
@@ -207,14 +208,19 @@ public class FirebaseHelper {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             MyPreferences.isSincronizado(true);
-                            Log.d("TAG", "onComplete: sync");
+
+                            if (parentProfile != null) {
+                                Toast.makeText(parentProfile, "Alterações salvas", Toast.LENGTH_SHORT).show();
+                            }
+
+                            atualizarLocal();
                         }
                     }
                 });
     }
 
-    public void atualizarLocal() { //todo Fazer esse listenner pausar e continuar ao sair da activity
-        firestore.collection("users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+    public static void atualizarLocal() {
+        listenerRegistration = firestore.collection("users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Usuario usuarioRemoto = value.toObject(Usuario.class);
@@ -236,6 +242,12 @@ public class FirebaseHelper {
             }
         });
 
+    }
+
+    public void removerListener() {
+        if (listenerRegistration != null) {
+            listenerRegistration.remove();
+        }
     }
 
 }

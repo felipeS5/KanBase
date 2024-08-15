@@ -58,7 +58,6 @@ public class EditActivity extends AppCompatActivity {
 
         intencao = getIntent().getExtras();
         if (intencao.getBoolean("isNovo")) {
-            // todo: arredondar tempo
             dateStart = DateUtilities.getNextTime().toLocalDate();
             timeStart = DateUtilities.getNextTime().toLocalTime();
             binding.dateStartConteiner.setVisibility(View.VISIBLE);
@@ -143,10 +142,15 @@ public class EditActivity extends AppCompatActivity {
         binding.fabSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (acao.equals("adicionar")) {
+                    String id = LocalDateTime.now().toString();
+                    tarefa.setId(id);
+                }
+
                 tarefa.setTarefaNome(binding.titulo.getText().toString());
                 tarefa.setDescricao(binding.descricao.getText().toString());
                 tarefa.setPrioridade(prioridade);
-                myPreferences.isSincronizado(false);
 
                 if (tags.size() != 0) {
                     String temp = "";
@@ -186,6 +190,7 @@ public class EditActivity extends AppCompatActivity {
 
                 if (addSuccess) {
                     Toast.makeText(getApplicationContext(), "Sucesso ao "+acao, Toast.LENGTH_SHORT).show();
+                    myPreferences.isSincronizado(false);
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Erro ao "+acao, Toast.LENGTH_SHORT).show();
@@ -196,7 +201,7 @@ public class EditActivity extends AppCompatActivity {
 
 
     public void edit() {
-        tarefa = Database.getTarefa(intencao.getInt("id"));
+        tarefa = Database.getTarefa(intencao.getString("id"));
 
         // Config data
         if (!tarefa.getDateStart().equals("")) {

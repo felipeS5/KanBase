@@ -13,6 +13,8 @@ import androidx.appcompat.app.AlertDialog;
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.util.Database;
+import com.fsmsh.checkpad.util.FirebaseHelper;
+import com.fsmsh.checkpad.util.MyPreferences;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -69,6 +71,8 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
                         EditText tagStr = dialog.findViewById(R.id.txtDialogTag);
 
                         boolean added = Database.addTag(tagStr.getText().toString());
+                        MyPreferences.isSincronizado(false);
+                        FirebaseHelper.atualizarRemoto();
                         criarChips();
 
                         if (added) Toast.makeText(parent, "Tag criada", Toast.LENGTH_SHORT).show();

@@ -16,6 +16,8 @@ import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
+import com.fsmsh.checkpad.util.FirebaseHelper;
+import com.fsmsh.checkpad.util.MyPreferences;
 import com.fsmsh.checkpad.util.Sort;
 
 import java.util.List;
@@ -101,8 +103,13 @@ public class FragmentsIniciais extends Fragment {
 
         boolean isMovida = Database.editTarefa(tarefa);
 
-        if (isMovida) return true;
-        else return false;
+        if (isMovida) {
+            MyPreferences.isSincronizado(false);
+            FirebaseHelper.atualizarRemoto();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void autoClassify() {
