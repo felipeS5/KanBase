@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Insira sua senha" />
+            android:hint="@string/insira_sua_senha" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -29,7 +29,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/red"
-        android:text="Excluir conta"
+        android:text="@string/excluir_conta"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout"

@@ -59,27 +59,27 @@ public class PriorityBottomSheet extends BottomSheetDialogFragment {
     public void confirmPriority(CompoundButton button, boolean b) {
 
         if (button.getId() == urgenteCheck.getId()) {
-            binding.prioridade.setText("Urgente");
+            binding.prioridade.setText(R.string.prioridade_urgente);
             parent.prioridade = 0;
             button.setChecked(true);
         }
         if (button.getId() == importanteCheck.getId()) {
-            binding.prioridade.setText("Importante");
+            binding.prioridade.setText(R.string.prioridade_importante);
             parent.prioridade = 1;
             button.setChecked(true);
         }
         if (button.getId() == mediaCheck.getId()) {
-            binding.prioridade.setText("Prioridade média");
+            binding.prioridade.setText(R.string.prioridade_media);
             parent.prioridade = 2;
             button.setChecked(true);
         }
         if (button.getId() == baixaCheck.getId()) {
-            binding.prioridade.setText("Prioridade baixa");
+            binding.prioridade.setText(R.string.prioridade_baixa);
             parent.prioridade = 3;
             button.setChecked(true);
         }
         if (button.getId() == nenhumaCheck.getId()) {
-            binding.prioridade.setText("Nenhuma prioridade");
+            binding.prioridade.setText(R.string.prioridade_nenhuma);
             parent.prioridade = 4;
             button.setChecked(true);
             binding.priorityConteiner.setVisibility(View.GONE);

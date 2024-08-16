@@ -42,7 +42,7 @@
             android:id="@+id/titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Titulo" />
+            android:hint="@string/titulo" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -59,8 +59,9 @@
             android:id="@+id/descricao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:layout_margin="16dp"
-            android:hint="Descrição" />
+            android:hint="@string/descricao" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/dateStartConteiner"
@@ -301,7 +302,7 @@
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Adicionar informações"
+        android:text="@string/adicionar_informacoes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 

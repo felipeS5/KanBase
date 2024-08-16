@@ -22,7 +22,7 @@
             android:id="@+id/txt_nome_perfil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome" />
+            android:hint="@string/nome" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -42,7 +42,7 @@
             android:id="@+id/txt_email_perfil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="E-mail" />
+            android:hint="@string/e_mail" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -52,7 +52,7 @@
         android:id="@+id/btn_salvar_alteracoes_perfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Salvar alterações"
+        android:text="@string/salvar_alteracoes"
         app:layout_constraintBottom_toTopOf="@+id/btn_deslogar_perfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -65,7 +65,7 @@
         android:id="@+id/btn_deslogar_perfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Deslogar"
+        android:text="@string/deslogar"
         app:layout_constraintBottom_toTopOf="@+id/btn_deletar_conta_perfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/red"
-        android:text="Excluir conta"
+        android:text="@string/excluir_conta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

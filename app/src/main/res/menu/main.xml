@@ -4,7 +4,7 @@
     <item
         android:id="@+id/test"
         android:orderInCategory="1"
-        android:title="Classificar"
+        android:title="@string/classificar"
         app:iconTint="@color/white"
         android:icon="@drawable/baseline_format_line_spacing_24"
         app:showAsAction="always" />
@@ -12,13 +12,13 @@
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="2"
-        android:title="Perfil"
+        android:title="@string/perfil"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="3"
-        android:title="Deslogar"
+        android:title="@string/deslogar"
         app:showAsAction="never" />
 
 

@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Início"
+            android:text="@string/inicio"
             app:chipIcon="@drawable/baseline_today_24" />
 
         <com.google.android.material.chip.Chip
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Limite"
+            android:text="@string/limite"
             app:chipIcon="@drawable/baseline_calendar_month_24" />
 
         <com.google.android.material.chip.Chip
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Prioridade"
+            android:text="@string/prioridade"
             app:chipIcon="@drawable/baseline_priority_high_24" />
 
         <com.google.android.material.chip.Chip
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Categoria"
+            android:text="@string/tags"
             app:chipIcon="@drawable/baseline_label_24" />
 
     </com.google.android.material.chip.ChipGroup>
@@ -78,7 +78,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary"
-        android:text="Selecionar campos"
+        android:text="@string/selecionar_campos"
         android:textColor="@color/white" />
 
 

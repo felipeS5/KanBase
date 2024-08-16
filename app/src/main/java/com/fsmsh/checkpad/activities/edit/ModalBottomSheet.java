@@ -93,7 +93,7 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         if (prioridadeChip.isChecked()) binding.priorityConteiner.setVisibility(View.VISIBLE);
         else {
             binding.priorityConteiner.setVisibility(View.GONE);
-            binding.prioridade.setText("Nenhuma Prioridade");
+            binding.prioridade.setText(R.string.prioridade_nenhuma);
             parent.prioridade = 4;
         }
 

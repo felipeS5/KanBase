@@ -62,7 +62,7 @@ public class TagsFilterAdapter extends RecyclerView.Adapter<TagsFilterAdapter.Me
         else if (!tarefa.getDateLimit().equals("")) localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
 
         if ( tarefa.getDateStart().equals("") && !tarefa.getDateLimit().equals("") )
-            holder.data.setText("Prazo: " + DateUtilities.getFormattedDate(localDate, true));
+            holder.data.setText(R.string.item_prazo + DateUtilities.getFormattedDate(localDate, true));
         else
             holder.data.setText( DateUtilities.getFormattedDate(localDate, true) );
 
@@ -70,16 +70,16 @@ public class TagsFilterAdapter extends RecyclerView.Adapter<TagsFilterAdapter.Me
         if (tarefa.getPrioridade() != 4) {
             holder.prioridade.setVisibility(View.VISIBLE);
             if (tarefa.getPrioridade() == 0) {
-                holder.prioridade.setText("Urgente!!");
+                holder.prioridade.setText(R.string.prioridade_urgente);
                 holder.prioridade.setTextColor(context.getColor(R.color.red));
             } else if (tarefa.getPrioridade() == 1) {
-                holder.prioridade.setText("Importante!");
+                holder.prioridade.setText(R.string.prioridade_importante);
                 holder.prioridade.setTextColor(context.getColor(R.color.orangeRed));
             } else if (tarefa.getPrioridade() == 2) {
-                holder.prioridade.setText("Prioridade média");
+                holder.prioridade.setText(R.string.prioridade_media);
                 holder.prioridade.setTextColor(context.getColor(R.color.yellow));
             } else if (tarefa.getPrioridade() == 3) {
-                holder.prioridade.setText("Baixa prioridade");
+                holder.prioridade.setText(R.string.prioridade_baixa);
                 holder.prioridade.setTextColor(context.getColor(R.color.green));
             }
         }
@@ -91,14 +91,14 @@ public class TagsFilterAdapter extends RecyclerView.Adapter<TagsFilterAdapter.Me
 
                 if (DateUtilities.isToday(dateLimit, 0)) {
                     holder.infoAdicional.setVisibility(View.VISIBLE);
-                    holder.infoAdicional.setText("Vencendo hoje!");
+                    holder.infoAdicional.setText(R.string.item_tarefa_vencendo_hoje);
                     holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
                 }
             }
         } else { //caso esteja completo exibe uma informação visual positiva :)
             holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_green));
             holder.infoAdicional.setVisibility(View.VISIBLE);
-            holder.infoAdicional.setText("Tarefa completa :)");
+            holder.infoAdicional.setText(R.string.item_tarefa_completa);
         }
 
 
@@ -156,7 +156,7 @@ public class TagsFilterAdapter extends RecyclerView.Adapter<TagsFilterAdapter.Me
             MenuInflater inflater = ((Activity) context).getMenuInflater();
             inflater.inflate(R.menu.floating_menu, contextMenu);
 
-            contextMenu.add(Menu.NONE, R.id.action_edit, Menu.NONE, "Editar").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            contextMenu.add(Menu.NONE, R.id.action_edit, Menu.NONE, R.string.action_editar).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
                     int position = getAdapterPosition();
@@ -172,7 +172,7 @@ public class TagsFilterAdapter extends RecyclerView.Adapter<TagsFilterAdapter.Me
                 }
             });
 
-            contextMenu.add(Menu.NONE, R.id.action_delete, Menu.NONE, "Deletar").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            contextMenu.add(Menu.NONE, R.id.action_delete, Menu.NONE, R.string.action_deletar).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
                     int position = getAdapterPosition();

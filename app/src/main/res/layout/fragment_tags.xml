@@ -33,7 +33,7 @@
         android:id="@+id/btnFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Filtrar"
+        android:text="@string/filtrar"
         android:drawableStart="@drawable/baseline_filter_list_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

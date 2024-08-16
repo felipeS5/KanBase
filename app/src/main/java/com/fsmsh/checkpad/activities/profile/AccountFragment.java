@@ -52,7 +52,7 @@ public class AccountFragment extends Fragment {
                             parent.firebaseHelper.atualizarRemoto();
 
                         } else {
-                            Toast.makeText(getContext(), "Insira as credenciais", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.insira_as_credenciais, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

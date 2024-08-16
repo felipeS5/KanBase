@@ -25,8 +25,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Filtre os itens:"
-        android:textSize="20dp" />
+        android:text="@string/filtre_os_itens_2p"
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Estado"
+        android:text="@string/estado"
         android:textColor="@color/black"
         android:textSize="16dp" />
 
@@ -50,21 +50,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Não iniciada"/>
+            android:text="@string/not_started"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_filter_started"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Iniciada"/>
+            android:text="@string/started"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_filter_finished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Finalizada"/>
+            android:text="@string/finished"/>
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -77,7 +77,7 @@
         android:layout_marginEnd="16dp"
         android:text="Tags"
         android:textColor="@color/black"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/check_noTag_filter"
@@ -86,7 +86,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Exibir tarefas sem tags"/>
+        android:text="@string/exibir_tarefas_sem_tags"/>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_filter"
@@ -105,7 +105,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary"
-        android:text="Selecionar campos"
+        android:text="@string/selecionar_campos"
         android:textColor="@color/white" />
 
 

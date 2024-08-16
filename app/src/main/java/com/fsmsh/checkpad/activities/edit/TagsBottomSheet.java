@@ -75,8 +75,8 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
                         FirebaseHelper.atualizarRemoto();
                         criarChips();
 
-                        if (added) Toast.makeText(parent, "Tag criada", Toast.LENGTH_SHORT).show();
-                        else Toast.makeText(parent, "Erro ao criar tag!", Toast.LENGTH_LONG).show();
+                        if (added) Toast.makeText(parent, R.string.toast_tag_criada, Toast.LENGTH_SHORT).show();
+                        else Toast.makeText(parent, R.string.toast_erro_ao_criar_tag, Toast.LENGTH_LONG).show();
 
 
                         alertDialog.dismiss();

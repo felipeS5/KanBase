@@ -63,7 +63,7 @@ public class FirebaseHelper {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(parentProfile, "Sucesso ao logar", Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, R.string.sucesso_ao_logar, Toast.LENGTH_LONG).show();
 
                             // Pegar dados do usuário remoto
                             DocumentReference documentReference = firestore.collection("users").document(auth.getUid());
@@ -91,7 +91,7 @@ public class FirebaseHelper {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(parentProfile, "Erro: "+task.getException(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, parentProfile.getString(R.string.erro_2p) + task.getException(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -106,7 +106,7 @@ public class FirebaseHelper {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(parentProfile, "Sucesso ao cadastrar usuário", Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, R.string.sucesso_ao_cadastrar_usuario, Toast.LENGTH_LONG).show();
                             Usuario usuario = new Usuario();
 
                             usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
@@ -124,7 +124,7 @@ public class FirebaseHelper {
                             parentProfile.checarUser();
                         } else {
                             // If sign in fails, return error message
-                            Toast.makeText(parentProfile, "Erro: "+task.getException(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, parentProfile.getString(R.string.erro_2p)+task.getException(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -173,7 +173,7 @@ public class FirebaseHelper {
                                                 firestore.collection("users").document(userUid)
                                                         .delete();
 
-                                                Toast.makeText(parentProfile, "Conta deletada", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(parentProfile, R.string.toast_conta_deletada, Toast.LENGTH_LONG).show();
                                                 parentProfile.checarUser();
 
                                             }
@@ -183,7 +183,7 @@ public class FirebaseHelper {
                                     });
 
                         } else {
-                            Toast.makeText(parentProfile, "Verifique sua senha", Toast.LENGTH_LONG).show();
+                            Toast.makeText(parentProfile, R.string.toast_verifique_sua_senha, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -210,7 +210,7 @@ public class FirebaseHelper {
                             MyPreferences.isSincronizado(true);
 
                             if (parentProfile != null) {
-                                Toast.makeText(parentProfile, "Alterações salvas", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(parentProfile, R.string.perfil_alteraces_salvas, Toast.LENGTH_SHORT).show();
                             }
 
                             atualizarLocal();

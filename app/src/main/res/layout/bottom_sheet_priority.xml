@@ -19,8 +19,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Qual a prioridade da tarefa?"
-        android:textSize="20dp" />
+        android:text="@string/qual_a_prioridade_da_tarefa"
+        android:textSize="20sp" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -33,7 +33,7 @@
         android:background="@drawable/checkbox_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Urgente" />
+        android:text="@string/prioridade_urgente" />
 
     <CheckBox
         android:id="@+id/checkBox1"
@@ -46,7 +46,7 @@
         android:background="@drawable/checkbox_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Importante" />
+        android:text="@string/prioridade_importante" />
 
     <CheckBox
         android:id="@+id/checkBox2"
@@ -59,7 +59,7 @@
         android:background="@drawable/checkbox_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prioridade média" />
+        android:text="@string/prioridade_media" />
 
     <CheckBox
         android:id="@+id/checkBox3"
@@ -72,7 +72,7 @@
         android:background="@drawable/checkbox_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prioridade baixa" />
+        android:text="@string/prioridade_baixa" />
     <CheckBox
         android:id="@+id/checkBox4"
         android:button="@null"
@@ -83,7 +83,7 @@
         android:background="@drawable/checkbox_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sem prioridade" />
+        android:text="@string/sem_prioridade" />
 
 
 

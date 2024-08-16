@@ -76,7 +76,7 @@ public class EditActivity extends AppCompatActivity {
         else local = dateLimit.atStartOfDay();
 
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Selecione a data")
+                .setTitleText(R.string.calendar_selecione_a_data)
                 .setSelection(local.atZone(timeZone.toZoneId()).toInstant().toEpochMilli())
                 .build();
 
@@ -117,7 +117,7 @@ public class EditActivity extends AppCompatActivity {
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 .setHour(local.getHour())
                 .setMinute(local.getMinute())
-                .setTitleText("Selecione o horário")
+                .setTitleText(R.string.calendar_selecione_o_horario)
                 .build();
         picker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
@@ -189,11 +189,11 @@ public class EditActivity extends AppCompatActivity {
                 else addSuccess = Database.editTarefa(tarefa);
 
                 if (addSuccess) {
-                    Toast.makeText(getApplicationContext(), "Sucesso ao "+acao, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.edit_sucesso_add_save, acao), Toast.LENGTH_SHORT).show();
                     myPreferences.isSincronizado(false);
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Erro ao "+acao, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.edit_erro_add_save, acao), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -226,11 +226,11 @@ public class EditActivity extends AppCompatActivity {
         }
 
         prioridade = tarefa.getPrioridade();
-        if (prioridade == 0) binding.prioridade.setText("Urgente");
-        if (prioridade == 1) binding.prioridade.setText("Importante");
-        if (prioridade == 2) binding.prioridade.setText("Prioridade média");
-        if (prioridade == 3) binding.prioridade.setText("Prioridade baixa");
-        if (prioridade == 4) binding.prioridade.setText("Nenhuma prioridade");
+        if (prioridade == 0) binding.prioridade.setText(R.string.prioridade_urgente);
+        if (prioridade == 1) binding.prioridade.setText(R.string.prioridade_importante);
+        if (prioridade == 2) binding.prioridade.setText(R.string.prioridade_media);
+        if (prioridade == 3) binding.prioridade.setText(R.string.prioridade_baixa);
+        if (prioridade == 4) binding.prioridade.setText(R.string.prioridade_nenhuma);
 
         checkDetails(tarefa);
 
@@ -319,7 +319,7 @@ public class EditActivity extends AppCompatActivity {
 
         if (view.getId() == R.id.btnCancelPriority) {
             binding.priorityConteiner.setVisibility(View.GONE);
-            binding.prioridade.setText("Nenhuma Prioridade");
+            binding.prioridade.setText(R.string.prioridade_nenhuma);
             prioridade = 4;
         }
 
