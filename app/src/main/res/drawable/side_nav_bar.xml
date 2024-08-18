@@ -1,9 +1,15 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+<shape android:shape="rectangle"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <gradient
-        android:angle="135"
-        android:centerColor="#009688"
-        android:endColor="#00695C"
-        android:startColor="#4DB6AC"
+        android:angle="0"
+        android:startColor="@color/sideNavHeader"
+        android:centerColor="@color/sideNavHeader"
+        android:endColor="@color/primary"
         android:type="linear" />
+
+    <corners android:radius="@dimen/nav_radius"/>
+
+    <stroke android:color="@color/appBg"
+        android:width="3dp"/>
 </shape>

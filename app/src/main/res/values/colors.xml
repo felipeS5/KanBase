@@ -12,9 +12,10 @@
 
     <color name="appBg">#FDFBFF</color>
 
-    <color name="primary">#98D59B</color>
-    <color name="primaryDark">#87CC89</color>
-    <color name="secondaryConteiner">#B9AADEAC</color>
+    <color name="primary">#4C7ACC</color>
+    <color name="primaryDark">#416AB1</color>
+    <color name="secondaryConteiner">#81D4FA</color>
     <color name="accet">#81D4FA</color>
-    <color name="container">#6AFA71</color>
+    <color name="container">#81D4FA</color>
+    <color name="sideNavHeader">#3A67B6</color>
 </resources>
