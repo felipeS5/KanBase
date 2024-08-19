@@ -1,8 +1,12 @@
 package com.fsmsh.checkpad.util;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.ModalBottomSheet;
+import com.fsmsh.checkpad.activities.main.home.FragmentsIniciais;
+import com.fsmsh.checkpad.model.Tarefa;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +14,55 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtilities {
+
+    public static String getSaudacoes(Context context) {
+        LocalTime localTime = LocalTime.now();
+
+        if (localTime.getHour() < 12) return context.getString(R.string.bom_dia);
+        if (localTime.getHour() < 18 ) return context.getString(R.string.boa_tarde);
+        else return context.getString(R.string.boa_noite);
+    }
+
+    public static boolean isAtrazada(Tarefa tarefa) {
+        if (tarefa.getProgresso() == FragmentsIniciais.FINALIZADAS) return false;
+
+        LocalDate dateNow = LocalDate.now();
+
+        // Atrazo no dateStart
+        if (!tarefa.getDateStart().equals("")) { // Verifica se tem startDate
+            LocalDate dateStart = toLocalDate(tarefa.getDateStart());
+
+            if (dateNow.isAfter(dateStart) && (tarefa.getProgresso() == FragmentsIniciais.NOVAS)) {
+                return true;
+            }
+        }
+
+        // Atrazo no prazo limite
+        if (!tarefa.getDateLimit().equals("")) { // Verifica se tem limitDate
+            LocalDate dateLimit = toLocalDate(tarefa.getDateLimit());
+
+            if (dateNow.isAfter(dateLimit)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    public static boolean isVencendoHoje(Tarefa tarefa) {
+        if (tarefa.getDateLimit().equals("")) return false;
+
+        LocalDate dateLimit = toLocalDate(tarefa.getDateLimit());
+        LocalDate dateNow = LocalDate.now();
+
+        if (dateLimit.isEqual(dateNow) && (tarefa.getProgresso() != FragmentsIniciais.FINALIZADAS)) {
+            return true;
+        }
+
+        return false;
+
+    }
 
     public static boolean isToday(LocalDate compare, int plusDay) {
         LocalDate hoje = LocalDate.now();

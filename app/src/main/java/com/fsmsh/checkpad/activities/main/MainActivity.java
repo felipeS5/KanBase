@@ -1,13 +1,12 @@
 package com.fsmsh.checkpad.activities.main;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.about.AboutActivity;
@@ -15,29 +14,19 @@ import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.activities.profile.ProfileActivity;
 import com.fsmsh.checkpad.activities.settings.SettingsActivity;
 import com.fsmsh.checkpad.model.Tarefa;
-import com.fsmsh.checkpad.model.Usuario;
-import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
-import com.fsmsh.checkpad.ui.tags.TagsFragment;
+import com.fsmsh.checkpad.activities.main.home.FragmentsIniciais;
+import com.fsmsh.checkpad.activities.main.tags.TagsFragment;
 import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.FirebaseHelper;
 import com.fsmsh.checkpad.util.MyPreferences;
 import com.fsmsh.checkpad.util.Sort;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.Timestamp;
-import com.google.firebase.encoders.annotations.Encodable;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ServerTimestamp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -52,11 +41,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
@@ -118,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
                 }else if (menuItem.getItemId() == R.id.nav_category) {
-                    replaceFragment(new com.fsmsh.checkpad.ui.tags.TagsFragment(), null);
+                    replaceFragment(new TagsFragment(MainActivity.this), null);
                 }else if (menuItem.getItemId() == R.id.nav_config) {
                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(intent);
@@ -132,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 return true;
             }
         });
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);;
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -172,25 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             }
         });
 
-        // Adiciona o firestore attListener
+        // Instancia o firebaseHelper
         firebaseHelper = new FirebaseHelper(this);
-
-        /*/ todo TimeStamp
-        docUserRes.update("timeStamp", FieldValue.serverTimestamp());
-
-        db.collection("users").document(usuario.getFirestoreDocId()).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Timestamp timestamp = (Timestamp) documentSnapshot.getData().get("timeStamp");
-                        LocalDateTime localDateTime = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.of("UTC-3"));
-
-                        Log.d("TAGd", "onSuccess: "+localDateTime.toString());
-                    }
-                });
-
-         */
-
 
     }
 
@@ -317,23 +285,73 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         int[] badges = new int[3];
 
         // loop que percorre os 3 estados possíveis
-        for (int progressoAtual = 0; progressoAtual <= 2; progressoAtual++) {
-            List<Tarefa> tarefas = Database.getTarefas(progressoAtual);
+        for (int progressPercorrido = 0; progressPercorrido <= 2; progressPercorrido++) {
+            List<Tarefa> tarefas = Database.getTarefas(progressPercorrido);
 
             // loop que percorre a lista do estado atual
             for (Tarefa tarefa : tarefas) {
-                if (!tarefa.getDateLimit().equals("")) {// verifica se tem limite
-                    LocalDate dateLimit = DateUtilities.toLocalDate(tarefa.getDateLimit());
-
-                    if (DateUtilities.isToday(dateLimit, 0)) {// aumenta a contagem de badges caso vença hoje
-                        badges[progressoAtual]++;
-                    }
+                if (DateUtilities.isAtrazada(tarefa) || DateUtilities.isVencendoHoje(tarefa)) {
+                    badges[progressPercorrido]++; // aumenta a contagem de badges caso esteja atrazada vença hoje
                 }
             }
 
         }
 
         return badges;
+    }
+
+    public void adjustHeader() {
+        View header = navigationView.getHeaderView(0); // peguei esse trem no stackOverflow
+
+        TextView noProblem = header.findViewById(R.id.header_congrats);
+        TextView lblWelcome = header.findViewById(R.id.header_welcome);
+        TextView lblAtrazada = header.findViewById(R.id.header_tarefas_atrazadas);
+        TextView lblVencendo = header.findViewById(R.id.header_tarefas_vencendo);
+
+        // Retorna ao estado inicial
+        noProblem.setVisibility(View.VISIBLE);
+        lblWelcome.setVisibility(View.GONE);
+        lblAtrazada.setVisibility(View.GONE);
+        lblVencendo.setVisibility(View.GONE);
+
+        List<Tarefa> tarefas = Database.getTarefas(Database.PROGRESS_TODOS);
+        int tarefasAtrazadas = 0;
+        int tarefasVencendo = 0;
+
+        for (Tarefa t : tarefas) {
+            if (DateUtilities.isAtrazada(t) && t.getProgresso()!=FragmentsIniciais.FINALIZADAS) tarefasAtrazadas++;
+            if (DateUtilities.isVencendoHoje(t) && t.getProgresso()!=FragmentsIniciais.FINALIZADAS) tarefasVencendo++;
+        }
+
+        if (tarefasAtrazadas>0 || tarefasVencendo>0) {
+            noProblem.setVisibility(View.GONE);
+            lblWelcome.setVisibility(View.VISIBLE);
+
+            String saudacoes = DateUtilities.getSaudacoes(getApplicationContext());
+            if (firebaseHelper.getFirebaseUser() != null) saudacoes += " "+Database.getUsuario().getNome();
+            lblWelcome.setText(saudacoes+getString(R.string.v_voce_tem_2p));
+
+            if (tarefasAtrazadas>0) {
+                lblAtrazada.setVisibility(View.VISIBLE);
+                String texto;
+
+                if (tarefasAtrazadas==1) texto = tarefasAtrazadas+getString(R.string.sp_tarefa_atrazada);
+                else texto = tarefasAtrazadas+getString(R.string.sp_tarefas_atrazadas);
+
+                lblAtrazada.setText(texto);
+            }
+
+            if (tarefasVencendo>0) {
+                lblVencendo.setVisibility(View.VISIBLE);
+                String texto;
+
+                if (tarefasVencendo==1) texto = tarefasVencendo+getString(R.string.sp_tarefa_vencendo);
+                else texto = tarefasVencendo+getString(R.string.sp_tarefas_vencendo);
+
+                lblVencendo.setText(texto);
+            }
+        }
+
     }
 
     @Override
@@ -348,6 +366,9 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 firebaseHelper.atualizarLocal();
             }
         }
+
+        adjustHeader();
+
     }
 
     @Override

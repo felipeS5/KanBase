@@ -1,4 +1,4 @@
-package com.fsmsh.checkpad.ui.home;
+package com.fsmsh.checkpad.activities.main.home;
 
 import android.app.Activity;
 import android.content.Context;
@@ -86,20 +86,26 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         }
 
         // Vencendo hoje
-        if (tarefa.getProgresso() != FragmentsIniciais.FINALIZADAS) {
-            if (!tarefa.getDateLimit().equals("")) {
-                LocalDate dateLimit = DateUtilities.toLocalDate(tarefa.getDateLimit());
-
-                if (DateUtilities.isToday(dateLimit, 0)) {
-                    holder.infoAdicional.setVisibility(View.VISIBLE);
-                    holder.infoAdicional.setText(R.string.item_tarefa_vencendo_hoje);
-                    holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
-                }
-            }
-        } else { //caso esteja completo exibe uma informação visual positiva :)
-            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_green));
+        if (DateUtilities.isVencendoHoje(tarefa)) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_orange));
+            holder.infoAdicional.setText(R.string.item_tarefa_vencendo_hoje);
             holder.infoAdicional.setVisibility(View.VISIBLE);
+            holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+        }
+
+        // Atrazada?
+        if (DateUtilities.isAtrazada(tarefa)) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_red));
+            holder.infoAdicional.setText(R.string.tarefa_atrazada);
+            holder.infoAdicional.setVisibility(View.VISIBLE);
+            holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+        }
+
+        // Missão cumprida?
+        if (tarefa.getProgresso() == FragmentsIniciais.FINALIZADAS) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_green));
             holder.infoAdicional.setText(R.string.item_tarefa_completa);
+            holder.infoAdicional.setVisibility(View.VISIBLE);
         }
 
 

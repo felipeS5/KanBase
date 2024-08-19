@@ -1,4 +1,4 @@
-package com.fsmsh.checkpad.ui.tags;
+package com.fsmsh.checkpad.activities.main.tags;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,24 +7,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import com.fsmsh.checkpad.R;
-import com.fsmsh.checkpad.activities.edit.PriorityBottomSheet;
+import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.model.Tarefa;
-import com.fsmsh.checkpad.ui.home.HomeAdapter;
 import com.fsmsh.checkpad.util.Database;
-import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.Sort;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TagsFragment extends Fragment {
@@ -38,6 +33,11 @@ public class TagsFragment extends Fragment {
 
     List<Tarefa> tarefas;
     TagsFilterAdapter adapter;
+    MainActivity parent;
+
+    public TagsFragment(MainActivity parent) {
+        this.parent = parent;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class TagsFragment extends Fragment {
         tarefas = Sort.sortByCreation(tarefas, Sort.ORDEM_DECRESCENTE);
         tarefas = Sort.filtrar(tarefas, estadosAtivos, tagsAtivas, aceitarSemTags);
         autoClassify();
+        parent.adjustHeader();
 
         // Recycler
         adapter = new TagsFilterAdapter( tarefas, getActivity(), this );

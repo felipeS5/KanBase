@@ -1,4 +1,4 @@
-package com.fsmsh.checkpad.ui.tags;
+package com.fsmsh.checkpad.activities.main.tags;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
+import com.fsmsh.checkpad.activities.main.home.FragmentsIniciais;
 import com.fsmsh.checkpad.model.Tarefa;
-import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
 
@@ -85,20 +85,26 @@ public class TagsFilterAdapter extends RecyclerView.Adapter<TagsFilterAdapter.Me
         }
 
         // Vencendo hoje
-        if (tarefa.getProgresso() != Database.PROGRESS_COMPLETO) {
-            if (!tarefa.getDateLimit().equals("")) {
-                LocalDate dateLimit = DateUtilities.toLocalDate(tarefa.getDateLimit());
-
-                if (DateUtilities.isToday(dateLimit, 0)) {
-                    holder.infoAdicional.setVisibility(View.VISIBLE);
-                    holder.infoAdicional.setText(R.string.item_tarefa_vencendo_hoje);
-                    holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
-                }
-            }
-        } else { //caso esteja completo exibe uma informação visual positiva :)
-            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_green));
+        if (DateUtilities.isVencendoHoje(tarefa)) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_orange));
+            holder.infoAdicional.setText(R.string.item_tarefa_vencendo_hoje);
             holder.infoAdicional.setVisibility(View.VISIBLE);
+            holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+        }
+
+        // Atrazada?
+        if (DateUtilities.isAtrazada(tarefa)) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_red));
+            holder.infoAdicional.setText(R.string.tarefa_atrazada);
+            holder.infoAdicional.setVisibility(View.VISIBLE);
+            holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+        }
+
+        // Missão cumprida?
+        if (tarefa.getProgresso() == FragmentsIniciais.FINALIZADAS) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_green));
             holder.infoAdicional.setText(R.string.item_tarefa_completa);
+            holder.infoAdicional.setVisibility(View.VISIBLE);
         }
 
 

@@ -1,4 +1,4 @@
-package com.fsmsh.checkpad.ui.tags;
+package com.fsmsh.checkpad.activities.main.tags;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

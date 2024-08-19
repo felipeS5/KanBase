@@ -1,26 +1,14 @@
 package com.fsmsh.checkpad.activities.profile;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fsmsh.checkpad.R;
-import com.fsmsh.checkpad.model.Credenciais;
-import com.fsmsh.checkpad.ui.home.FragmentsIniciais;
-import com.fsmsh.checkpad.ui.tags.TagsFragment;
-import com.fsmsh.checkpad.util.AnimationRes;
-import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.FirebaseHelper;
-import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends AppCompatActivity {
 

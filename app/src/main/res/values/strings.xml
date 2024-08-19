@@ -91,4 +91,13 @@
     <string name="menos_importantes">Menos importantes</string>
     <string name="classificar">Classificar</string>
     <string name="perfil">Perfil</string>
+    <string name="tarefa_atrazada">Tarefa atrazada!</string>
+    <string name="boa_noite">Boa noite</string>
+    <string name="boa_tarde">Boa tarde</string>
+    <string name="bom_dia">Bom dia</string>
+    <string name="v_voce_tem_2p">, você tem:</string>
+    <string name="sp_tarefa_atrazada">" tarefa atrazada"</string>
+    <string name="sp_tarefas_atrazadas">" tarefas atrazadas"</string>
+    <string name="sp_tarefa_vencendo">" tarefa vencendo"</string>
+    <string name="sp_tarefas_vencendo">" tarefas vencendo"</string>
 </resources>

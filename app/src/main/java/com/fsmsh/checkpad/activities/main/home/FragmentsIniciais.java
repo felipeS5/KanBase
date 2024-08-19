@@ -1,4 +1,4 @@
-package com.fsmsh.checkpad.ui.home;
+package com.fsmsh.checkpad.activities.main.home;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -52,6 +52,7 @@ public class FragmentsIniciais extends Fragment {
         tarefas = Database.getTarefas(PROGRESSO);
         autoClassify();
         parent.setBadges();
+        parent.adjustHeader();
 
         // Recycler
         homeAdapter = new HomeAdapter( tarefas, getActivity(), this );

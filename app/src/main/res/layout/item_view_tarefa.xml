@@ -39,7 +39,6 @@
         android:layout_marginTop="4dp"
         android:text="adicional info"
         android:textSize="13sp"
-        android:background="@drawable/bg_small_red"
         android:textColor="@color/white"
         android:visibility="gone"
         android:paddingStart="6dp"
