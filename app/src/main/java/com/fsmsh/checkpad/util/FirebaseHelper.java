@@ -226,8 +226,14 @@ public class FirebaseHelper {
     }
 
     public void deslogar() {
-        auth.signOut();
-        parentProfile.checarUser();
+        if (listenerRegistration != null) {
+            removerListener();
+            auth.signOut();
+            parentProfile.checarUser();
+        } else {
+            auth.signOut();
+            parentProfile.checarUser();
+        }
     }
 
     public void excluirConta() {
@@ -285,58 +291,63 @@ public class FirebaseHelper {
     }
 
     public static void atualizarRemoto() {
-        Usuario usuario = Database.getUsuario();
+        if (auth.getCurrentUser() != null) {
+            Usuario usuario = Database.getUsuario();
 
-        usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
-        usuario.setTags(Database.getTags());
-        usuario.setFirestoreDocId(auth.getUid());
+            usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
+            usuario.setTags(Database.getTags());
+            usuario.setFirestoreDocId(auth.getUid());
 
-        // Salva os dados no Firestore
-        firestore.collection("users").document(usuario.getFirestoreDocId())
-                .set(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            MyPreferences.isSincronizado(true);
+            // Salva os dados no Firestore
+            firestore.collection("users").document(usuario.getFirestoreDocId())
+                    .set(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                MyPreferences.isSincronizado(true);
 
-                            if (parentProfile != null) {
-                                Toast.makeText(parentProfile, R.string.perfil_alteraces_salvas, Toast.LENGTH_SHORT).show();
+                                if (parentProfile != null) {
+                                    Toast.makeText(parentProfile, R.string.perfil_alteraces_salvas, Toast.LENGTH_SHORT).show();
+                                }
+
+                                atualizarLocal();
                             }
-
-                            atualizarLocal();
                         }
-                    }
-                });
+                    });
+        }
     }
 
     public static void atualizarLocal() {
-        listenerRegistration = firestore.collection("users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                Usuario usuarioRemoto = value.toObject(Usuario.class);
+        if (auth.getCurrentUser() != null) {
+            listenerRegistration = firestore.collection("users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    Usuario usuarioRemoto = value.toObject(Usuario.class);
 
-                Database.setUsuario(usuarioRemoto);
+                    Database.setUsuario(usuarioRemoto);
 
-                // Recupera tarefas do servidor
-                Database.deleteAllTarefas();
-                for (Tarefa t : usuarioRemoto.getTarefas()) {
-                    Database.addTarefa(t);
+                    // Recupera tarefas do servidor
+                    Database.deleteAllTarefas();
+                    for (Tarefa t : usuarioRemoto.getTarefas()) {
+                        Database.addTarefa(t);
+                    }
+
+                    // Recupera tags do servidor
+                    Database.deleteAllTags();
+                    for (String s : usuarioRemoto.getTags()) {
+                        Database.addTag(s);
+                    }
+
                 }
-
-                // Recupera tags do servidor
-                Database.deleteAllTags();
-                for (String s : usuarioRemoto.getTags()) {
-                    Database.addTag(s);
-                }
-
-            }
-        });
+            });
+        }
 
     }
 
     public void removerListener() {
         if (listenerRegistration != null) {
             listenerRegistration.remove();
+            listenerRegistration = null;
         }
     }
 
