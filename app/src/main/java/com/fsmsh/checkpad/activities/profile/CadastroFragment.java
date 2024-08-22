@@ -1,5 +1,6 @@
 package com.fsmsh.checkpad.activities.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -53,6 +54,14 @@ public class CadastroFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.insira_as_credenciais, Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+
+        view.findViewById(R.id.btn_cadastrar_google).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = parent.firebaseHelper.googleSignInClient.getSignInIntent();
+                parent.startActivityForResult(intent, 20);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.fsmsh.checkpad.util;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,6 +15,11 @@ import com.fsmsh.checkpad.activities.profile.ProfileActivity;
 import com.fsmsh.checkpad.model.Credenciais;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.model.Usuario;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +29,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -39,12 +46,18 @@ public class FirebaseHelper {
     private static ProfileActivity parentProfile;
     private static MainActivity parentMain;
     private static ListenerRegistration listenerRegistration;
+    public GoogleSignInClient googleSignInClient;
 
     public FirebaseHelper(ProfileActivity parentProfile) {
         this.parentProfile = parentProfile;
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(parentProfile.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(parentProfile, googleSignInOptions);
     }
 
     public FirebaseHelper(MainActivity parentMain) {
@@ -54,6 +67,83 @@ public class FirebaseHelper {
 
     }
 
+
+    public void logarComGoogle(Intent data) {
+
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+
+            AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            auth.signInWithCredential(authCredential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+
+                                firestore.collection("users").document(auth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        boolean temConta = false;
+                                        if (documentSnapshot.exists()) temConta = true;
+                                        else temConta = false;
+
+                                        if (temConta) {// Caso tenha conta
+                                            Usuario usuario = documentSnapshot.toObject(Usuario.class);
+                                            Database.setUsuario(usuario);
+
+                                            // Recupera tarefas do servidor
+                                            Database.deleteAllTarefas();            // todo Dar um jeito de adicionar as tarefas e tags do server e local juntas sem conflito de ids
+                                            for (Tarefa t : usuario.getTarefas()) {
+                                                Database.addTarefa(t);
+                                            }
+
+                                            // Recupera tags do servidor
+                                            Database.deleteAllTags();
+                                            for (String s : usuario.getTags()) {
+                                                Database.addTag(s);
+                                            }
+
+                                            Toast.makeText(parentProfile, R.string.sucesso_ao_logar, Toast.LENGTH_LONG).show();
+                                            parentProfile.checarUser();
+
+
+                                        } else {// Caso seja uma nova conta
+                                            Usuario usuario = new Usuario();
+
+                                            usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
+                                            usuario.setTags(Database.getTags());
+                                            usuario.setNome(account.getDisplayName());
+                                            usuario.setEmail(account.getEmail());
+                                            usuario.setFirestoreDocId(auth.getUid());
+
+                                            // Salva os dados no Firestore
+                                            firestore.collection("users").document(usuario.getFirestoreDocId())
+                                                    .set(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
+                                                            Toast.makeText(parentProfile, R.string.sucesso_ao_cadastrar_usuario, Toast.LENGTH_LONG).show();
+                                                            Database.setUsuario(usuario);
+                                                            parentProfile.checarUser();
+                                                        }
+                                                    });
+
+                                        }
+                                    }
+                                });
+
+                            } else {
+                                Toast.makeText(parentProfile, parentProfile.getString(R.string.erro_2p) + task.getException(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void logar(Credenciais c) {
 
