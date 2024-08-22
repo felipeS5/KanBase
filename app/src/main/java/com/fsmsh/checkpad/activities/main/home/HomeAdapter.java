@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -86,30 +85,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
             }
         }
 
-        // Exibe os alertas
-        if (DateUtilities.isAtrazada(tarefa) || DateUtilities.isVencendoHoje(tarefa) || tarefa.getProgresso()==FragmentsIniciais.FINALIZADAS) {
-            holder.alertsContainer.setVisibility(View.VISIBLE);
+        // Vencendo hoje
+        if (DateUtilities.isVencendoHoje(tarefa)) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_orange));
+            holder.infoAdicional.setText(R.string.item_tarefa_vencendo_hoje);
+            holder.infoAdicional.setVisibility(View.VISIBLE);
+            holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+        }
 
-            // Atrazada?
-            if (DateUtilities.isAtrazada(tarefa)) {
-                holder.lblAtrazada.setBackground(context.getDrawable(R.drawable.bg_small_red));
-                holder.lblAtrazada.setVisibility(View.VISIBLE);
-                holder.lblAtrazada.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
-            }
+        // Atrazada?
+        if (DateUtilities.isAtrazada(tarefa)) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_red));
+            holder.infoAdicional.setText(R.string.tarefa_atrazada);
+            holder.infoAdicional.setVisibility(View.VISIBLE);
+            holder.infoAdicional.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
+        }
 
-            // Vencendo hoje
-            if (DateUtilities.isVencendoHoje(tarefa)) {
-                holder.lblVencedo.setBackground(context.getDrawable(R.drawable.bg_small_orange));
-                holder.lblVencedo.setVisibility(View.VISIBLE);
-                holder.lblVencedo.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.blink));
-            }
-
-            // Missão cumprida?
-            if (tarefa.getProgresso() == FragmentsIniciais.FINALIZADAS) {
-                holder.lblCumprida.setBackground(context.getDrawable(R.drawable.bg_small_green));
-                holder.lblCumprida.setVisibility(View.VISIBLE);
-            }
-
+        // Missão cumprida?
+        if (tarefa.getProgresso() == FragmentsIniciais.FINALIZADAS) {
+            holder.infoAdicional.setBackground(context.getDrawable(R.drawable.bg_small_green));
+            holder.infoAdicional.setText(R.string.item_tarefa_completa);
+            holder.infoAdicional.setVisibility(View.VISIBLE);
         }
 
 
@@ -145,10 +141,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         TextView titulo;
         TextView data;
         TextView prioridade;
-        LinearLayout alertsContainer;
-        TextView lblAtrazada;
-        TextView lblVencedo;
-        TextView lblCumprida;
+        TextView infoAdicional;
         ConstraintLayout item;
 
         public MeuVH(@NonNull View itemView) {
@@ -157,10 +150,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
             titulo = itemView.findViewById(R.id.lblTitulo);
             data = itemView.findViewById(R.id.lblInicio);
             prioridade = itemView.findViewById(R.id.itemViewPrioridade);
-            alertsContainer = itemView.findViewById(R.id.item_view_alertas_container);
-            lblAtrazada = itemView.findViewById(R.id.item_view_atrazada);
-            lblVencedo = itemView.findViewById(R.id.item_view_vencendo);
-            lblCumprida = itemView.findViewById(R.id.item_view_cumprida);
+            infoAdicional = itemView.findViewById(R.id.itemViewInfoAdicional);
             item = itemView.findViewById(R.id.item_main);
 
             itemView.setOnCreateContextMenuListener(this);

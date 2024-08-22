@@ -32,57 +32,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/item_view_alertas_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
+    <TextView
+        android:id="@+id/itemViewInfoAdicional"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="adicional info"
+        android:textSize="13sp"
+        android:textColor="@color/white"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/lblTitulo"
-        app:layout_constraintStart_toStartOf="@id/lblTitulo"
-        android:layout_marginTop="4dp">
-
-        <TextView
-            android:id="@+id/item_view_atrazada"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_small_red"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:text="@string/tarefa_atrazada"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/item_view_vencendo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_small_orange"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:text="@string/vencendo_hoje"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/item_view_cumprida"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_small_green"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:text="@string/item_tarefa_completa"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            android:visibility="gone" />
-    </LinearLayout>
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        app:layout_constraintStart_toStartOf="@+id/lblTitulo"
+        app:layout_constraintTop_toBottomOf="@+id/lblTitulo" />
 
 
     <TextView
