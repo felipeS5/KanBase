@@ -319,6 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         int tarefasVencendo = 0;
 
         for (Tarefa t : tarefas) {
+            // Atarefa poderá ser encaixada nos 2 casos
             if (DateUtilities.isAtrazada(t) && t.getProgresso()!=FragmentsIniciais.FINALIZADAS) tarefasAtrazadas++;
             if (DateUtilities.isVencendoHoje(t) && t.getProgresso()!=FragmentsIniciais.FINALIZADAS) tarefasVencendo++;
         }
