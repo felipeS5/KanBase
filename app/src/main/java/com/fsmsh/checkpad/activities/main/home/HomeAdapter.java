@@ -20,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
+import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.FirebaseHelper;
 import com.fsmsh.checkpad.util.MyPreferences;
+import com.fsmsh.checkpad.util.NotificationHelper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -115,6 +117,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                NotificationHelper notificationHelper = new NotificationHelper(fragmentsIniciais.parent.getApplicationContext());
+                notificationHelper.configurarChannel();
+                notificationHelper.enviarNotificacao(tarefa);
+
                 // Funcao edit
                 Intent intent = new Intent(holder.itemView.getContext(), EditActivity.class);
                 intent.putExtra("isNovo", false);
@@ -196,7 +203,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
                     // Funcao delete
                     Tarefa tarefa = tarefas.get(position);
                     Database.deleteTarefa(tarefa);
-                    MyPreferences.isSincronizado(false);
+                    MyPreferences.setSincronizado(false);
                     FirebaseHelper.atualizarRemoto();
 
                     fragmentsIniciais.start();

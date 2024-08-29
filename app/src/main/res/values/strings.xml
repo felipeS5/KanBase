@@ -101,4 +101,5 @@
     <string name="sp_tarefa_vencendo">" tarefa vencendo"</string>
     <string name="sp_tarefas_vencendo">" tarefas vencendo"</string>
     <string name="vencendo_hoje">Vencendo hoje</string>
+    <string name="a_tarefa_ira_vencer_em_pouco_tempo">A tarefa \"%1$s\" irá vencer em pouco tempo!</string>
 </resources>

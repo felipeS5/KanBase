@@ -21,6 +21,7 @@ import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.FirebaseHelper;
 import com.fsmsh.checkpad.util.MyPreferences;
+import com.fsmsh.checkpad.util.NotificationHelper;
 import com.fsmsh.checkpad.util.Sort;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,7 +42,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
@@ -99,15 +99,15 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 fab.setVisibility(View.GONE);
 
                 if (menuItem.getItemId() == R.id.nav_home) {
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this),null);
+                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), null);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
-                }else if (menuItem.getItemId() == R.id.nav_category) {
+                } else if (menuItem.getItemId() == R.id.nav_category) {
                     replaceFragment(new TagsFragment(MainActivity.this), null);
-                }else if (menuItem.getItemId() == R.id.nav_config) {
+                } else if (menuItem.getItemId() == R.id.nav_config) {
                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(intent);
-                }else if (menuItem.getItemId() == R.id.nav_about) {
+                } else if (menuItem.getItemId() == R.id.nav_about) {
                     Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
                     startActivity(intent);
                 }
@@ -117,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 return true;
             }
         });
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);;
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        ;
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -133,17 +134,20 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                     AnimationRes animationRes = null;
 
                     if (menuItem.getItemId() == R.id.item_naoIniciado) {
-                        if (TELA_HOME_ATUAL == FragmentsIniciais.FINALIZADAS) animationRes = new AnimationRes(false, true);
+                        if (TELA_HOME_ATUAL == FragmentsIniciais.FINALIZADAS)
+                            animationRes = new AnimationRes(false, true);
                         else animationRes = new AnimationRes(false, false);
                         TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
 
                     } else if (menuItem.getItemId() == R.id.item_iniciado) {
-                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS) animationRes = new AnimationRes(true, false);
+                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS)
+                            animationRes = new AnimationRes(true, false);
                         else animationRes = new AnimationRes(false, false);
                         TELA_HOME_ATUAL = FragmentsIniciais.INICIADAS;
 
                     } else if (menuItem.getItemId() == R.id.item_feitas) {
-                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS) animationRes = new AnimationRes(true, true);
+                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS)
+                            animationRes = new AnimationRes(true, true);
                         else animationRes = new AnimationRes(true, false);
                         TELA_HOME_ATUAL = FragmentsIniciais.FINALIZADAS;
 
@@ -320,34 +324,39 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         for (Tarefa t : tarefas) {
             // Atarefa poderá ser encaixada nos 2 casos
-            if (DateUtilities.isAtrazada(t) && t.getProgresso()!=FragmentsIniciais.FINALIZADAS) tarefasAtrazadas++;
-            if (DateUtilities.isVencendoHoje(t) && t.getProgresso()!=FragmentsIniciais.FINALIZADAS) tarefasVencendo++;
+            if (DateUtilities.isAtrazada(t) && t.getProgresso() != FragmentsIniciais.FINALIZADAS)
+                tarefasAtrazadas++;
+            if (DateUtilities.isVencendoHoje(t) && t.getProgresso() != FragmentsIniciais.FINALIZADAS)
+                tarefasVencendo++;
         }
 
-        if (tarefasAtrazadas>0 || tarefasVencendo>0) {
+        if (tarefasAtrazadas > 0 || tarefasVencendo > 0) {
             noProblem.setVisibility(View.GONE);
             lblWelcome.setVisibility(View.VISIBLE);
 
             String saudacoes = DateUtilities.getSaudacoes(getApplicationContext());
-            if (firebaseHelper.getFirebaseUser() != null) saudacoes += " "+Database.getUsuario().getNome();
-            lblWelcome.setText(saudacoes+getString(R.string.v_voce_tem_2p));
+            if (firebaseHelper.getFirebaseUser() != null)
+                saudacoes += " " + Database.getUsuario().getNome();
+            lblWelcome.setText(saudacoes + getString(R.string.v_voce_tem_2p));
 
-            if (tarefasAtrazadas>0) {
+            if (tarefasAtrazadas > 0) {
                 lblAtrazada.setVisibility(View.VISIBLE);
                 String texto;
 
-                if (tarefasAtrazadas==1) texto = tarefasAtrazadas+getString(R.string.sp_tarefa_atrazada);
-                else texto = tarefasAtrazadas+getString(R.string.sp_tarefas_atrazadas);
+                if (tarefasAtrazadas == 1)
+                    texto = tarefasAtrazadas + getString(R.string.sp_tarefa_atrazada);
+                else texto = tarefasAtrazadas + getString(R.string.sp_tarefas_atrazadas);
 
                 lblAtrazada.setText(texto);
             }
 
-            if (tarefasVencendo>0) {
+            if (tarefasVencendo > 0) {
                 lblVencendo.setVisibility(View.VISIBLE);
                 String texto;
 
-                if (tarefasVencendo==1) texto = tarefasVencendo+getString(R.string.sp_tarefa_vencendo);
-                else texto = tarefasVencendo+getString(R.string.sp_tarefas_vencendo);
+                if (tarefasVencendo == 1)
+                    texto = tarefasVencendo + getString(R.string.sp_tarefa_vencendo);
+                else texto = tarefasVencendo + getString(R.string.sp_tarefas_vencendo);
 
                 lblVencendo.setText(texto);
             }
@@ -359,9 +368,9 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     protected void onResume() {
         super.onResume();
 
-        // Vrifica se falta fazer upload de alguma tarefa
+        // Verifica se falta fazer upload de alguma tarefa
         if (firebaseHelper.getFirebaseUser() != null) {
-            if (!MyPreferences.getIsSincronizado()) {
+            if (!MyPreferences.isSincronizado()) {
                 firebaseHelper.atualizarRemoto();
             } else {
                 firebaseHelper.atualizarLocal();
@@ -378,4 +387,11 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         firebaseHelper.removerListener();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
 }

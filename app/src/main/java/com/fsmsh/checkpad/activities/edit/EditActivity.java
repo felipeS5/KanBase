@@ -190,7 +190,7 @@ public class EditActivity extends AppCompatActivity {
 
                 if (addSuccess) {
                     Toast.makeText(getApplicationContext(), getString(R.string.edit_sucesso_add_save, acao), Toast.LENGTH_SHORT).show();
-                    myPreferences.isSincronizado(false);
+                    myPreferences.setSincronizado(false);
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.edit_erro_add_save, acao), Toast.LENGTH_SHORT).show();

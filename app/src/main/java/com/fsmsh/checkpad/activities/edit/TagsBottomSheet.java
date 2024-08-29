@@ -71,7 +71,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
                         EditText tagStr = dialog.findViewById(R.id.txtDialogTag);
 
                         boolean added = Database.addTag(tagStr.getText().toString());
-                        MyPreferences.isSincronizado(false);
+                        MyPreferences.setSincronizado(false);
                         FirebaseHelper.atualizarRemoto();
                         criarChips();
 

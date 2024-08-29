@@ -37,9 +37,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FirebaseHelper {
     private static FirebaseAuth auth;
     private static FirebaseFirestore firestore;
@@ -304,7 +301,7 @@ public class FirebaseHelper {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                MyPreferences.isSincronizado(true);
+                                MyPreferences.setSincronizado(true);
 
                                 if (parentProfile != null) {
                                     Toast.makeText(parentProfile, R.string.perfil_alteraces_salvas, Toast.LENGTH_SHORT).show();

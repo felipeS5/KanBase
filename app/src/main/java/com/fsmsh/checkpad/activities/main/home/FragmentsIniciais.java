@@ -105,7 +105,7 @@ public class FragmentsIniciais extends Fragment {
         boolean isMovida = Database.editTarefa(tarefa);
 
         if (isMovida) {
-            MyPreferences.isSincronizado(false);
+            MyPreferences.setSincronizado(false);
             FirebaseHelper.atualizarRemoto();
             return true;
         } else {
