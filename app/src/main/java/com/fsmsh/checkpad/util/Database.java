@@ -30,6 +30,7 @@ public class Database {
         sql.execSQL("CREATE TABLE IF NOT EXISTS usuario (nome VARCHAR, email VARCHAR)");
     }
 
+
     public static boolean setUsuario(Usuario usuario) {
         try {
             String valores = "'"+ usuario.getNome() +"', '"+usuario.getEmail() +"'";

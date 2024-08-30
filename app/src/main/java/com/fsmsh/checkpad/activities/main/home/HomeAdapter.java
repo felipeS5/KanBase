@@ -117,11 +117,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                NotificationHelper notificationHelper = new NotificationHelper(fragmentsIniciais.parent.getApplicationContext());
-                notificationHelper.configurarChannel();
-                notificationHelper.enviarNotificacao(tarefa);
-
                 // Funcao edit
                 Intent intent = new Intent(holder.itemView.getContext(), EditActivity.class);
                 intent.putExtra("isNovo", false);

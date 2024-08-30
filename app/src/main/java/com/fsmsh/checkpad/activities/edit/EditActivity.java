@@ -12,6 +12,7 @@ import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.MyPreferences;
+import com.fsmsh.checkpad.util.NotificationHelper;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -184,12 +185,19 @@ public class EditActivity extends AppCompatActivity {
                 }
 
 
+                // Salvando localmente
                 boolean addSuccess;
                 if (acao.equals("adicionar")) addSuccess = Database.addTarefa(tarefa);
                 else addSuccess = Database.editTarefa(tarefa);
 
                 if (addSuccess) {
                     Toast.makeText(getApplicationContext(), getString(R.string.edit_sucesso_add_save, acao), Toast.LENGTH_SHORT).show();
+
+                    NotificationHelper notificationHelper = new NotificationHelper( getApplicationContext() );
+                    notificationHelper.configurarChannel();
+                    notificationHelper.removerAgendamento(tarefa.getId()); // Removendo o angendamento antigo (caso haja)
+                    notificationHelper.agendarNotificação(tarefa);
+
                     myPreferences.setSincronizado(false);
                     finish();
                 } else {
