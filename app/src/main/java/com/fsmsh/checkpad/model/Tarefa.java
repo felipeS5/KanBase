@@ -11,6 +11,8 @@ public class Tarefa {
     private String timeLimit;
     private String categoria;
     private int prioridade;
+    private int broadcastCodeStart; // Só existe pq preciso dele pra cancelar o broadcast
+    private int broadcastCodeLimit; // Só existe pq preciso dele pra cancelar o broadcast
 
     public String getId() {
         return id;
@@ -90,5 +92,21 @@ public class Tarefa {
 
     public void setPrioridade(int prioridade) {
         this.prioridade = prioridade;
+    }
+
+    public int getBroadcastCodeStart() {
+        return broadcastCodeStart;
+    }
+
+    public void setBroadcastCodeStart(int broadcastCodeStart) {
+        this.broadcastCodeStart = broadcastCodeStart;
+    }
+
+    public int getBroadcastCodeLimit() {
+        return broadcastCodeLimit;
+    }
+
+    public void setBroadcastCodeLimit(int broadcastCodeLimit) {
+        this.broadcastCodeLimit = broadcastCodeLimit;
     }
 }

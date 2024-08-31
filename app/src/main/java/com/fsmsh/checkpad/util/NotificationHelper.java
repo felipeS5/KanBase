@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -43,34 +44,61 @@ public class NotificationHelper {
     }
 
     public void agendarNotificação(Tarefa tarefa) {
-        long millisTime = System.currentTimeMillis() + 5000; // 5 segundos depois...
+        long millisTime = System.currentTimeMillis() + 3000; // 3 segundos depois...
+        long millisTime2 = System.currentTimeMillis() + 10000; // 10 segundos depois...
 
         // Intent para o BroadcastReceiver
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("tarefaID", tarefa.getId());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (!tarefa.getDateStart().equals("")) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeStart(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Agendamento com AlarmManager
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
-            } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // O app nem roda em KitKat!
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
+            // Agendamento com AlarmManager
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
+
+                    Log.d("TAG", "agendarNotificação: Start"+tarefa.getBroadcastCodeStart());
+                } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // O app nem roda em KitKat!
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
+                }
             }
         }
 
+        if (!tarefa.getDateLimit().equals("")) {
+            PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeLimit(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Agendamento com AlarmManager
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime2, pendingIntentLimit);
+
+                    Log.d("TAG", "agendarNotificação: Limit"+tarefa.getBroadcastCodeLimit());
+
+                } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // O app nem roda em KitKat!
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime2, pendingIntentLimit);
+                }
+            }
+        }
+
+
+
     }
 
-    public void removerAgendamento(String tarefaID) {
+    public void removerAgendamento(int[] broadcastCodes) {
         // Criando pendingIntent igual para remover
         Intent intent = new Intent(context, NotificationReceiver.class);
-        intent.putExtra("tarefaID", tarefaID);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, broadcastCodes[0], intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent intentLimit = new Intent(context, NotificationReceiver.class);
+        PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, broadcastCodes[1], intentLimit, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+        alarmManager.cancel(pendingIntentLimit);
     }
 
     public void enviarNotificacao(Tarefa tarefa) {
