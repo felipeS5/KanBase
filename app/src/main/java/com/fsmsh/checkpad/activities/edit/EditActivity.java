@@ -173,7 +173,7 @@ public class EditActivity extends AppCompatActivity {
                 if (dateStart != null) {
                     tarefa.setDateStart(dateStart.toString());
                     tarefa.setTimeStart(timeStart.toString());
-                    tarefa.setBroadcastCodeStart(new Random().nextInt()); //todo Tornar menos nucetível a duplicatas
+                    tarefa.setBroadcastCodeStart(new Random().nextInt()); //todo Tornar menos sucetível a duplicatas
                 } else {
                     tarefa.setDateStart("");
                     tarefa.setTimeStart("");
@@ -183,12 +183,14 @@ public class EditActivity extends AppCompatActivity {
                 if (dateLimit != null) {
                     tarefa.setDateLimit(dateLimit.toString());
                     tarefa.setTimeLimit(timeLimit.toString());
-                    tarefa.setBroadcastCodeLimit(new Random().nextInt()); //todo Tornar menos nucetível a duplicatas
+                    tarefa.setBroadcastCodeLimit(new Random().nextInt()); //todo Tornar menos sucetível a duplicatas
                 } else {
                     tarefa.setDateLimit("");
                     tarefa.setTimeLimit("");
                     tarefa.setBroadcastCodeLimit(0);
                 }
+
+                tarefa.setNotifyBefore(30); // todo Possibilitar o user alterar esse valor
 
 
                 // Salvando localmente

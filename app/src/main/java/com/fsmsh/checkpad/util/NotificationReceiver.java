@@ -17,15 +17,15 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String tarefaID = intent.getStringExtra("tarefaID");
-
-        Log.d("TAG", "onReceive: ");
-
         new Database(context); // Inicializei só pra passar o context
         Tarefa tarefa = Database.getTarefa(tarefaID);
 
-
-        NotificationHelper notificationHelper = new NotificationHelper(context);
-        notificationHelper.enviarNotificacao(tarefa);
+        if (tarefa != null) {
+            NotificationHelper notificationHelper = new NotificationHelper(context);
+            notificationHelper.enviarNotificacao(tarefa);
+        } else {
+            Log.d("TAG", "onReceive: Tarefa nula");
+        }
 
     }
 }

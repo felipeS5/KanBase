@@ -11,9 +11,19 @@ import com.fsmsh.checkpad.model.Tarefa;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtilities {
+
+
+    public static long getBeforeLong(LocalDateTime local, int beforeMinutes) {
+        long milli = local.atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
+
+        return milli - (beforeMinutes * 60 * 1000);
+    }
 
     public static String getSaudacoes(Context context) {
         LocalTime localTime = LocalTime.now();

@@ -25,7 +25,7 @@ public class Database {
         this.context = context;
 
         sql = context.openOrCreateDatabase("Dados.db", Context.MODE_PRIVATE, null);
-        sql.execSQL("CREATE TABLE IF NOT EXISTS tarefas (id VARCHAR, tarefaNome VARCHAR, descricao VARCHAR, progresso INT(1), dateStart VARCHAR, timeStart VARCHAR, dateLimit VARCHAR, timeLimit VARCHAR, categoria VARCHAR, prioridade INT(1), broadcastCodeStart INTEGER, broadcastCodeLimit INTEGER)");
+        sql.execSQL("CREATE TABLE IF NOT EXISTS tarefas (id VARCHAR, tarefaNome VARCHAR, descricao VARCHAR, progresso INT(1), dateStart VARCHAR, timeStart VARCHAR, dateLimit VARCHAR, timeLimit VARCHAR, categoria VARCHAR, prioridade INT(1), broadcastCodeStart INTEGER, broadcastCodeLimit INTEGER, notifyBefore INTEGER)");
         sql.execSQL("CREATE TABLE IF NOT EXISTS tags (tagName VARCHAR)");
         sql.execSQL("CREATE TABLE IF NOT EXISTS usuario (nome VARCHAR, email VARCHAR)");
     }
@@ -64,8 +64,8 @@ public class Database {
 
     public static boolean addTarefa(Tarefa tarefa) {
         try {
-            String campos = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade, broadcastCodeStart,  broadcastCodeLimit";
-            String valores = "'"+ tarefa.getId() +"', '"+ tarefa.getTarefaNome() +"', '"+tarefa.getDescricao() +"', "+ tarefa.getProgresso() +", '"+ tarefa.getDateStart() +"', '"+ tarefa.getTimeStart() +"', '"+ tarefa.getDateLimit() +"', '"+ tarefa.getTimeLimit() +"', '"+ tarefa.getCategoria() +"', "+ tarefa.getPrioridade()+", "+tarefa.getBroadcastCodeStart() +", "+ tarefa.getBroadcastCodeLimit();
+            String campos = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade, broadcastCodeStart,  broadcastCodeLimit, notifyBefore";
+            String valores = "'"+ tarefa.getId() +"', '"+ tarefa.getTarefaNome() +"', '"+tarefa.getDescricao() +"', "+ tarefa.getProgresso() +", '"+ tarefa.getDateStart() +"', '"+ tarefa.getTimeStart() +"', '"+ tarefa.getDateLimit() +"', '"+ tarefa.getTimeLimit() +"', '"+ tarefa.getCategoria() +"', "+ tarefa.getPrioridade()+", "+tarefa.getBroadcastCodeStart() +", "+ tarefa.getBroadcastCodeLimit() +", "+ tarefa.getNotifyBefore();
 
             sql.execSQL("INSERT INTO tarefas ("+ campos +") VALUES (" +valores+ ")");
 
@@ -78,7 +78,7 @@ public class Database {
 
     public static Tarefa getTarefa(String id) {
         Tarefa tarefa = new Tarefa();
-        String query = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade, broadcastCodeStart, broadcastCodeLimit";
+        String query = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade, broadcastCodeStart, broadcastCodeLimit, notifyBefore";
 
         try {
             Cursor cursor = sql.rawQuery("SELECT " +query+ " FROM tarefas WHERE id='"+ id +"'", null);
@@ -96,9 +96,11 @@ public class Database {
             tarefa.setPrioridade( cursor.getInt(9) );
             tarefa.setBroadcastCodeStart( cursor.getInt(10) );
             tarefa.setBroadcastCodeLimit( cursor.getInt(11) );
+            tarefa.setNotifyBefore( cursor.getInt(12) );
 
         }catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
         return tarefa;
@@ -106,7 +108,7 @@ public class Database {
 
     public static List<Tarefa> getTarefas(int progress) {
         List<Tarefa> tarefas = new ArrayList<>();
-        String query = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade, broadcastCodeStart, broadcastCodeLimit";
+        String query = "id, tarefaNome, descricao, progresso, dateStart, timeStart, dateLimit, timeLimit, categoria, prioridade, broadcastCodeStart, broadcastCodeLimit, notifyBefore";
 
         try {
 
@@ -127,6 +129,7 @@ public class Database {
                 tarefa.setPrioridade( cursor.getInt(9) );
                 tarefa.setBroadcastCodeStart( cursor.getInt(10) );
                 tarefa.setBroadcastCodeLimit( cursor.getInt(11) );
+                tarefa.setNotifyBefore( cursor.getInt(12) );
 
                 if (progress == tarefa.getProgresso() || progress == PROGRESS_TODOS) {
                     tarefas.add(tarefa);
@@ -144,8 +147,8 @@ public class Database {
 
     public static boolean editTarefa(Tarefa t) {
 
-        String sqlAtt = String.format("tarefaNome = '%s', descricao = '%s', progresso = %d, dateStart = '%s', timeStart = '%s', dateLimit = '%s', timeLimit = '%s', categoria = '%s', prioridade = %d, broadcastCodeStart = %d, broadcastCodeLimit = %d",
-                t.getTarefaNome(), t.getDescricao(), t.getProgresso(), t.getDateStart(), t.getTimeStart(), t.getDateLimit(), t.getTimeLimit(), t.getCategoria(), t.getPrioridade(), t.getBroadcastCodeStart(), t.getBroadcastCodeLimit() );
+        String sqlAtt = String.format("tarefaNome = '%s', descricao = '%s', progresso = %d, dateStart = '%s', timeStart = '%s', dateLimit = '%s', timeLimit = '%s', categoria = '%s', prioridade = %d, broadcastCodeStart = %d, broadcastCodeLimit = %d, notifyBefore = %d",
+                t.getTarefaNome(), t.getDescricao(), t.getProgresso(), t.getDateStart(), t.getTimeStart(), t.getDateLimit(), t.getTimeLimit(), t.getCategoria(), t.getPrioridade(), t.getBroadcastCodeStart(), t.getBroadcastCodeLimit(), t.getNotifyBefore() );
 
         try {
             sql.execSQL("UPDATE tarefas SET " + sqlAtt + " WHERE id = '"+ t.getId() +"'");

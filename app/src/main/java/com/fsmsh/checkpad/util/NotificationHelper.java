@@ -16,6 +16,10 @@ import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.EditActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Random;
 
 public class NotificationHelper {
@@ -44,8 +48,6 @@ public class NotificationHelper {
     }
 
     public void agendarNotificação(Tarefa tarefa) {
-        long millisTime = System.currentTimeMillis() + 3000; // 3 segundos depois...
-        long millisTime2 = System.currentTimeMillis() + 10000; // 10 segundos depois...
 
         // Intent para o BroadcastReceiver
         Intent intent = new Intent(context, NotificationReceiver.class);
@@ -54,13 +56,19 @@ public class NotificationHelper {
         if (!tarefa.getDateStart().equals("")) {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeStart(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            // Pega o tempo em long
+            LocalDate localDate = DateUtilities.toLocalDate(tarefa.getDateStart());
+            LocalTime localTime = DateUtilities.toLocalTime(tarefa.getTimeStart());
+            LocalDateTime localDateTime = localDate.atTime(localTime);
+            long millisTime = DateUtilities.getBeforeLong(localDateTime, tarefa.getNotifyBefore());
+
             // Agendamento com AlarmManager
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (alarmManager != null) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, pendingIntent);
 
-                    Log.d("TAG", "agendarNotificação: Start"+tarefa.getBroadcastCodeStart());
+                    Log.d("TAG", "agendarNotificação: Start"+new Date(millisTime));
                 } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // O app nem roda em KitKat!
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
                 }
@@ -70,16 +78,21 @@ public class NotificationHelper {
         if (!tarefa.getDateLimit().equals("")) {
             PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeLimit(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            // Pega o tempo em long
+            LocalDate localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
+            LocalTime localTime = DateUtilities.toLocalTime(tarefa.getTimeLimit());
+            LocalDateTime localDateTime = localDate.atTime(localTime);
+            long millisTime = DateUtilities.getBeforeLong(localDateTime, tarefa.getNotifyBefore());
+
             // Agendamento com AlarmManager
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (alarmManager != null) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime2, pendingIntentLimit);
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime, pendingIntentLimit);
 
-                    Log.d("TAG", "agendarNotificação: Limit"+tarefa.getBroadcastCodeLimit());
-
+                    Log.d("TAG", "agendarNotificação: Limit"+new Date(millisTime));
                 } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // O app nem roda em KitKat!
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime2, pendingIntentLimit);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime, pendingIntentLimit);
                 }
             }
         }
