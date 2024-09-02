@@ -48,13 +48,14 @@ public class NotificationHelper {
     }
 
     public void agendarNotificação(Tarefa tarefa) {
-
         // Intent para o BroadcastReceiver
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("tarefaID", tarefa.getId());
 
         if (!tarefa.getDateStart().equals("")) {
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeStart(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intentIntern = intent;
+            intentIntern.putExtra("notifyType", "start");
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeStart(), intentIntern, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Pega o tempo em long
             LocalDate localDate = DateUtilities.toLocalDate(tarefa.getDateStart());
@@ -66,9 +67,7 @@ public class NotificationHelper {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (alarmManager != null) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, pendingIntent);
-
-                    Log.d("TAG", "agendarNotificação: Start"+new Date(millisTime));
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
                 } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // O app nem roda em KitKat!
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime, pendingIntent);
                 }
@@ -76,7 +75,9 @@ public class NotificationHelper {
         }
 
         if (!tarefa.getDateLimit().equals("")) {
-            PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeLimit(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intentIntern = intent;
+            intentIntern.putExtra("notifyType", "limit");
+            PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeLimit(), intentIntern, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Pega o tempo em long
             LocalDate localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
@@ -89,8 +90,6 @@ public class NotificationHelper {
             if (alarmManager != null) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millisTime, pendingIntentLimit);
-
-                    Log.d("TAG", "agendarNotificação: Limit"+new Date(millisTime));
                 } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // O app nem roda em KitKat!
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, millisTime, pendingIntentLimit);
                 }
@@ -114,19 +113,19 @@ public class NotificationHelper {
         alarmManager.cancel(pendingIntentLimit);
     }
 
-    public void enviarNotificacao(Tarefa tarefa) {
+    public void enviarNotificacao(String title, String description, String tarefaID) {
         NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.header_icon)
-                .setContentTitle(tarefa.getTarefaNome())
-                .setContentText(context.getString(R.string.a_tarefa_ira_vencer_em_pouco_tempo, tarefa.getTarefaNome()))
+                .setContentTitle(title)
+                .setContentText(description)
                 .setChannelId(VENCENDO_CHANNEL_ID)
                 .setAutoCancel(true); // clear notification when clicked
 
         Intent intent = new Intent(context, EditActivity.class);
         intent.putExtra("isNovo", false);
-        intent.putExtra("id", tarefa.getId());
+        intent.putExtra("id", tarefaID);
         PendingIntent pi = PendingIntent.getActivity(context, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
         mBuilder.setContentIntent(pi);
 

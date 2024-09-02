@@ -101,5 +101,8 @@
     <string name="sp_tarefa_vencendo">" tarefa vencendo"</string>
     <string name="sp_tarefas_vencendo">" tarefas vencendo"</string>
     <string name="vencendo_hoje">Vencendo hoje</string>
-    <string name="a_tarefa_ira_vencer_em_pouco_tempo">A tarefa \"%1$s\" irá vencer em pouco tempo!</string>
+    <string name="a_tarefa_x_ira_expirar_em_x_minutos">A tarefa \"%1$s\" irá expirar em %2$d minutos!</string>
+    <string name="a_tarefa_x_ira_expirar_em_1_hora">A tarefa \"%1$s\" irá expirar em uma hora!</string>
+    <string name="a_tarefa_x_deve_ser_iniciada_em_x_minutos">A tarefa \"%1$s\" deve ser iniciada em %2$d minutos</string>
+    <string name="a_tarefa_x_deve_ser_iniciada_em_1_hora">A tarefa \"%1$s\" deve ser iniciada em uma hora</string>
 </resources>
