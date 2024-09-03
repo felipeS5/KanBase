@@ -43,6 +43,7 @@ public class EditActivity extends AppCompatActivity {
     public LocalTime timeStart;
     public LocalDate dateLimit;
     public LocalTime timeLimit;
+    int notifyBefore = 15;
     int prioridade = 4;
     int[] oldBroadcastCodes = new int[]{0, 0};
     Tarefa tarefa;
@@ -64,6 +65,7 @@ public class EditActivity extends AppCompatActivity {
             dateStart = DateUtilities.getNextTime().toLocalDate();
             timeStart = DateUtilities.getNextTime().toLocalTime();
             binding.dateStartConteiner.setVisibility(View.VISIBLE);
+            binding.notifyConteiner.setVisibility(View.VISIBLE);
 
             salvar("adicionar", new Tarefa());
         } else {
@@ -190,7 +192,7 @@ public class EditActivity extends AppCompatActivity {
                     tarefa.setBroadcastCodeLimit(0);
                 }
 
-                tarefa.setNotifyBefore(30); // todo Possibilitar o user alterar esse valor
+                tarefa.setNotifyBefore(notifyBefore); // todo Possibilitar o user alterar esse valor
 
 
                 // Salvando localmente
@@ -201,10 +203,11 @@ public class EditActivity extends AppCompatActivity {
                 if (addSuccess) {
                     Toast.makeText(getApplicationContext(), getString(R.string.edit_sucesso_add_save, acao), Toast.LENGTH_SHORT).show();
 
-                    NotificationHelper notificationHelper = new NotificationHelper( getApplicationContext() );
+                    NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
                     notificationHelper.configurarChannel();
                     notificationHelper.removerAgendamento(oldBroadcastCodes); // Removendo o angendamento antigo (caso haja)
-                    notificationHelper.agendarNotificação(tarefa);
+                    if (notifyBefore != -1) notificationHelper.agendarNotificação(tarefa);
+                    // todo Tarefas passadas mandam notificação instantâneo quando salvas, isso tá errado, nem deveria mandar
 
                     myPreferences.setSincronizado(false);
                     finish();
@@ -242,6 +245,10 @@ public class EditActivity extends AppCompatActivity {
 
             setChipTags();
         }
+
+        notifyBefore = tarefa.getNotifyBefore();
+        if (notifyBefore == 60) binding.notifyBebore.setText(R.string._1hr_antes);
+        else binding.notifyBebore.setText(getString(R.string.x_mins_antes, notifyBefore));
 
         prioridade = tarefa.getPrioridade();
         if (prioridade == 0) binding.prioridade.setText(R.string.prioridade_urgente);
@@ -300,16 +307,23 @@ public class EditActivity extends AppCompatActivity {
     public void showModalBottomSheet(View view) {
         boolean inicio = false;
         boolean limite = false;
+        boolean notify = false;
         boolean prioridade = false;
         boolean categoria = false;
 
         if(dateStart != null) inicio = true;
         if(dateLimit != null) limite = true;
+        if(notifyBefore != -1) notify = true;
         if(this.prioridade != 4) prioridade = true;
         if(tags.size() != 0) categoria = true;
 
-        ModalBottomSheet modalBottomSheet = new ModalBottomSheet(inicio, limite, prioridade, categoria, this, binding);
+        ModalBottomSheet modalBottomSheet = new ModalBottomSheet(inicio, limite, notify, prioridade, categoria, this, binding);
         modalBottomSheet.show(getSupportFragmentManager(), ModalBottomSheet.TAG);
+    }
+
+    public void showNotifyBottomSheet(View view) {
+        NotifyBottomSheet notifyBottomSheet = new NotifyBottomSheet(notifyBefore, this, binding);
+        notifyBottomSheet.show(getSupportFragmentManager(), PriorityBottomSheet.TAG);
     }
 
     public void showPriorityBottomSheet(View view) {
@@ -335,6 +349,12 @@ public class EditActivity extends AppCompatActivity {
             timeLimit = null;
         }
 
+        if (view.getId() == R.id.btnCancelNotify) {
+            binding.notifyConteiner.setVisibility(View.GONE);
+            binding.notifyBebore.setText(R.string.notificacoes_desativadas);
+            notifyBefore = -1;
+        }
+
         if (view.getId() == R.id.btnCancelPriority) {
             binding.priorityConteiner.setVisibility(View.GONE);
             binding.prioridade.setText(R.string.prioridade_nenhuma);
@@ -350,6 +370,7 @@ public class EditActivity extends AppCompatActivity {
     public void checkDetails(Tarefa tarefa) {
         if (!tarefa.getCategoria().equals("")) binding.categoryConteiner.setVisibility(View.VISIBLE);
         if (tarefa.getPrioridade() != 4) binding.priorityConteiner.setVisibility(View.VISIBLE);
+        if (tarefa.getNotifyBefore() != -1) binding.notifyConteiner.setVisibility(View.VISIBLE);
 
         if (!tarefa.getDateStart().equals("")) binding.dateStartConteiner.setVisibility(View.VISIBLE);
         if (!tarefa.getDateLimit().equals("")) binding.dateLimitConteiner.setVisibility(View.VISIBLE);

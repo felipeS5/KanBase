@@ -105,4 +105,13 @@
     <string name="a_tarefa_x_ira_expirar_em_1_hora">A tarefa \"%1$s\" irá expirar em uma hora!</string>
     <string name="a_tarefa_x_deve_ser_iniciada_em_x_minutos">A tarefa \"%1$s\" deve ser iniciada em %2$d minutos</string>
     <string name="a_tarefa_x_deve_ser_iniciada_em_1_hora">A tarefa \"%1$s\" deve ser iniciada em uma hora</string>
+    <string name="notificar_x_min_antes">Notificar %1$d minutos antes</string>
+    <string name="desativar_notificacoes">Desativar notificações</string>
+    <string name="_5min_antes">5 mins antes</string>
+    <string name="_15min_antes">15 mins antes</string>
+    <string name="_30min_antes">30 mins antes</string>
+    <string name="_1hr_antes">1 hora antes</string>
+    <string name="quanto_tempo_antes_voc_quer_ser_notificado">Quanto tempo antes você quer ser notificado?</string>
+    <string name="notificacoes_desativadas">Notificações desativadas</string>
+    <string name="x_mins_antes">%1$d mins antes</string>
 </resources>

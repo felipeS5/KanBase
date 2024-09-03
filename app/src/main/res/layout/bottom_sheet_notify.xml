@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/bottomSheetDragHandleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.bottomsheet.BottomSheetDragHandleView>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/quanto_tempo_antes_voc_quer_ser_notificado"
+        android:textSize="20sp" />
+
+    <CheckBox
+        android:id="@+id/t1hr_antes"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_notifications_active_24"
+        android:button="@null"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_1hr_antes" />
+
+    <CheckBox
+        android:id="@+id/t30min_antes"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_notifications_active_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_30min_antes" />
+
+    <CheckBox
+        android:id="@+id/t15min_antes"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_notifications_active_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_15min_antes" />
+
+    <CheckBox
+        android:id="@+id/t5min_antes"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_notifications_active_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_5min_antes" />
+    <CheckBox
+        android:id="@+id/_desativar"
+        android:button="@null"
+        android:paddingLeft="4dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/baseline_notifications_off_24"
+        android:layout_margin="8dp"
+        android:background="@drawable/checkbox_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/desativar_notificacoes" />
+
+
+
+
+</LinearLayout>

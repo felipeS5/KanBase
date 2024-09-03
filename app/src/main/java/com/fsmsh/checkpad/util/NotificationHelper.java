@@ -52,6 +52,8 @@ public class NotificationHelper {
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("tarefaID", tarefa.getId());
 
+        Log.d("TAG", "agendarNotificação: ");
+
         if (!tarefa.getDateStart().equals("")) {
             Intent intentIntern = intent;
             intentIntern.putExtra("notifyType", "start");
