@@ -24,13 +24,8 @@
             android:parentActivityName=".activities.main.MainActivity" />
         <activity
             android:name=".activities.settings.SettingsActivity"
-            android:exported="true"
+            android:exported="false"
             android:parentActivityName=".activities.main.MainActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.edit.EditActivity"
@@ -38,7 +33,11 @@
         <activity
             android:name=".activities.main.MainActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <receiver android:name=".util.NotificationReceiver" />

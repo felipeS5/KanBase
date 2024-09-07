@@ -114,6 +114,12 @@
     <string name="quanto_tempo_antes_voc_quer_ser_notificado">Quanto tempo antes você quer ser notificado?</string>
     <string name="notificacoes_desativadas">Notificações desativadas</string>
     <string name="x_mins_antes">%1$d mins antes</string>
+    <string name="remover_tag_q">Remover tag?</string>
+    <string name="deseja_realmente_remover_a_tag_x_q">Deseja realmente remover a tag \"%1$s\"?</string>
+    <string name="manter">Manter</string>
+    <string name="remover">Remover</string>
+    <string name="tag_removida">Tag removida</string>
+    <string name="erro_ao_remover_tag">Erro ao remover tag</string>
     <string name="notificacao_previa_padrao">Notificação prévia padrão</string>
     <string name="resumo_diario">Resumo diário</string>
     <string name="resetar_conta">Resetar conta</string>

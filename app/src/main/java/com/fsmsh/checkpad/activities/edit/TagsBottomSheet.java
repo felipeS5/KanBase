@@ -1,5 +1,6 @@
 package com.fsmsh.checkpad.activities.edit;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
+import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.FirebaseHelper;
 import com.fsmsh.checkpad.util.MyPreferences;
@@ -114,6 +116,10 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
             Chip chip = new Chip(getContext());
             chip.setText(s);
             chip.setCheckable(true);
+            chip.setOnLongClickListener(view -> {
+                removeTag(chip);
+                return true;
+            });
 
             for (String tagPresente : tagsPresentes) { // verificar se o chip gerado está entre as tags presentes na tarefa
                 if (s.equals(tagPresente)) chip.setChecked(true);
@@ -122,5 +128,46 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
             chips.add(chip);
             chipGroup.addView(chip);
         }
+    }
+
+    public void removeTag(Chip chip) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TagsBottomSheet.this.getContext());
+        builder.setTitle(R.string.remover_tag_q);
+        builder.setMessage(parent.getString(R.string.deseja_realmente_remover_a_tag_x_q, chip.getText().toString()));
+
+        builder.setNegativeButton(R.string.manter, null);
+
+        builder.setPositiveButton(R.string.remover, (dialogInterface, i) -> {
+            boolean removed = Database.deleteTag(chip.getText().toString());
+
+            for (Tarefa t : Database.getTarefas(Database.PROGRESS_TODOS)) {
+                List<String> tags = new ArrayList<>();
+
+                for (String tag : t.getCategoria().split("‖")) {
+                    if (!tag.equals(chip.getText().toString())) tags.add(tag);
+                }
+
+                String temp = "";
+                for (String s : tags) {
+                    if (!s.equals("")) {
+                        temp += s + "‖";
+                    }
+                }
+
+                t.setCategoria(temp);
+                Database.editTarefa(t);
+            }
+
+            parent.setChipTags(); //todo Por alguma razão as tag não estão sendo setadas no parent
+            MyPreferences.setSincronizado(false);
+            FirebaseHelper.atualizarRemoto();
+            criarChips();
+
+            if (removed) Toast.makeText(parent, R.string.tag_removida, Toast.LENGTH_SHORT).show();
+            else Toast.makeText(parent, R.string.erro_ao_remover_tag, Toast.LENGTH_LONG).show();
+
+        });
+
+        builder.show();
     }
 }
