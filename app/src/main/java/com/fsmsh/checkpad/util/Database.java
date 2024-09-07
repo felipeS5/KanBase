@@ -230,7 +230,7 @@ public class Database {
 
     public static boolean deleteTag(String tag) {
         try {
-            sql.execSQL("DELETE FROM tags WHERE tagName = '"+ tag +"'");
+            sql.execSQL("DELETE FROM tags WHERE tagName = " + tag);
 
             return true;
         }catch (Exception e){

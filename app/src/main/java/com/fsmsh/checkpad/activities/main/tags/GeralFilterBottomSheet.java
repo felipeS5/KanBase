@@ -6,17 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.fsmsh.checkpad.R;
-import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
-import com.fsmsh.checkpad.util.FirebaseHelper;
-import com.fsmsh.checkpad.util.MyPreferences;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,10 +71,6 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
             Chip chip = new Chip(getContext());
             chip.setText(s);
             chip.setCheckable(true);
-            chip.setOnLongClickListener(view -> {
-                removeTag(chip);
-                return true;
-            });
 
             for (String tagPresente : tagsPresentes) { // verificar se o chip gerado está entre as tags presentes na tarefa
                 if (s.equals(tagPresente)) chip.setChecked(true);
@@ -88,48 +79,6 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
             chips.add(chip);
             chipGroup.addView(chip);
         }
-    }
-
-    public void removeTag(Chip chip) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(GeralFilterBottomSheet.this.getContext());
-        builder.setTitle(R.string.remover_tag_q);
-        builder.setMessage(parent.getString(R.string.deseja_realmente_remover_a_tag_x_q, chip.getText().toString()));
-
-        builder.setNegativeButton(R.string.manter, null);
-
-        builder.setPositiveButton(R.string.remover, (dialogInterface, i) -> {
-            boolean removed = Database.deleteTag(chip.getText().toString());
-
-            for (Tarefa t : Database.getTarefas(Database.PROGRESS_TODOS)) {
-                List<String> tags = new ArrayList<>();
-
-                for (String tag : t.getCategoria().split("‖")) {
-                    if (!tag.equals(chip.getText().toString())) tags.add(tag);
-                }
-
-                String temp = "";
-                for (String s : tags) {
-                    if (!s.equals("")) {
-                        temp += s + "‖";
-                    }
-                }
-
-                t.setCategoria(temp);
-                Database.editTarefa(t);
-            }
-
-            //todo Por alguma razão as tag não estão sendo setadas no parent
-            parent.setChipTags();
-            MyPreferences.setSincronizado(false);
-            FirebaseHelper.atualizarRemoto();
-            criarChips();
-
-            if (removed) Toast.makeText(parent.getContext(), R.string.tag_removida, Toast.LENGTH_SHORT).show();
-            else Toast.makeText(parent.getContext(), R.string.erro_ao_remover_tag, Toast.LENGTH_LONG).show();
-
-        });
-
-        builder.show();
     }
 
     public void confirmFilter() {
