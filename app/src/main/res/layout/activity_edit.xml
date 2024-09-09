@@ -74,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                style="@style/Base.Theme.ICON_TINT"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -81,12 +82,12 @@
 
             <TextView
                 android:id="@+id/dtInicio"
+                style="@style/Base.Theme.BGSMALL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirDatePicker"
                 android:padding="8dp"
                 android:text="22 de jun de 2024"
@@ -97,10 +98,10 @@
 
             <TextView
                 android:id="@+id/timeInicio"
+                style="@style/Base.Theme.BGSMALL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirTimePicker"
                 android:padding="8dp"
                 android:text="20:00"
@@ -132,6 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                style="@style/Base.Theme.ICON_TINT"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -139,12 +141,12 @@
 
             <TextView
                 android:id="@+id/dtFim"
+                style="@style/Base.Theme.BGSMALL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirDatePicker"
                 android:padding="8dp"
                 android:text="22 de jun de 2024"
@@ -155,10 +157,10 @@
 
             <TextView
                 android:id="@+id/timeFim"
+                style="@style/Base.Theme.BGSMALL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:background="@drawable/bg_small_gray"
                 android:onClick="exibirTimePicker"
                 android:padding="8dp"
                 android:text="20:00"
@@ -191,6 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                style="@style/Base.Theme.ICON_TINT"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -235,6 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                style="@style/Base.Theme.ICON_TINT"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -280,6 +284,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                style="@style/Base.Theme.ICON_TINT"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_label_24" />

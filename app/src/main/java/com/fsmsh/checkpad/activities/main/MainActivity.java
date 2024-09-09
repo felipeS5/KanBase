@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         navigationView = findViewById(R.id.nav_view);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         fab = findViewById(R.id.fab);
+
+        int tema = MyPreferences.getTema();
+        AppCompatDelegate.setDefaultNightMode(tema);
 
         setSupportActionBar(toolbar);
 

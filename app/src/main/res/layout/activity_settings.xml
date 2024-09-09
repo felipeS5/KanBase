@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:paddingBottom="4dp"
+                style="@style/Base.Theme.CARD"
                 android:background="@drawable/bg_config_white">
 
                 <TextView
@@ -95,6 +96,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:paddingBottom="4dp"
+                style="@style/Base.Theme.CARD"
                 android:background="@drawable/bg_config_white">
 
                 <TextView
@@ -150,6 +152,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_config_white"
+                style="@style/Base.Theme.CARD"
                 android:paddingBottom="4dp">
 
                 <TextView
@@ -236,6 +239,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:paddingBottom="4dp"
+                style="@style/Base.Theme.CARD"
                 android:background="@drawable/bg_config_white">
 
                 <TextView

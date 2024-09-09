@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
+import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.model.Tarefa;
 
 import org.json.JSONArray;
@@ -20,6 +23,32 @@ public class MyPreferences {
 
     public MyPreferences(Context context) {
         this.context = context;
+    }
+
+
+    // Tema
+    public static void setTema(int tema) {
+        SharedPreferences preferences = context.getSharedPreferences("tema.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putInt("tema", tema);
+
+        Log.d("TAG", "setTema: "+tema);
+
+        prefEditor.apply();
+    }
+
+    public static int getTema() {
+        int tema = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+
+        SharedPreferences preferences = context.getSharedPreferences("tema.pref", MODE_PRIVATE);
+
+        if (preferences.contains("tema")) {
+            tema = preferences.getInt("tema", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+        Log.d("TAG", "getTema: "+tema);
+
+        return tema;
     }
 
 

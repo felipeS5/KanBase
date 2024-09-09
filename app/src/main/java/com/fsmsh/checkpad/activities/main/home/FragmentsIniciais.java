@@ -38,6 +38,8 @@ public class FragmentsIniciais extends Fragment {
         this.parent = parent;
     }
 
+    public FragmentsIniciais() {
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -51,8 +53,10 @@ public class FragmentsIniciais extends Fragment {
     public void start() {
         tarefas = Database.getTarefas(PROGRESSO);
         autoClassify();
-        parent.setBadges();
-        parent.adjustHeader();
+        if (parent!=null) {
+            parent.setBadges();
+            parent.adjustHeader();
+        }
 
         // Recycler
         homeAdapter = new HomeAdapter( tarefas, getActivity(), this );

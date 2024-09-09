@@ -30,7 +30,7 @@
         android:drawableLeft="@drawable/baseline_priority_high_24"
         android:button="@null"
         android:layout_margin="8dp"
-        android:background="@drawable/checkbox_selector"
+        style="@style/Base.Theme.CHECKBOX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/prioridade_urgente" />
@@ -43,7 +43,7 @@
         android:drawablePadding="4dp"
         android:drawableLeft="@drawable/baseline_priority_high_24"
         android:layout_margin="8dp"
-        android:background="@drawable/checkbox_selector"
+        style="@style/Base.Theme.CHECKBOX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/prioridade_importante" />
@@ -56,7 +56,7 @@
         android:drawablePadding="4dp"
         android:drawableLeft="@drawable/baseline_priority_high_24"
         android:layout_margin="8dp"
-        android:background="@drawable/checkbox_selector"
+        style="@style/Base.Theme.CHECKBOX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/prioridade_media" />
@@ -69,7 +69,7 @@
         android:drawablePadding="4dp"
         android:drawableLeft="@drawable/baseline_priority_high_24"
         android:layout_margin="8dp"
-        android:background="@drawable/checkbox_selector"
+        style="@style/Base.Theme.CHECKBOX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/prioridade_baixa" />
@@ -80,7 +80,7 @@
         android:drawablePadding="4dp"
         android:drawableLeft="@drawable/baseline_clear_24"
         android:layout_margin="8dp"
-        android:background="@drawable/checkbox_selector"
+        style="@style/Base.Theme.CHECKBOX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sem_prioridade" />

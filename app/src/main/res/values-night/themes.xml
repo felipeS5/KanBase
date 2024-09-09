@@ -1,7 +1,98 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.CheckPad" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorBackground">@color/appBgNight</item>
+        <item name="colorPrimary">@color/primaryNight</item>
+        <item name="colorOnPrimary">@color/lightText</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/accet</item>
+        <item name="colorPrimaryContainer">@color/containerNight</item>
+        <item name="colorSecondaryContainer">@color/secondaryConteinerNight</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="popupMenuBackground">@drawable/bg_small_dialog_night</item>
+
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+        <item name="chipIconTint">@color/lightText</item>
+        <item name="android:textColor">@color/lightText</item>
+        <item name="materialAlertDialogTheme">@style/Base.Theme.DIALOG</item>
     </style>
+
+
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Base.Theme.BOTTOM_SHEET</item>
+    </style>
+
+    <style name="Base.Theme.BOTTOM_SHEET" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/dark2</item>
+    </style>
+
+    <style name="Base.Theme.ICON_TINT" parent="Base.Theme.CheckPad">
+        <item name="android:tint">@color/lightText</item>
+    </style>
+
+    <style name="Base.Theme.BUTTONTAGS_NEW" parent="Base.Theme.CheckPad">
+        <item name="android:textColor">@color/lightText</item>
+        <item name="android:backgroundTint">@color/containerNight</item>
+    </style>
+
+    <style name="Base.Theme.BUTTONTAGS_SELECT" parent="Base.Theme.CheckPad">
+        <item name="android:textColor">@color/lightText</item>
+        <item name="android:backgroundTint">@color/primaryNight</item>
+    </style>
+
+    <style name="Base.Theme.CHECKBOX" parent="Base.Theme.CheckPad">
+        <item name="android:background">@drawable/checkbox_selector_night</item>
+        <item name="android:drawableTint">@color/lightText</item>
+    </style>
+
+    <style name="Base.Theme.BGSMALL" parent="Base.Theme.CheckPad">
+        <item name="android:background">@drawable/bg_small_night</item>
+    </style>
+
+    <style name="Base.Theme.NAVIGTIONVIEW" parent="Base.Theme.CheckPad">
+        <item name="android:background">@drawable/bg_nav_header_night</item>
+    </style>
+
+    <style name="Base.Theme.NAVIGATIONHEADER" parent="Base.Theme.CheckPad">
+        <item name="android:background">@drawable/side_nav_bar_night</item>
+    </style>
+
+    <style name="Base.Theme.DIALOG" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:background">@drawable/bg_config_dark</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/accetNight</item>
+    </style>
+
+    <style name="Base.Theme.CARD" parent="Base.Theme.CheckPad">
+        <item name="android:backgroundTint">@color/dark</item>
+    </style>
+
+    <style name="Base.Theme.BOTTOMNAV" parent="Base.Theme.CheckPad">
+        <item name="backgroundTint">@color/dark</item>
+    </style>
+
+    <style name="Base.Theme.BOTTOMNAVDIV" parent="Base.Theme.CheckPad">
+        <item name="android:background">@color/dark2</item>
+    </style>
+
+    <style name="CustomPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/bg_small_gray</item>
+    </style>
+
+    <style name="Theme.CheckPad" parent="Base.Theme.CheckPad" />
+
+    <style name="Theme.CheckPad.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.CheckPad.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.CheckPad.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

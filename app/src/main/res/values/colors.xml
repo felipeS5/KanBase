@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="dark">#25292E</color>
+    <color name="dark2">#151B22</color>
+    <color name="lightText">#F8F9F9</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="darkGray">#6E6E6E</color>
@@ -12,6 +15,7 @@
     <color name="green">#34B300</color>
     <color name="orange">#E47043</color>
 
+    <!-- Claro -->
     <color name="appBg">#f2f4f9</color>
 
     <color name="primary">#4C7ACC</color>
@@ -20,4 +24,14 @@
     <color name="accet">#81D4FA</color>
     <color name="container">#81D4FA</color>
     <color name="sideNavHeader">#3A67B6</color>
+
+    <!-- Escuro -->
+    <color name="appBgNight">#0C1014</color>
+
+    <color name="primaryNight">#254A8C</color>
+    <color name="primaryDarkNight">#416AB1</color>
+    <color name="secondaryConteinerNight">#446EBA</color>
+    <color name="accetNight">#81D4FA</color>
+    <color name="containerNight">#416AB1</color>
+    <color name="sideNavHeaderNight">#3A67B6</color>
 </resources>
