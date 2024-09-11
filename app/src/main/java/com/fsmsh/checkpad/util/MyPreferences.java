@@ -16,6 +16,20 @@ public class MyPreferences {
     }
 
 
+    // Notificação prévia padrão
+    public static void setDefaultNotify(int notifyBefore) {
+        SharedPreferences preferences = context.getSharedPreferences("notify.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putInt("default", notifyBefore);
+        prefEditor.apply();
+    }
+
+    public static int getDefaultNotify() {
+        SharedPreferences preferences = context.getSharedPreferences("notify.pref", MODE_PRIVATE);
+        return preferences.getInt("default", 15);
+    }
+
     // Pending Restart
     public static void setPendingRestart(boolean pendingRestart) {
         SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);

@@ -126,5 +126,55 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        // Notificação prévia
+        binding.lblNotifyBeforeConfigs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int defaultNotify = MyPreferences.getDefaultNotify();
+                int checkedItem = 2;
+
+                if (defaultNotify == 60) checkedItem = 0;
+                else if (defaultNotify == 30) checkedItem = 1;
+                else if (defaultNotify == 15) checkedItem = 2;
+                else if (defaultNotify == 5) checkedItem = 3;
+                else if (defaultNotify == -1) checkedItem = 4;
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(SettingsActivity.this);
+                builder.setTitle(getString(R.string.notificacao_previa_padrao));
+                builder.setSingleChoiceItems(new String[]{getString(R.string._1hr_antes), getString(R.string._30min_antes), getString(R.string._15min_antes), getString(R.string._5min_antes), getString(R.string.desativar_notificacoes)}, checkedItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            int notifyBefore = 60;
+                            MyPreferences.setDefaultNotify(notifyBefore);
+
+                        } else if (i == 1) {
+                            int notifyBefore = 30;
+                            MyPreferences.setDefaultNotify(notifyBefore);
+
+                        } else if (i == 2) {
+                            int notifyBefore = 15;
+                            MyPreferences.setDefaultNotify(notifyBefore);
+
+                        } else if (i == 3) {
+                            int notifyBefore = 5;
+                            MyPreferences.setDefaultNotify(notifyBefore);
+
+                        } else if (i == 4) {
+                            int notifyBefore = -1;
+                            MyPreferences.setDefaultNotify(notifyBefore);
+
+                        }
+
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                builder.setPositiveButton(R.string.cancelar, null);
+
+                builder.show();
+            }
+        });
+
     }
 }

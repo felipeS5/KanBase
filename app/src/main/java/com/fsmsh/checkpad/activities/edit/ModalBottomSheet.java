@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.databinding.ActivityEditBinding;
 import com.fsmsh.checkpad.util.DateUtilities;
+import com.fsmsh.checkpad.util.MyPreferences;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 
@@ -97,8 +98,18 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
 
         if (notifyChip.isChecked()) {
             binding.notifyConteiner.setVisibility(View.VISIBLE);
-            binding.notifyBebore.setText(R.string._15min_antes);
-            parent.notifyBefore = 15;
+            parent.notifyBefore = MyPreferences.getDefaultNotify();
+
+            int notifyBefore = MyPreferences.getDefaultNotify();
+            if (notifyBefore != -1) {
+                if (notifyBefore == 60) binding.notifyBebore.setText(R.string._1hr_antes);
+                else binding.notifyBebore.setText(getString(R.string.x_mins_antes, notifyBefore));
+
+            } else {
+                binding.notifyBebore.setText(R.string.notificacoes_desativadas);
+
+            }
+
         } else {
             binding.notifyConteiner.setVisibility(View.GONE);
             binding.notifyBebore.setText(R.string.notificacoes_desativadas);

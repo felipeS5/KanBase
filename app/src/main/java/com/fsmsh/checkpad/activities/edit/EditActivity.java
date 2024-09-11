@@ -43,7 +43,7 @@ public class EditActivity extends AppCompatActivity {
     public LocalTime timeStart;
     public LocalDate dateLimit;
     public LocalTime timeLimit;
-    int notifyBefore = 15;
+    int notifyBefore = -1;
     int prioridade = 4;
     int[] oldBroadcastCodes = new int[]{0, 0};
     Tarefa tarefa;
@@ -66,6 +66,15 @@ public class EditActivity extends AppCompatActivity {
             timeStart = DateUtilities.getNextTime().toLocalTime();
             binding.dateStartConteiner.setVisibility(View.VISIBLE);
             binding.notifyConteiner.setVisibility(View.VISIBLE);
+
+            notifyBefore = MyPreferences.getDefaultNotify();
+            if (notifyBefore != -1) {
+                if (notifyBefore == 60) binding.notifyBebore.setText(R.string._1hr_antes);
+                else binding.notifyBebore.setText(getString(R.string.x_mins_antes, notifyBefore));
+                binding.notifyConteiner.setVisibility(View.VISIBLE);
+            } else {
+                binding.notifyConteiner.setVisibility(View.GONE);
+            }
 
             salvar("adicionar", new Tarefa());
         } else {
