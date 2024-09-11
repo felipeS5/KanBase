@@ -1,6 +1,7 @@
 package com.fsmsh.checkpad.activities.settings;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -15,10 +16,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.activities.edit.TagsBottomSheet;
+import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.databinding.ActivitySettingsBinding;
 import com.fsmsh.checkpad.model.Tarefa;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.FirebaseHelper;
+import com.fsmsh.checkpad.util.Helper;
 import com.fsmsh.checkpad.util.MyPreferences;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -37,9 +40,11 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolBarSettings);
-        getSupportActionBar().setTitle("Configurações");
+        getSupportActionBar().setTitle(getString(R.string.configuracoes));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        // Tema
         binding.lblTemaConfigs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,8 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
                 else if (temaAtual == AppCompatDelegate.MODE_NIGHT_YES) checkedItem = 2;
 
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(SettingsActivity.this);
-                builder.setTitle("Tema");
-                builder.setSingleChoiceItems(new String[]{"Padrão do sistema", "Claro", "Escuro"}, checkedItem, new DialogInterface.OnClickListener() {
+                builder.setTitle(getString(R.string.tema));
+                builder.setSingleChoiceItems(new String[]{getString(R.string.padrao_do_sistema), getString(R.string.claro), getString(R.string.escuro)}, checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
@@ -76,7 +81,46 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
 
-                builder.setPositiveButton("Cancelar", null);
+                builder.setPositiveButton(getString(R.string.cancelar), null);
+
+                builder.show();
+            }
+        });
+
+        // Idioma
+        binding.lblIdiomaConfigs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String idiomaAtual = MyPreferences.getIdioma();
+                int checkedItem = 0;
+
+                if (idiomaAtual.equals("pt_br")) checkedItem = 0;
+                else if (idiomaAtual.equals("en")) checkedItem = 1;
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(SettingsActivity.this);
+                builder.setTitle(getString(R.string.idioma));
+                builder.setSingleChoiceItems(new String[]{getString(R.string.portugues_brasil), getString(R.string.english)}, checkedItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            String lang = "pt_br";
+                            Helper.setLocale(SettingsActivity.this, lang);
+                            MyPreferences.setIdioma(lang);
+
+                        } else if (i == 1) {
+                            String lang = "en";
+                            Helper.setLocale(SettingsActivity.this, lang);
+                            MyPreferences.setIdioma(lang);
+
+                        }
+
+                        MyPreferences.setPendingRestart(true);
+                        dialogInterface.dismiss();
+                        finish();
+                    }
+                });
+
+                builder.setPositiveButton(R.string.cancelar, null);
 
                 builder.show();
             }

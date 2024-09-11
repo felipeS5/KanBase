@@ -284,7 +284,7 @@ public class EditActivity extends AppCompatActivity {
 
         // Time Start
         if (dateStart != null) {
-            String dataFormatada = DateUtilities.getFormattedDate(dateStart, false);
+            String dataFormatada = DateUtilities.getFormattedDate(dateStart, false, getApplicationContext());
             binding.dtInicio.setText(dataFormatada);
 
             String tempoInicial = timeStart.format(formatoTempo);
@@ -295,7 +295,7 @@ public class EditActivity extends AppCompatActivity {
         // Time Limit
         if (dateLimit != null) {
 
-            String dataFinalFormatada = DateUtilities.getFormattedDate(dateLimit, false);
+            String dataFinalFormatada = DateUtilities.getFormattedDate(dateLimit, false, getApplicationContext());
             binding.dtFim.setText( dataFinalFormatada );
 
             String tempoFinal = timeLimit.format(formatoTempo);

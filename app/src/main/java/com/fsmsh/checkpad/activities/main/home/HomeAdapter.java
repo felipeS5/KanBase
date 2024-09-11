@@ -66,9 +66,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
         else if (!tarefa.getDateLimit().equals("")) localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
 
         if ( tarefa.getDateStart().equals("") && !tarefa.getDateLimit().equals("") )
-            holder.data.setText(context.getString(R.string.item_prazo) + DateUtilities.getFormattedDate(localDate, true));
+            holder.data.setText(context.getString(R.string.item_prazo) + DateUtilities.getFormattedDate(localDate, true, context));
         else
-            holder.data.setText( DateUtilities.getFormattedDate(localDate, true) );
+            holder.data.setText( DateUtilities.getFormattedDate(localDate, true, context) );
 
         // Prioridade
         if (tarefa.getPrioridade() != 4) {

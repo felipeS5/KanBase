@@ -63,9 +63,9 @@ public class TagsFilterAdapter extends RecyclerView.Adapter<TagsFilterAdapter.Me
         else if (!tarefa.getDateLimit().equals("")) localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
 
         if ( tarefa.getDateStart().equals("") && !tarefa.getDateLimit().equals("") )
-            holder.data.setText(R.string.item_prazo + DateUtilities.getFormattedDate(localDate, true));
+            holder.data.setText(R.string.item_prazo + DateUtilities.getFormattedDate(localDate, true, context));
         else
-            holder.data.setText( DateUtilities.getFormattedDate(localDate, true) );
+            holder.data.setText( DateUtilities.getFormattedDate(localDate, true, context) );
 
         // Prioridade
         if (tarefa.getPrioridade() != 4) {

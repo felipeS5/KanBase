@@ -20,8 +20,8 @@ import com.fsmsh.checkpad.util.AnimationRes;
 import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.FirebaseHelper;
+import com.fsmsh.checkpad.util.Helper;
 import com.fsmsh.checkpad.util.MyPreferences;
-import com.fsmsh.checkpad.util.NotificationHelper;
 import com.fsmsh.checkpad.util.Sort;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preConfigs();
+
         super.onCreate(savedInstanceState);
         view = getLayoutInflater().inflate(R.layout.activity_main, null);
         setContentView(view);
@@ -81,9 +83,6 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         navigationView = findViewById(R.id.nav_view);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         fab = findViewById(R.id.fab);
-
-        int tema = MyPreferences.getTema();
-        AppCompatDelegate.setDefaultNightMode(tema);
 
         setSupportActionBar(toolbar);
 
@@ -99,21 +98,25 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                bottomNavigationView.setVisibility(View.GONE);
-                fab.setVisibility(View.GONE);
 
                 if (menuItem.getItemId() == R.id.nav_home) {
                     replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), null);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
+
                 } else if (menuItem.getItemId() == R.id.nav_category) {
                     replaceFragment(new TagsFragment(MainActivity.this), null);
+                    bottomNavigationView.setVisibility(View.GONE);
+                    fab.setVisibility(View.GONE);
+
                 } else if (menuItem.getItemId() == R.id.nav_config) {
                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(intent);
+
                 } else if (menuItem.getItemId() == R.id.nav_about) {
                     Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
                     startActivity(intent);
+
                 }
 
                 drawerLayout.close();
@@ -368,9 +371,33 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     }
 
+
+    // Ajustes de systema
+    private void preConfigs() {
+        // Idioma
+        new MyPreferences(getApplicationContext());
+        String idiomaAtual = MyPreferences.getIdioma();
+        Helper.setLocale(MainActivity.this, idiomaAtual);
+
+        // Tema
+        int tema = MyPreferences.getTema();
+        AppCompatDelegate.setDefaultNightMode(tema);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Verifica se deve restartar (ao mudar idioma)
+        if (MyPreferences.isPendingRestart()) {
+            MyPreferences.setPendingRestart(false);
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+
+            finish();
+        }
+
 
         // Verifica se falta fazer upload de alguma tarefa
         if (firebaseHelper.getFirebaseUser() != null) {

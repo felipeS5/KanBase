@@ -4,18 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
-
-import com.fsmsh.checkpad.activities.main.MainActivity;
-import com.fsmsh.checkpad.model.Tarefa;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Random;
 
 public class MyPreferences {
 
@@ -26,15 +16,40 @@ public class MyPreferences {
     }
 
 
+    // Pending Restart
+    public static void setPendingRestart(boolean pendingRestart) {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("restart", pendingRestart);
+        prefEditor.apply();
+    }
+
+    public static boolean isPendingRestart() {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        return preferences.getBoolean("restart", false);
+    }
+
+    // Idioma
+    public static void setIdioma(String lang) {
+        SharedPreferences preferences = context.getSharedPreferences("lang.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putString("lang", lang);
+        prefEditor.apply();
+    }
+
+    public static String getIdioma() {
+        SharedPreferences preferences = context.getSharedPreferences("lang.pref", MODE_PRIVATE);
+        return preferences.getString("lang", "pt_br");
+    }
+
     // Tema
     public static void setTema(int tema) {
         SharedPreferences preferences = context.getSharedPreferences("tema.pref", MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = preferences.edit();
 
         prefEditor.putInt("tema", tema);
-
-        Log.d("TAG", "setTema: "+tema);
-
         prefEditor.apply();
     }
 
@@ -46,7 +61,6 @@ public class MyPreferences {
         if (preferences.contains("tema")) {
             tema = preferences.getInt("tema", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         }
-        Log.d("TAG", "getTema: "+tema);
 
         return tema;
     }

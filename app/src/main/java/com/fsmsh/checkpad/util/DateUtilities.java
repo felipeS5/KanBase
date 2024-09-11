@@ -26,6 +26,8 @@ public class DateUtilities {
     }
 
     public static String getSaudacoes(Context context) {
+        Helper.setLocale(context, MyPreferences.getIdioma()); // Preciso definir o Locale para a tradução funcionar aqui
+
         LocalTime localTime = LocalTime.now();
 
         if (localTime.getHour() < 12) return context.getString(R.string.bom_dia);
@@ -86,8 +88,9 @@ public class DateUtilities {
 
     }
 
-    public static String getFormattedDate(LocalDate localDate, boolean abreviar) {
+    public static String getFormattedDate(LocalDate localDate, boolean abreviar, Context context) {
         if (localDate == null) return "";
+        Helper.setLocale(context, MyPreferences.getIdioma()); // Preciso definir o Locale para a tradução funcionar aqui
 
         // Variáveis padrões
         DateTimeFormatter formatoData;
@@ -97,9 +100,9 @@ public class DateUtilities {
 
         String dataFormatada = localDate.format(formatoData);
 
-        if ( DateUtilities.isToday(localDate, 0) ) dataFormatada = "Hoje";
-        else if ( DateUtilities.isToday(localDate, 1) ) dataFormatada = "Amanhã";
-        else if ( DateUtilities.isToday(localDate, -1) ) dataFormatada = "Ontem";
+        if ( DateUtilities.isToday(localDate, 0) ) dataFormatada = context.getString(R.string.hoje);
+        else if ( DateUtilities.isToday(localDate, 1) ) dataFormatada = context.getString(R.string.amanha);
+        else if ( DateUtilities.isToday(localDate, -1) ) dataFormatada = context.getString(R.string.ontem);
 
         return dataFormatada;
     }
