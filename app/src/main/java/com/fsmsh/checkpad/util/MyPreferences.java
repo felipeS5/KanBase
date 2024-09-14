@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import java.time.LocalTime;
+
 public class MyPreferences {
 
     private static Context context;
@@ -15,6 +17,54 @@ public class MyPreferences {
         this.context = context;
     }
 
+
+    // Resumo diário
+        // Sumary No Tasks
+    public static void setSumaryNoTasksActive(boolean estado) {
+        SharedPreferences preferences = context.getSharedPreferences("daily_sumary.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("is_sumary_no_tasks_active", estado);
+        prefEditor.apply();
+    }
+
+    public static boolean isSumaryNoTasksActive() {
+        SharedPreferences preferences = context.getSharedPreferences("daily_sumary.pref", MODE_PRIVATE);
+        return preferences.getBoolean("is_sumary_no_tasks_active", true);
+    }
+
+        // isActive
+    public static void setDailySumaryActive(boolean estado) {
+        SharedPreferences preferences = context.getSharedPreferences("daily_sumary.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("is_active", estado);
+        prefEditor.apply();
+    }
+
+    public static boolean isDailySumaryActive() {
+        SharedPreferences preferences = context.getSharedPreferences("daily_sumary.pref", MODE_PRIVATE);
+        return preferences.getBoolean("is_active", true);
+    }
+
+        // localTime
+    public static void setDailySumaryLocalTime(LocalTime localTime) {
+        SharedPreferences preferences = context.getSharedPreferences("daily_sumary.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putInt("hour", localTime.getHour());
+        prefEditor.putInt("min", localTime.getMinute());
+        prefEditor.apply();
+    }
+
+    public static LocalTime getDailySumaryLocalTime() {
+        SharedPreferences preferences = context.getSharedPreferences("daily_sumary.pref", MODE_PRIVATE);
+
+        int hour = preferences.getInt("hour", 8);
+        int min = preferences.getInt("min", 00);
+
+        return LocalTime.of(hour, min);
+    }
 
     // Notificação prévia padrão
     public static void setDefaultNotify(int notifyBefore) {

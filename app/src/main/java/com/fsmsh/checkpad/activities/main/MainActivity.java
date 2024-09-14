@@ -22,6 +22,7 @@ import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.FirebaseHelper;
 import com.fsmsh.checkpad.util.Helper;
 import com.fsmsh.checkpad.util.MyPreferences;
+import com.fsmsh.checkpad.util.NotificationHelper;
 import com.fsmsh.checkpad.util.Sort;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -374,14 +375,22 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     // Ajustes de systema
     private void preConfigs() {
-        // Idioma
         new MyPreferences(getApplicationContext());
+
+        // Idioma
         String idiomaAtual = MyPreferences.getIdioma();
         Helper.setLocale(MainActivity.this, idiomaAtual);
 
         // Tema
         int tema = MyPreferences.getTema();
         AppCompatDelegate.setDefaultNightMode(tema);
+
+        // Resumo diário
+        if (MyPreferences.isDailySumaryActive()) {
+            NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+            notificationHelper.configurarChannel();
+            notificationHelper.agendarNotificacaoDiaria();
+        }
     }
 
     @Override

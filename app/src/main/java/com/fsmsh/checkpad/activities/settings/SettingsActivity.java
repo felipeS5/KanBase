@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.fsmsh.checkpad.R;
+import com.fsmsh.checkpad.activities.edit.PriorityBottomSheet;
 import com.fsmsh.checkpad.activities.edit.TagsBottomSheet;
 import com.fsmsh.checkpad.activities.main.MainActivity;
 import com.fsmsh.checkpad.databinding.ActivitySettingsBinding;
@@ -173,6 +174,15 @@ public class SettingsActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.cancelar, null);
 
                 builder.show();
+            }
+        });
+
+        // Resumo diário
+        binding.lblResumoConfigs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DailySumaryBottomSheet dailySumaryBottomSheet = new DailySumaryBottomSheet(SettingsActivity.this, binding);
+                dailySumaryBottomSheet.show(getSupportFragmentManager(), DailySumaryBottomSheet.TAG);
             }
         });
 

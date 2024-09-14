@@ -127,7 +127,7 @@ public class EditActivity extends AppCompatActivity {
         else local = timeLimit;
 
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
-                .setTimeFormat(format)
+                .setTimeFormat(format) //todo Esse formato tá ficando 24h independente da config
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 .setHour(local.getHour())
                 .setMinute(local.getMinute())

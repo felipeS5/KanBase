@@ -138,4 +138,7 @@
     <string name="adicione_tags">Adicione tags</string>
     <string name="nenhuma_prioridade">Nenhuma Prioridade</string>
     <string name="voce_pode_adicionar_ou_remover_os_campos">Você pode adicionar ou remover os campos:</string>
+    <string name="voce_tem_2p">"Você tem: "</string>
+    <string name="sp_e_sp">" e "</string>
+    <string name="hoje_voce_nao_tem_tarefas_vencendo_ou_atrazadas">Hoje, você não tem tarefas vencendo ou atrazadas</string>
 </resources>

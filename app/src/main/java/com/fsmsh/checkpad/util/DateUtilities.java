@@ -19,6 +19,20 @@ import java.util.TimeZone;
 public class DateUtilities {
 
 
+    // Daily Sumary
+    public static long getNextDailySumaryLong(LocalTime localTime) {
+        LocalTime agora = LocalTime.now();
+        LocalDateTime localDateTime = LocalDate.now().atTime(localTime);
+
+        if (agora.isAfter(localTime)) { // Caso tenha passado do horário, adia para o próximo dia
+            localDateTime = localDateTime.plusDays(1);
+
+            return localDateTime.atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
+        }
+
+        return localDateTime.atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
+    }
+
     public static long getBeforeLong(LocalDateTime local, int beforeMinutes) {
         long milli = local.atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
 
