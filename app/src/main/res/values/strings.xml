@@ -141,4 +141,11 @@
     <string name="voce_tem_2p">"Você tem: "</string>
     <string name="sp_e_sp">" e "</string>
     <string name="hoje_voce_nao_tem_tarefas_vencendo_ou_atrazadas">Hoje, você não tem tarefas vencendo ou atrazadas</string>
+    <string name="excluir">Excluir</string>
+    <string name="voce_quer_realmente_excluir_todas_as_tarefas_q">Você quer realmente excluir todas as tarefas?</string>
+    <string name="excluir_tarefas">Excluir tarefas</string>
+    <string name="limpar_tarefas">Limpar tarefas</string>
+    <string name="ativar_resumo_diario">Ativar resumo diário</string>
+    <string name="horario_do_lembrete_2p">Horário do lembrete:</string>
+    <string name="enviar_mesmo_sem_avisos_q">Enviar mesmo sem avisos?</string>
 </resources>

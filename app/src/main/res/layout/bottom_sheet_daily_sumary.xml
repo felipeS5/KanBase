@@ -20,14 +20,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Resumo diário"
+        android:text="@string/resumo_diario"
         android:textSize="20sp" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ativar resumo diário"
+        android:text="@string/ativar_resumo_diario"
         android:layout_margin="16dp"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:paddingStart="8dp"
-            android:text="Horário do lembrete:"
+            android:text="@string/horario_do_lembrete_2p"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -67,11 +67,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enviar mesmo sem avisos?"
+        android:text="@string/enviar_mesmo_sem_avisos_q"
         android:layout_margin="16dp"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,7 +88,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary"
-        android:text="Salvar alterações"
+        android:text="@string/salvar_alteracoes"
         android:textColor="@color/white" />
 
 

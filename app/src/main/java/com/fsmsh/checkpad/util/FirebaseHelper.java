@@ -1,5 +1,6 @@
 package com.fsmsh.checkpad.util;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
@@ -38,17 +39,23 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 
 public class FirebaseHelper {
+    public int TELA_PROFILE = 0;
+    public int TELA_GENERICA = -1;
+
     private static FirebaseAuth auth;
     private static FirebaseFirestore firestore;
     private static ProfileActivity parentProfile;
     private static MainActivity parentMain;
     private static ListenerRegistration listenerRegistration;
     public GoogleSignInClient googleSignInClient;
+    private Context context;
+    private int telaAtual;
 
     public FirebaseHelper(ProfileActivity parentProfile) {
         this.parentProfile = parentProfile;
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+        telaAtual = TELA_PROFILE;
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(parentProfile.getString(R.string.default_web_client_id))
@@ -62,6 +69,14 @@ public class FirebaseHelper {
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+    }
+
+    public FirebaseHelper(Context context) {
+        telaAtual = TELA_GENERICA;
+
+        this.context = context;
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
     }
 
 
@@ -223,14 +238,13 @@ public class FirebaseHelper {
     }
 
     public void deslogar() {
-        if (listenerRegistration != null) {
-            removerListener();
-            auth.signOut();
-            parentProfile.checarUser();
-        } else {
-            auth.signOut();
+        auth.signOut();
+
+        if (telaAtual == TELA_PROFILE) {
             parentProfile.checarUser();
         }
+
+        if (listenerRegistration != null) removerListener();
     }
 
     public void excluirConta() {
@@ -315,6 +329,8 @@ public class FirebaseHelper {
     }
 
     public static void atualizarLocal() {
+        //todo Testar se funciona em todas as telas, não vou sincronizar em bg pois vai ser meio complicado (precisa de um service)
+
         if (auth.getCurrentUser() != null) {
             listenerRegistration = firestore.collection("users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
@@ -322,6 +338,8 @@ public class FirebaseHelper {
                     Usuario usuarioRemoto = value.toObject(Usuario.class);
 
                     Database.setUsuario(usuarioRemoto);
+
+                    //todo Ajustar os broadcasts (agendar)
 
                     // Recupera tarefas do servidor
                     Database.deleteAllTarefas();

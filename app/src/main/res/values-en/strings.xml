@@ -138,4 +138,14 @@
     <string name="adicione_tags">Add tags</string>
     <string name="nenhuma_prioridade">No priority</string>
     <string name="voce_pode_adicionar_ou_remover_os_campos">You can add or remove fields:</string>
+    <string name="voce_tem_2p">"You have: "</string>
+    <string name="sp_e_sp">" and "</string>
+    <string name="hoje_voce_nao_tem_tarefas_vencendo_ou_atrazadas">Today, you have no tasks due or late</string>
+    <string name="excluir">Delete</string>
+    <string name="voce_quer_realmente_excluir_todas_as_tarefas_q">Do you really want to delete all tasks?</string>
+    <string name="excluir_tarefas">Delete tasks</string>
+    <string name="limpar_tarefas">Clear tasks</string>
+    <string name="ativar_resumo_diario">Enable daily summary</string>
+    <string name="horario_do_lembrete_2p">Reminder time:</string>
+    <string name="enviar_mesmo_sem_avisos_q">Send even without warnings?</string>
 </resources>
