@@ -3,6 +3,7 @@ package com.fsmsh.checkpad.activities.about;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,25 +28,19 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolBarAbout);
-        getSupportActionBar().setTitle("Sobre o app");
+        getSupportActionBar().setTitle(R.string.sobre_o_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Linkedin
-        findViewById(R.id.imageView7).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/felipe-santos-0571ba2b2/"));
-                startActivity(intent);
-            }
+        findViewById(R.id.imageView7).setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/felipe-santos-0571ba2b2/"));
+            startActivity(intent);
         });
 
         // Github
-        findViewById(R.id.imageView8).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/felipeS5"));
-                startActivity(intent);
-            }
+        findViewById(R.id.imageView8).setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/felipeS5"));
+            startActivity(intent);
         });
 
         // Site
@@ -59,6 +54,16 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
          */
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Verificar se o item selecionado é o botão de voltar
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Fecha a Activity atual, voltando para a anterior
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

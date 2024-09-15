@@ -3,6 +3,7 @@ package com.fsmsh.checkpad.activities.settings;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.fsmsh.checkpad.R;
+import com.fsmsh.checkpad.activities.about.AboutActivity;
 import com.fsmsh.checkpad.activities.edit.PriorityBottomSheet;
 import com.fsmsh.checkpad.activities.edit.TagsBottomSheet;
 import com.fsmsh.checkpad.activities.main.MainActivity;
@@ -212,6 +214,15 @@ public class SettingsActivity extends AppCompatActivity {
             onResume();
         });
 
+        // Avaliar app
+        // ToDo
+
+        // Sobre o app
+        binding.lblAboutConfigs.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     @Override
@@ -225,5 +236,15 @@ public class SettingsActivity extends AppCompatActivity {
             binding.conteinerDeslogado.setVisibility(View.GONE);
             binding.conteinerLogado.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Verificar se o item selecionado é o botão de voltar
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Fecha a Activity atual, voltando para a anterior
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

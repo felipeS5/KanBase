@@ -1,6 +1,7 @@
 package com.fsmsh.checkpad.activities.edit;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -57,7 +58,10 @@ public class EditActivity extends AppCompatActivity {
 
         database = new Database(this);
         myPreferences = new MyPreferences(this);
+
         setSupportActionBar(binding.toolbarEdit);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         timeZone = TimeZone.getTimeZone("UTC-3");
 
         intencao = getIntent().getExtras();
@@ -383,5 +387,15 @@ public class EditActivity extends AppCompatActivity {
 
         if (!tarefa.getDateStart().equals("")) binding.dateStartConteiner.setVisibility(View.VISIBLE);
         if (!tarefa.getDateLimit().equals("")) binding.dateLimitConteiner.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Verificar se o item selecionado é o botão de voltar
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Fecha a Activity atual, voltando para a anterior
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

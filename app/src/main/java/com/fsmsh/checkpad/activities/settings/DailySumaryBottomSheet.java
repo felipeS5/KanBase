@@ -18,6 +18,7 @@ import com.fsmsh.checkpad.databinding.ActivitySettingsBinding;
 import com.fsmsh.checkpad.util.MyPreferences;
 import com.fsmsh.checkpad.util.NotificationHelper;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
@@ -34,10 +35,10 @@ public class DailySumaryBottomSheet extends BottomSheetDialogFragment {
     ActivitySettingsBinding binding;
 
     LocalTime localTime;
-    SwitchMaterial mySwitch;
+    MaterialSwitch mySwitch;
     ConstraintLayout containerHorario;
     TextView lblhorario;
-    SwitchMaterial sumaryNoTasksActive;
+    MaterialSwitch sumaryNoTasksActive;
     Button btnConfirm;
 
     public DailySumaryBottomSheet(SettingsActivity parent, ActivitySettingsBinding binding) {

@@ -2,6 +2,7 @@ package com.fsmsh.checkpad.activities.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,8 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         setSupportActionBar(findViewById(R.id.toolbarProfile));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         firebaseHelper = new FirebaseHelper(this);
 
     }
@@ -74,5 +77,15 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == 20) {
             firebaseHelper.logarComGoogle(data);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Verificar se o item selecionado é o botão de voltar
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Fecha a Activity atual, voltando para a anterior
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

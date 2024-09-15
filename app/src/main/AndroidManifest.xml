@@ -20,13 +20,10 @@
             android:exported="false" />
         <activity
             android:name=".activities.about.AboutActivity"
-            android:exported="false"
-            android:parentActivityName=".activities.main.MainActivity" />
+            android:exported="false" />
         <activity
             android:name=".activities.settings.SettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".activities.main.MainActivity" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activities.edit.EditActivity"
             android:exported="false" />

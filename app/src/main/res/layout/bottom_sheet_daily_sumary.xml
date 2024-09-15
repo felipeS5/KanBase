@@ -23,7 +23,8 @@
         android:text="@string/resumo_diario"
         android:textSize="20sp" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <!--todo As funções que dependem dessa opç deveriam ser desabilitadas, não ocultadas -->
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switch2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switch3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
