@@ -29,7 +29,7 @@
         android:paddingRight="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:background="@drawable/bg_small_gray"
+        style="@style/Base.Theme.BGSMALL"
         android:id="@+id/btnFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -31,9 +31,18 @@ public class NotifyBottomSheet extends BottomSheetDialogFragment {
         this.binding = binding;
     }
 
+    public NotifyBottomSheet() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_notify, container, false);
+
+        // Verifica se há parent (ao mudar o tema por exemplo)
+        if (parent==null) {
+            this.dismiss();
+            return view;
+        }
 
         _1hr = view.findViewById(R.id.t1hr_antes);
         _30min = view.findViewById(R.id.t30min_antes);

@@ -46,9 +46,18 @@ public class DailySumaryBottomSheet extends BottomSheetDialogFragment {
         this.binding = binding;
     }
 
+    public DailySumaryBottomSheet() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_daily_sumary, container, false);
+
+        // Verifica se há parent (ao mudar o tema por exemplo)
+        if (parent==null) {
+            this.dismiss();
+            return view;
+        }
 
         mySwitch = view.findViewById(R.id.switch2);
         containerHorario = view.findViewById(R.id.container_daily_sumary);

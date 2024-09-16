@@ -49,6 +49,7 @@
 
     <style name="Base.Theme.BGSMALL" parent="Base.Theme.CheckPad">
         <item name="android:background">@drawable/bg_small_night</item>
+        <item name="android:drawableTint">@color/lightText</item>
     </style>
 
     <style name="Base.Theme.NAVIGTIONVIEW" parent="Base.Theme.CheckPad">

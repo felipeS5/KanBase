@@ -45,9 +45,18 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
         this.tagsPresentes = tagsPresentes;
     }
 
+    public TagsBottomSheet() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_tags, container, false);
+
+        // Verifica se há parent (ao mudar o tema por exemplo)
+        if (parent==null) {
+            this.dismiss();
+            return view;
+        }
 
         button = view.findViewById(R.id.tags_select_sheet_buttom);
         buttonCreate = view.findViewById(R.id.tags_create_sheet_buttom);

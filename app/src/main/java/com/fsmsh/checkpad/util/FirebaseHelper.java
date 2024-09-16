@@ -301,6 +301,7 @@ public class FirebaseHelper {
 
     }
 
+    //todo Será mesmo que devo usar static?
     public static void atualizarRemoto() {
         if (auth.getCurrentUser() != null) {
             Usuario usuario = Database.getUsuario();

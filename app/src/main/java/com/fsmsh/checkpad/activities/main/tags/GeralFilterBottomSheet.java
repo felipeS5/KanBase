@@ -42,9 +42,19 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
         this.estadosPresentes = estadosPresentes;
     }
 
+    public GeralFilterBottomSheet() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_geral_filter, container, false);
+
+
+        // Verifica se há parent (ao mudar o tema por exemplo)
+        if (parent==null) {
+            this.dismiss();
+            return view;
+        }
 
         estadosChips = new Chip[] {
                 view.findViewById(R.id.chip_filter_not_started),

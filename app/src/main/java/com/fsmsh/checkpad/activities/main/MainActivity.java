@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             }
         });
 
+        //todo Certas ações (como mudar o tema do dispositivo) habilitam o menu inferior e buga o menu options
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

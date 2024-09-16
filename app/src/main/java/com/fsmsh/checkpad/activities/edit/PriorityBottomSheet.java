@@ -31,9 +31,18 @@ public class PriorityBottomSheet extends BottomSheetDialogFragment {
         this.binding = binding;
     }
 
+    public PriorityBottomSheet() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_priority, container, false);
+
+        // Verifica se há parent (ao mudar o tema por exemplo)
+        if (parent==null) {
+            this.dismiss();
+            return view;
+        }
 
         urgenteCheck = view.findViewById(R.id.checkBox);
         importanteCheck = view.findViewById(R.id.checkBox1);

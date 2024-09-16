@@ -44,9 +44,18 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         this.binding = binding;
     }
 
+    public ModalBottomSheet() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_modal, container, false);
+
+        // Verifica se há parent (ao mudar o tema por exemplo)
+        if (parent==null) {
+            this.dismiss();
+            return view;
+        }
 
         inicioChip = view.findViewById(R.id.chip_start);
         limiteChip = view.findViewById(R.id.chip_limit);
