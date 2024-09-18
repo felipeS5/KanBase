@@ -15,10 +15,6 @@ import com.fsmsh.checkpad.util.FirebaseHelper;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    LoginFragment loginFragment;
-    CadastroFragment cadastroFragment;
-    AccountFragment accountFragment;
-    Fragment fragmentAtual;
     FirebaseHelper firebaseHelper;
 
     @Override
@@ -29,6 +25,8 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.toolbarProfile));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().setTitle(R.string.perfil);
+
         firebaseHelper = new FirebaseHelper(this);
 
     }
@@ -37,29 +35,16 @@ public class ProfileActivity extends AppCompatActivity {
         if (firebaseHelper.getFirebaseUser() != null) {
             replaceFragment(new AccountFragment(this));
         } else {
-            replaceFragment(new CadastroFragment(this));
+            replaceFragment(new ReceptionFragment());
         }
     }
 
     public void replaceFragment(Fragment fragment) {
-        // ToDo: remover a opção de foto e basear-se nas imagens da Dribble
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         transaction.replace(R.id.fragment_profile, fragment);
         transaction.commit();
-
-        if (fragment instanceof CadastroFragment) cadastroFragment = (CadastroFragment) fragment;
-        if (fragment instanceof LoginFragment) loginFragment = (LoginFragment) fragment;
-        if (fragment instanceof AccountFragment) accountFragment = (AccountFragment) fragment;
-
-        fragmentAtual = fragment;
-    }
-
-    public void swichFragment() {
-
-        if (fragmentAtual instanceof CadastroFragment) replaceFragment(new LoginFragment(this));
-        else if (fragmentAtual instanceof LoginFragment) replaceFragment(new CadastroFragment(this));
 
     }
 

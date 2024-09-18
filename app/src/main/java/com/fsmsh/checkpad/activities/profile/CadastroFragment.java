@@ -22,20 +22,21 @@ public class CadastroFragment extends Fragment {
     View view;
     ProfileActivity parent;
 
-    public CadastroFragment(ProfileActivity parent) {
-        this.parent = parent;
+    public CadastroFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cadastro, container, false);
 
+        parent = (ProfileActivity) getActivity();
+
         EditText editNome = view.findViewById(R.id.txt_nome_cadastro);
         EditText editEmail = view.findViewById(R.id.txt_email_cadastro);
         EditText editSenha = view.findViewById(R.id.txt_senha_cadastro);
 
         view.findViewById(R.id.lbl_logar).setOnClickListener(view -> {
-            parent.swichFragment();
+            parent.replaceFragment(new LoginFragment());
         });
 
         view.findViewById(R.id.btn_cadastrar).setOnClickListener(new View.OnClickListener() {
