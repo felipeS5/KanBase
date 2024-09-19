@@ -2,6 +2,7 @@ package com.fsmsh.checkpad.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -128,6 +129,7 @@ public class FirebaseHelper {
                                             usuario.setTags(Database.getTags());
                                             usuario.setNome(account.getDisplayName());
                                             usuario.setEmail(account.getEmail());
+                                            usuario.setLoginType("google");
                                             usuario.setFirestoreDocId(auth.getUid());
 
                                             // Salva os dados no Firestore
@@ -215,6 +217,7 @@ public class FirebaseHelper {
                             usuario.setTags(Database.getTags());
                             usuario.setNome(c.getNome());
                             usuario.setEmail(c.getEmail());
+                            usuario.setLoginType("email");
                             usuario.setFirestoreDocId(auth.getUid());
 
                             // Salva os dados no Firestore
@@ -248,57 +251,110 @@ public class FirebaseHelper {
     }
 
     public void excluirConta() {
+        String loginType = Database.getUsuario().getLoginType();
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(parentProfile);
-        View dialog = parentProfile.getLayoutInflater().inflate(R.layout.dialog_confirm_exclude_account, null);
-        builder.setView(dialog);
+        if (loginType.equals("email")) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(parentProfile);
+            View dialog = parentProfile.getLayoutInflater().inflate(R.layout.dialog_confirm_exclude_account, null);
+            builder.setView(dialog);
 
-        AlertDialog alertDialog = builder.show();
+            AlertDialog alertDialog = builder.show();
 
 
-        dialog.findViewById(R.id.btn_confirmar_exclusao).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText senha = dialog.findViewById(R.id.txt_senha_dialog_exclude_account);
+            dialog.findViewById(R.id.btn_confirmar_exclusao).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText senha = dialog.findViewById(R.id.txt_senha_dialog_exclude_account);
 
-                AuthCredential authCredential = EmailAuthProvider.getCredential(auth.getCurrentUser().getEmail(), senha.getText().toString());
+                    AuthCredential authCredential = EmailAuthProvider.getCredential(auth.getCurrentUser().getEmail(), senha.getText().toString());
 
-                auth.getCurrentUser().reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            alertDialog.dismiss();
+                    auth.getCurrentUser().reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                alertDialog.dismiss();
 
-                            String userUid = auth.getUid();
+                                firestore.collection("users").document(auth.getUid())
+                                        .delete();
 
-                            auth.getCurrentUser().delete()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
+                                auth.getCurrentUser().delete()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(parentProfile, R.string.toast_conta_deletada, Toast.LENGTH_LONG).show();
+                                                    parentProfile.checarUser();
 
-                                                firestore.collection("users").document(userUid)
-                                                        .delete();
-
-                                                Toast.makeText(parentProfile, R.string.toast_conta_deletada, Toast.LENGTH_LONG).show();
-                                                parentProfile.checarUser();
+                                                }
 
                                             }
 
-                                        }
+                                        });
 
-                                    });
-
-                        } else {
-                            Toast.makeText(parentProfile, R.string.toast_verifique_sua_senha, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(parentProfile, R.string.toast_verifique_sua_senha, Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
 
+                }
+            });
+        } else if (loginType.equals("google")) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(parentProfile);
+            builder.setTitle(R.string.excluir_conta);
+            builder.setMessage(R.string.para_excluir_sua_conta_voce_precisa_relogar_nela_lembrando_que_essa_acao_nao_pode_ser_desfeita);
+
+            builder.setNegativeButton(R.string.manter, null);
+
+            builder.setPositiveButton(R.string.excluir_conta, (dialogInterface, i) -> {
+                Intent intent = googleSignInClient.getSignInIntent();
+                parentProfile.startActivityForResult(intent, 21);
+            });
+
+            builder.show();
+        }
+
+    }
+
+    public void excluirContaGoogle(Intent data) {
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+        GoogleSignInAccount account = null;
+        try {
+            account = task.getResult(ApiException.class);
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
+
+        AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+
+        auth.getCurrentUser().reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    firestore.collection("users").document(auth.getUid())
+                            .delete();
+
+                    auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+
+                                Toast.makeText(parentProfile, R.string.toast_conta_deletada, Toast.LENGTH_LONG).show();
+                                parentProfile.checarUser();
+
+                            }
+
+                        }
+
+                    });
+
+                } else {
+                    Toast.makeText(parentProfile, R.string.toast_verifique_sua_senha, Toast.LENGTH_LONG).show();
+                }
             }
         });
-
-
     }
 
     //todo Será mesmo que devo usar static?
@@ -318,10 +374,6 @@ public class FirebaseHelper {
                             if (task.isSuccessful()) {
                                 MyPreferences.setSincronizado(true);
 
-                                if (parentProfile != null) {
-                                    Toast.makeText(parentProfile, R.string.perfil_alteraces_salvas, Toast.LENGTH_SHORT).show();
-                                }
-
                                 atualizarLocal();
                             }
                         }
@@ -330,7 +382,7 @@ public class FirebaseHelper {
     }
 
     public static void atualizarLocal() {
-        //todo Testar se funciona em todas as telas, não vou sincronizar em bg pois vai ser meio complicado (precisa de um service)
+        //todo Testar se funciona em todas as telas, não vou sincronizar em bg pois vai ser meio complicado (precisa de um service(... eu acho))
 
         if (auth.getCurrentUser() != null) {
             listenerRegistration = firestore.collection("users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {

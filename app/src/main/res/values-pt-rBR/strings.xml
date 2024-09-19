@@ -148,4 +148,12 @@
     <string name="ativar_resumo_diario">Ativar resumo diário</string>
     <string name="horario_do_lembrete_2p">Horário do lembrete:</string>
     <string name="enviar_mesmo_sem_avisos_q">Enviar mesmo sem avisos?</string>
+    <string name="iniciar_sessao">Iniciar sessão</string>
+    <string name="fazer_login_com_google">Fazer login com Google</string>
+    <string name="crie_uma_conta_para_manter_suas_tarefas_seguras">Crie uma conta para manter suas tarefas seguras</string>
+    <string name="faca_login_para_salvar_suas_tarefas">Faça login para salvar suas tarefas</string>
+    <string name="ou">ou</string>
+    <string name="faca_o_cadastro_para_salvar_suas_tarefas">Faça o cadastro para salvar suas tarefas</string>
+    <string name="dados_da_conta">Dados da conta</string>
+    <string name="para_excluir_sua_conta_voce_precisa_relogar_nela_lembrando_que_essa_acao_nao_pode_ser_desfeita">Para excluir sua conta você precisa relogar nela, lembrando que essa ação não pode ser desfeita!</string>
 </resources>

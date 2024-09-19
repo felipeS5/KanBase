@@ -27,16 +27,16 @@ public class Database {
         sql = context.openOrCreateDatabase("Dados.db", Context.MODE_PRIVATE, null);
         sql.execSQL("CREATE TABLE IF NOT EXISTS tarefas (id VARCHAR, tarefaNome VARCHAR, descricao VARCHAR, progresso INT(1), dateStart VARCHAR, timeStart VARCHAR, dateLimit VARCHAR, timeLimit VARCHAR, categoria VARCHAR, prioridade INT(1), broadcastCodeStart INTEGER, broadcastCodeLimit INTEGER, notifyBefore INTEGER)");
         sql.execSQL("CREATE TABLE IF NOT EXISTS tags (tagName VARCHAR)");
-        sql.execSQL("CREATE TABLE IF NOT EXISTS usuario (nome VARCHAR, email VARCHAR)");
+        sql.execSQL("CREATE TABLE IF NOT EXISTS usuario (nome VARCHAR, email VARCHAR, loginType VARCHAR)");
     }
 
 
     public static boolean setUsuario(Usuario usuario) {
         try {
-            String valores = "'"+ usuario.getNome() +"', '"+usuario.getEmail() +"'";
+            String valores = "'"+ usuario.getNome() +"', '"+usuario.getEmail() +"', '"+ usuario.getLoginType() +"'";
 
             sql.execSQL("DELETE FROM usuario");
-            sql.execSQL("INSERT INTO usuario (nome, email) VALUES (" +valores+ ")");
+            sql.execSQL("INSERT INTO usuario (nome, email, loginType) VALUES (" +valores+ ")");
 
             return true;
         } catch (Exception e) {
@@ -49,11 +49,12 @@ public class Database {
         Usuario usuario = new Usuario();
 
         try {
-            Cursor cursor = sql.rawQuery("SELECT nome, email FROM usuario", null);
+            Cursor cursor = sql.rawQuery("SELECT nome, email, loginType FROM usuario", null);
             cursor.moveToFirst();
 
             usuario.setNome( cursor.getString(0) );
             usuario.setEmail( cursor.getString(1) );
+            usuario.setLoginType( cursor.getString(2) );
 
         }catch (Exception e) {
             e.printStackTrace();

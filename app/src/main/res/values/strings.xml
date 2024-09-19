@@ -154,4 +154,6 @@
     <string name="faca_login_para_salvar_suas_tarefas">Faça login para salvar suas tarefas</string>
     <string name="ou">ou</string>
     <string name="faca_o_cadastro_para_salvar_suas_tarefas">Faça o cadastro para salvar suas tarefas</string>
+    <string name="dados_da_conta">Dados da conta</string>
+    <string name="para_excluir_sua_conta_voce_precisa_relogar_nela_lembrando_que_essa_acao_nao_pode_ser_desfeita">Para excluir sua conta você precisa relogar nela, lembrando que essa ação não pode ser desfeita!</string>
 </resources>

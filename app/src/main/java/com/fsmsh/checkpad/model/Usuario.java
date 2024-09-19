@@ -10,6 +10,7 @@ public class Usuario {
     List<String> tags;
     String nome;
     String email;
+    String loginType;
     String firestoreDocId;
 
     public List<Tarefa> getTarefas() {
@@ -50,5 +51,13 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
     }
 }

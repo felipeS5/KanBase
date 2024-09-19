@@ -25,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.toolbarProfile));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle(R.string.perfil);
+        getSupportActionBar().setTitle(R.string.conta);
 
         firebaseHelper = new FirebaseHelper(this);
 
@@ -33,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void checarUser() {
         if (firebaseHelper.getFirebaseUser() != null) {
-            replaceFragment(new AccountFragment(this));
+            replaceFragment(new AccountFragment());
         } else {
             replaceFragment(new ReceptionFragment());
         }
@@ -61,6 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (requestCode == 20) {
             firebaseHelper.logarComGoogle(data);
+        } else if (requestCode == 21) {
+            firebaseHelper.excluirContaGoogle(data);
         }
     }
 

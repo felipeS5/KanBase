@@ -148,4 +148,12 @@
     <string name="ativar_resumo_diario">Enable daily summary</string>
     <string name="horario_do_lembrete_2p">Reminder time:</string>
     <string name="enviar_mesmo_sem_avisos_q">Send even without warnings?</string>
+    <string name="iniciar_sessao">Sign in</string>
+    <string name="fazer_login_com_google">Sign in with Google</string>
+    <string name="crie_uma_conta_para_manter_suas_tarefas_seguras">Create an account to keep your tasks secure</string>
+    <string name="faca_login_para_salvar_suas_tarefas">Log in to save your tasks</string>
+    <string name="ou">or</string>
+    <string name="faca_o_cadastro_para_salvar_suas_tarefas">Register to save your tasks</string>
+    <string name="dados_da_conta">Account details</string>
+    <string name="para_excluir_sua_conta_voce_precisa_relogar_nela_lembrando_que_essa_acao_nao_pode_ser_desfeita">To delete your account you need to relog into it, remembering that this action cannot be undone!</string>
 </resources>

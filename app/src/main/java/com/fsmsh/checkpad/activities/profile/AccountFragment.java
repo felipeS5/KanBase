@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +21,15 @@ public class AccountFragment extends Fragment {
     View view;
     ProfileActivity parent;
 
-    public AccountFragment(ProfileActivity parent) {
-        this.parent = parent;
+    public AccountFragment() {
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_account, container, false);
+
+        parent = (ProfileActivity) getActivity();
 
         view.findViewById(R.id.btn_deslogar_perfil)
                 .setOnClickListener(view -> parent.firebaseHelper.deslogar());
@@ -38,24 +41,35 @@ public class AccountFragment extends Fragment {
 
         EditText txtEmail = view.findViewById(R.id.txt_email_perfil);
         txtEmail.setText(Database.getUsuario().getEmail());
+        txtEmail.setEnabled(false);
 
-        view.findViewById(R.id.btn_salvar_alteracoes_perfil)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!txtNome.getText().toString().equals("") && !txtEmail.getText().toString().equals("")) {
-                            Usuario usuarioLocal = new Usuario();
-                            usuarioLocal.setNome(txtNome.getText().toString());
-                            usuarioLocal.setEmail(txtEmail.getText().toString());
+        txtNome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            Database.setUsuario(usuarioLocal);
-                            parent.firebaseHelper.atualizarRemoto();
+            }
 
-                        } else {
-                            Toast.makeText(getContext(), R.string.insira_as_credenciais, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!txtNome.getText().toString().equals("") && !txtEmail.getText().toString().equals("")) {
+                    Usuario usuarioLocal = new Usuario();
+                    usuarioLocal.setNome(txtNome.getText().toString());
+                    usuarioLocal.setEmail(Database.getUsuario().getEmail());
+                    usuarioLocal.setLoginType(Database.getUsuario().getLoginType());
+
+                    Database.setUsuario(usuarioLocal);
+                    parent.firebaseHelper.atualizarRemoto();
+
+                } else {
+                    Toast.makeText(getContext(), R.string.insira_as_credenciais, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return view;
     }
