@@ -27,6 +27,8 @@ public class AboutActivity extends AppCompatActivity {
         binding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //todo Ao mudar o tema, o idioma desta tela volta ao ptBR
+
         setSupportActionBar(binding.toolBarAbout);
         getSupportActionBar().setTitle(R.string.sobre_o_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -156,4 +156,6 @@
     <string name="faca_o_cadastro_para_salvar_suas_tarefas">Register to save your tasks</string>
     <string name="dados_da_conta">Account details</string>
     <string name="para_excluir_sua_conta_voce_precisa_relogar_nela_lembrando_que_essa_acao_nao_pode_ser_desfeita">To delete your account you need to relog into it, remembering that this action cannot be undone!</string>
+    <string name="termos_de_uso">Terms of use</string>
+    <string name="politica_de_privacidade">Privacy Policy</string>
 </resources>
