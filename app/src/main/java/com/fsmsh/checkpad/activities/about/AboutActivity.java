@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.databinding.ActivityAboutBinding;
 import com.fsmsh.checkpad.databinding.ActivitySettingsBinding;
+import com.fsmsh.checkpad.util.Helper;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -23,11 +24,11 @@ public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Helper.preConfigs(this);
+
         super.onCreate(savedInstanceState);
         binding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        //todo Ao mudar o tema, o idioma desta tela volta ao ptBR
 
         setSupportActionBar(binding.toolBarAbout);
         getSupportActionBar().setTitle(R.string.sobre_o_app);

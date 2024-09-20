@@ -68,7 +68,6 @@ public class FragmentsIniciais extends Fragment {
     }
 
     public void swipe() {
-        // todo: fazer bg de item ao mover com cor diferente e texto (se foi para andamento, finalizadas...)
         ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {

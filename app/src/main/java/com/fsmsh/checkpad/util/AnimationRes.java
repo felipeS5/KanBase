@@ -14,7 +14,6 @@ public class AnimationRes {
     public int getAnimResEnter() {
 
         if (!highSpeed) {
-            // todo: //////  essas animações não estão invertidas?  ////////
             if (leftToRight) return R.anim.enter_right_left;
             else return R.anim.enter_left_right;
         } else {
@@ -25,7 +24,6 @@ public class AnimationRes {
     public int getAnimResExit() {
 
         if (!highSpeed) {
-            // todo: //////  essas animações não estão invertidas?  ////////
             if (leftToRight) return R.anim.exit_right_left;
             else return R.anim.exit_left_right;
         } else {

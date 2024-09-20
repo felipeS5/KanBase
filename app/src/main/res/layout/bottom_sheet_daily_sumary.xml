@@ -23,7 +23,6 @@
         android:text="@string/resumo_diario"
         android:textSize="20sp" />
 
-    <!--todo As funções que dependem dessa opç deveriam ser desabilitadas, não ocultadas -->
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switch2"
         android:layout_width="match_parent"

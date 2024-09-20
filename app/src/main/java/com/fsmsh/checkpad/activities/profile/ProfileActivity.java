@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.fsmsh.checkpad.R;
 import com.fsmsh.checkpad.util.FirebaseHelper;
+import com.fsmsh.checkpad.util.Helper;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -19,6 +20,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Helper.preConfigs(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 

@@ -27,6 +27,7 @@ import com.fsmsh.checkpad.util.Database;
 import com.fsmsh.checkpad.util.FirebaseHelper;
 import com.fsmsh.checkpad.util.Helper;
 import com.fsmsh.checkpad.util.MyPreferences;
+import com.fsmsh.checkpad.util.NotificationHelper;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Helper.preConfigs(this);
+
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

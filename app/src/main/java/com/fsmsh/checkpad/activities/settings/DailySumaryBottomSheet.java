@@ -37,6 +37,7 @@ public class DailySumaryBottomSheet extends BottomSheetDialogFragment {
     LocalTime localTime;
     MaterialSwitch mySwitch;
     ConstraintLayout containerHorario;
+    TextView lblTextView9;
     TextView lblhorario;
     MaterialSwitch sumaryNoTasksActive;
     Button btnConfirm;
@@ -61,6 +62,7 @@ public class DailySumaryBottomSheet extends BottomSheetDialogFragment {
 
         mySwitch = view.findViewById(R.id.switch2);
         containerHorario = view.findViewById(R.id.container_daily_sumary);
+        lblTextView9 = view.findViewById(R.id.textView9);
         lblhorario = view.findViewById(R.id.lbl_daily_time);
         sumaryNoTasksActive = view.findViewById(R.id.switch3);
         btnConfirm = view.findViewById(R.id.btn_salvar_daily_sumary);
@@ -71,8 +73,9 @@ public class DailySumaryBottomSheet extends BottomSheetDialogFragment {
         sumaryNoTasksActive.setChecked(MyPreferences.isSumaryNoTasksActive());
 
         if (!mySwitch.isChecked()) {
-            containerHorario.setVisibility(View.GONE);
-            sumaryNoTasksActive.setVisibility(View.GONE);
+            lblTextView9.setEnabled(false);
+            lblhorario.setEnabled(false);
+            sumaryNoTasksActive.setEnabled(false);
         }
 
         DateTimeFormatter formatoTempo = DateTimeFormatter.ofPattern("HH:mm");
@@ -85,11 +88,15 @@ public class DailySumaryBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    containerHorario.setVisibility(View.VISIBLE);
-                    sumaryNoTasksActive.setVisibility(View.VISIBLE);
+                    lblTextView9.setEnabled(true);
+                    lblhorario.setEnabled(true);
+                    sumaryNoTasksActive.setEnabled(true);
+
                 } else {
-                    containerHorario.setVisibility(View.GONE);
-                    sumaryNoTasksActive.setVisibility(View.GONE);
+                    lblTextView9.setEnabled(false);
+                    lblhorario.setEnabled(false);
+                    sumaryNoTasksActive.setEnabled(false);
+
                 }
             }
         });

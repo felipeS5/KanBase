@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        preConfigs();
+        Helper.preConfigs(this);
 
         super.onCreate(savedInstanceState);
         view = getLayoutInflater().inflate(R.layout.activity_main, null);
@@ -371,27 +371,6 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             }
         }
 
-    }
-
-
-    // Ajustes de systema
-    private void preConfigs() {
-        new MyPreferences(getApplicationContext());
-
-        // Idioma
-        String idiomaAtual = MyPreferences.getIdioma();
-        Helper.setLocale(MainActivity.this, idiomaAtual);
-
-        // Tema
-        int tema = MyPreferences.getTema();
-        AppCompatDelegate.setDefaultNightMode(tema);
-
-        // Resumo diário
-        if (MyPreferences.isDailySumaryActive()) {
-            NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
-            notificationHelper.configurarChannel();
-            notificationHelper.agendarNotificacaoDiaria();
-        }
     }
 
     @Override
