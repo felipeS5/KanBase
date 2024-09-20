@@ -1,6 +1,8 @@
 package com.fsmsh.checkpad.activities.edit;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -20,8 +22,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
-
-import android.text.format.DateFormat;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -134,7 +134,7 @@ public class EditActivity extends AppCompatActivity {
         else local = timeLimit;
 
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
-                .setTimeFormat(format) //todo Esse formato tá ficando 24h independente da config
+                .setTimeFormat(format)
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 .setHour(local.getHour())
                 .setMinute(local.getMinute())
@@ -208,7 +208,7 @@ public class EditActivity extends AppCompatActivity {
                     tarefa.setBroadcastCodeLimit(0);
                 }
 
-                tarefa.setNotifyBefore(notifyBefore); // todo Possibilitar o user alterar esse valor
+                tarefa.setNotifyBefore(notifyBefore);
 
 
                 // Salvando localmente

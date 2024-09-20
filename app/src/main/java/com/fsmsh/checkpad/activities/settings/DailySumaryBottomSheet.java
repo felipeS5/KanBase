@@ -136,7 +136,7 @@ public class DailySumaryBottomSheet extends BottomSheetDialogFragment {
         else format = TimeFormat.CLOCK_12H;
 
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
-                .setTimeFormat(format) //todo Esse formato tá ficando 24h independente da config // mesmo problema em EditActivity
+                .setTimeFormat(format)
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 .setHour(localTime.getHour())
                 .setMinute(localTime.getMinute())

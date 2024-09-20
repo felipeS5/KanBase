@@ -34,7 +34,8 @@ public class Helper {
     }
 
     public static void setLocale(Context context, String lang) {
-        Locale locale = new Locale(lang);
+        String contry = Locale.getDefault().getCountry();
+        Locale locale = new Locale(lang, contry);
         Locale.setDefault(locale);
 
         Configuration config = context.getResources().getConfiguration();
