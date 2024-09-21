@@ -48,7 +48,6 @@ public class TagsFragment extends Fragment {
 
         chipGroup = view.findViewById(R.id.chip_group_tags_fragment);
         recyclerView = view.findViewById(R.id.recycler_tags_fragments);
-        allTags = Database.getTags();
 
         tagsAtivas = Database.getTags();
         view.findViewById(R.id.btnFilter).setOnClickListener(new View.OnClickListener() {
@@ -99,6 +98,7 @@ public class TagsFragment extends Fragment {
 
     public void setChipTags() {
         chipGroup.removeAllViews();
+        allTags = Database.getTags();
 
         for (String s : allTags) {
             Chip chip = new Chip(getContext());

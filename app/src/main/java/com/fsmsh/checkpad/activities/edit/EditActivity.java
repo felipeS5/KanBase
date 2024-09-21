@@ -82,7 +82,10 @@ public class EditActivity extends AppCompatActivity {
                 binding.notifyConteiner.setVisibility(View.GONE);
             }
 
-            salvar("adicionar", new Tarefa());
+            tarefa = new Tarefa();
+            String id = LocalDateTime.now().toString();
+            tarefa.setId(id);
+            salvar("adicionar", tarefa);
         } else {
             edit();
         }
@@ -164,9 +167,6 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (acao.equals("adicionar")) {
-                    String id = LocalDateTime.now().toString();
-                    tarefa.setId(id);
-
                     int[] codes = Helper.createNoRepeatedCodes();
                     tarefa.setBroadcastCodeStart(codes[0]);
                     tarefa.setBroadcastCodeLimit(codes[1]);
@@ -222,7 +222,6 @@ public class EditActivity extends AppCompatActivity {
                     notificationHelper.configurarChannel();
                     if (notifyBefore != -1) notificationHelper.agendarNotificação(tarefa);
                     else notificationHelper.removerAgendamento(tarefa.getBroadcastCodeStart(), tarefa.getBroadcastCodeLimit());
-                    // todo Tarefas passadas mandam notificação instantâneo quando salvas, isso tá errado, nem deveria mandar
 
                     myPreferences.setSincronizado(false);
                     finish();

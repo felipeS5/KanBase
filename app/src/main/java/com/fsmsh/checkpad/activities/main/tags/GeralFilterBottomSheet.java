@@ -128,7 +128,6 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
                 Database.editTarefa(t);
             }
 
-            //todo Por alguma razão as tag não estão sendo setadas no parent
             parent.setChipTags();
             MyPreferences.setSincronizado(false);
             FirebaseHelper.atualizarRemoto();

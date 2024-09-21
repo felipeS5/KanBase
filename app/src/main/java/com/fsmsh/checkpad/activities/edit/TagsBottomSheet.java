@@ -2,6 +2,7 @@ package com.fsmsh.checkpad.activities.edit;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TagsBottomSheet extends BottomSheetDialogFragment {
@@ -167,7 +169,25 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
                 Database.editTarefa(t);
             }
 
-            parent.setChipTags(); //todo Por alguma razão as tag não estão sendo setadas no parent
+            // Tag da tarefa atual
+            List<String> tags = new ArrayList<>();
+            for (String tag : parent.tags) {
+                if (!tag.equals(chip.getText().toString())) tags.add(tag);
+            }
+
+            String temp = "";
+            for (String s : tags) {
+                if (!s.equals("")) {
+                    temp += s + "‖";
+                }
+            }
+            parent.tarefa.setCategoria(temp);
+
+            String[] tagsArr = parent.tarefa.getCategoria().split("‖");
+            tags = Arrays.asList(tagsArr);
+            parent.tags = tags;
+            parent.setChipTags();
+
             MyPreferences.setSincronizado(false);
             FirebaseHelper.atualizarRemoto();
             criarChips();
