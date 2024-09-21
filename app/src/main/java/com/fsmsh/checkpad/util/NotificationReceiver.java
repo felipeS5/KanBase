@@ -89,13 +89,13 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         if (tarefa != null) {
             String mensagem = "";
-            if (notifyType.equals("start") && tarefa.getProgresso()==0) {
+            if (notifyType.equals("start") && tarefa.getProgresso()==0) { //todo Possibilidade de mandar "A tarefa x já devia ter sido iniciada"
                 if (tarefa.getNotifyBefore()<60) {
                     mensagem = context.getString(R.string.a_tarefa_x_deve_ser_iniciada_em_x_minutos, tarefa.getTarefaNome(), tarefa.getNotifyBefore());
                 } else {
                     mensagem = context.getString(R.string.a_tarefa_x_deve_ser_iniciada_em_1_hora, tarefa.getTarefaNome());
                 }
-            } else if (notifyType.equals("limit") && tarefa.getProgresso()<2) {
+            } else if (notifyType.equals("limit") && tarefa.getProgresso()<2) { //todo Possibilidade de mandar "A tarefa x está atrazada"
                 if (tarefa.getNotifyBefore()<60) {
                     mensagem = context.getString(R.string.a_tarefa_x_ira_expirar_em_x_minutos, tarefa.getTarefaNome(), tarefa.getNotifyBefore());
                 } else {

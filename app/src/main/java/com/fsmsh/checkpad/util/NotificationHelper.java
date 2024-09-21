@@ -164,13 +164,13 @@ public class NotificationHelper {
 
     }
 
-    public void removerAgendamento(int[] broadcastCodes) {
+    public void removerAgendamento(int codeStart, int codeLimit) {
         // Criando pendingIntent igual para remover
         Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, broadcastCodes[0], intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, codeStart, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent intentLimit = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, broadcastCodes[1], intentLimit, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, codeLimit, intentLimit, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);

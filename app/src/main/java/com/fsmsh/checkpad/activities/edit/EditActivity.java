@@ -47,7 +47,6 @@ public class EditActivity extends AppCompatActivity {
     public LocalTime timeLimit;
     int notifyBefore = -1;
     int prioridade = 4;
-    int[] oldBroadcastCodes = new int[]{0, 0};
     Tarefa tarefa;
     List<String> tags = new ArrayList<>();
 
@@ -167,6 +166,10 @@ public class EditActivity extends AppCompatActivity {
                 if (acao.equals("adicionar")) {
                     String id = LocalDateTime.now().toString();
                     tarefa.setId(id);
+
+                    int[] codes = Helper.createNoRepeatedCodes();
+                    tarefa.setBroadcastCodeStart(codes[0]);
+                    tarefa.setBroadcastCodeLimit(codes[1]);
                 }
 
                 tarefa.setTarefaNome(binding.titulo.getText().toString());
@@ -191,21 +194,17 @@ public class EditActivity extends AppCompatActivity {
                 if (dateStart != null) {
                     tarefa.setDateStart(dateStart.toString());
                     tarefa.setTimeStart(timeStart.toString());
-                    tarefa.setBroadcastCodeStart(new Random().nextInt()); //todo Tornar menos sucetível a duplicatas / adicionar só uma vez
                 } else {
                     tarefa.setDateStart("");
                     tarefa.setTimeStart("");
-                    tarefa.setBroadcastCodeStart(0);
                 }
 
                 if (dateLimit != null) {
                     tarefa.setDateLimit(dateLimit.toString());
                     tarefa.setTimeLimit(timeLimit.toString());
-                    tarefa.setBroadcastCodeLimit(new Random().nextInt()); //todo Tornar menos sucetível a duplicatas / adicionar só uma vez
                 } else {
                     tarefa.setDateLimit("");
                     tarefa.setTimeLimit("");
-                    tarefa.setBroadcastCodeLimit(0);
                 }
 
                 tarefa.setNotifyBefore(notifyBefore);
@@ -221,8 +220,8 @@ public class EditActivity extends AppCompatActivity {
 
                     NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
                     notificationHelper.configurarChannel();
-                    notificationHelper.removerAgendamento(oldBroadcastCodes); // Removendo o angendamento antigo (caso haja)
                     if (notifyBefore != -1) notificationHelper.agendarNotificação(tarefa);
+                    else notificationHelper.removerAgendamento(tarefa.getBroadcastCodeStart(), tarefa.getBroadcastCodeLimit());
                     // todo Tarefas passadas mandam notificação instantâneo quando salvas, isso tá errado, nem deveria mandar
 
                     myPreferences.setSincronizado(false);
@@ -242,13 +241,11 @@ public class EditActivity extends AppCompatActivity {
         if (!tarefa.getDateStart().equals("")) {
             dateStart = DateUtilities.toLocalDate(tarefa.getDateStart());
             timeStart = DateUtilities.toLocalTime(tarefa.getTimeStart());
-            oldBroadcastCodes[0] = tarefa.getBroadcastCodeStart();
         }
 
         if (!tarefa.getDateLimit().equals("")) {
             dateLimit = DateUtilities.toLocalDate( tarefa.getDateLimit() );
             timeLimit = DateUtilities.toLocalTime( tarefa.getTimeLimit() );
-            oldBroadcastCodes[1] = tarefa.getBroadcastCodeLimit();
         }
 
 
