@@ -11,6 +11,7 @@ import com.fsmsh.checkpad.activities.main.home.FragmentsIniciais;
 import com.fsmsh.checkpad.model.Tarefa;
 
 import java.util.List;
+import java.util.Random;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
@@ -113,10 +114,16 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             }
 
-            if (!mensagem.equals("")) {
+            if ( (!mensagem.equals("")) && (tarefa.getNotified()==0) ) {
                 NotificationHelper notificationHelper = new NotificationHelper(context);
                 notificationHelper.enviarNotificacao(tarefa.getTarefaNome(), mensagem, tarefaID);
+
+                tarefa.setNotified(1);
+                Database.editTarefa(tarefa);
+                MyPreferences.setSincronizado(false);
+
             }
+
         }
 
     }

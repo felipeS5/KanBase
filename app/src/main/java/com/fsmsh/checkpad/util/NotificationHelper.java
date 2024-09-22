@@ -4,11 +4,9 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -20,7 +18,6 @@ import com.fsmsh.checkpad.model.Tarefa;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Random;
 
 public class NotificationHelper {
@@ -111,6 +108,12 @@ public class NotificationHelper {
     }
 
     // Notificação de tarefa
+    public void agendarTarefas() {
+        for (Tarefa tarefa : Database.getTarefas(Database.PROGRESS_TODOS)) {
+            if (tarefa.getNotified()==0) agendarNotificação(tarefa);
+        }
+    }
+
     public void agendarNotificação(Tarefa tarefa) {
         // Intent para o BroadcastReceiver
         Intent intent = new Intent(context, NotificationReceiver.class);

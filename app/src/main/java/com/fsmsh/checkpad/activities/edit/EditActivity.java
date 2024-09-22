@@ -209,6 +209,7 @@ public class EditActivity extends AppCompatActivity {
 
                 tarefa.setNotifyBefore(notifyBefore);
 
+                tarefa.setNotified(0);
 
                 // Salvando localmente
                 boolean addSuccess;

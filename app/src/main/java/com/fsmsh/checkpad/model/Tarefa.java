@@ -14,6 +14,7 @@ public class Tarefa {
     private int broadcastCodeStart; // Só existe pq preciso dele pra cancelar o broadcast
     private int broadcastCodeLimit; // Só existe pq preciso dele pra cancelar o broadcast
     private int notifyBefore; // Notificar X minutos antes
+    private int notified; // Caso o usuário tenha sido notificado (0 ou 1)
 
     public String getId() {
         return id;
@@ -117,5 +118,13 @@ public class Tarefa {
 
     public void setNotifyBefore(int notifyBefore) {
         this.notifyBefore = notifyBefore;
+    }
+
+    public int getNotified() {
+        return notified;
+    }
+
+    public void setNotified(int notified) {
+        this.notified = notified;
     }
 }

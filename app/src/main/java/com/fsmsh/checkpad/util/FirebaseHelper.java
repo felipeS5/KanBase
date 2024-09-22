@@ -2,7 +2,6 @@ package com.fsmsh.checkpad.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -49,7 +48,7 @@ public class FirebaseHelper {
     private static MainActivity parentMain;
     private static ListenerRegistration listenerRegistration;
     public GoogleSignInClient googleSignInClient;
-    private Context context;
+    private static Context context;
     private int telaAtual;
 
     public FirebaseHelper(ProfileActivity parentProfile) {
@@ -107,7 +106,7 @@ public class FirebaseHelper {
                                             Database.setUsuario(usuario);
 
                                             // Recupera tarefas do servidor
-                                            Database.deleteAllTarefas();            // todo Dar um jeito de adicionar as tarefas e tags do server e local juntas sem conflito de ids
+                                            Database.deleteAllTarefas();
                                             for (Tarefa t : usuario.getTarefas()) {
                                                 Database.addTarefa(t);
                                             }
@@ -178,7 +177,7 @@ public class FirebaseHelper {
                                     Database.setUsuario(usuario);
 
                                     // Recupera tarefas do servidor
-                                    Database.deleteAllTarefas();            // todo Dar um jeito de adicionar as tarefas e tags do server e local juntas sem conflito de ids
+                                    Database.deleteAllTarefas();
                                     for (Tarefa t : usuario.getTarefas()) {
                                         Database.addTarefa(t);
                                     }
@@ -392,13 +391,18 @@ public class FirebaseHelper {
 
                     Database.setUsuario(usuarioRemoto);
 
-                    //todo Ajustar os broadcasts (agendar)
-
                     // Recupera tarefas do servidor
                     Database.deleteAllTarefas();
                     for (Tarefa t : usuarioRemoto.getTarefas()) {
                         Database.addTarefa(t);
                     }
+
+                    // Agendamento de tarefas
+                    NotificationHelper notificationHelper = null;
+                    if (parentMain != null) notificationHelper = new NotificationHelper(parentMain);
+                    if (parentProfile != null) notificationHelper = new NotificationHelper(parentProfile);
+                    if (context != null) notificationHelper = new NotificationHelper(context);
+                    notificationHelper.agendarTarefas();
 
                     // Recupera tags do servidor
                     Database.deleteAllTags();

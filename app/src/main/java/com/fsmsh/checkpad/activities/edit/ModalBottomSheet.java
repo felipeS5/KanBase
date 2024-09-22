@@ -107,9 +107,10 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
 
         if (notifyChip.isChecked()) {
             binding.notifyConteiner.setVisibility(View.VISIBLE);
-            parent.notifyBefore = MyPreferences.getDefaultNotify();
 
-            int notifyBefore = MyPreferences.getDefaultNotify();
+            if (!this.notify) parent.notifyBefore = MyPreferences.getDefaultNotify();
+
+            int notifyBefore = parent.notifyBefore;
             if (notifyBefore != -1) {
                 if (notifyBefore == 60) binding.notifyBebore.setText(R.string._1hr_antes);
                 else binding.notifyBebore.setText(getString(R.string.x_mins_antes, notifyBefore));

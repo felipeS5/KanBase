@@ -217,9 +217,6 @@ public class SettingsActivity extends AppCompatActivity {
             onResume();
         });
 
-        // Avaliar app
-        // ToDo
-
         // Sobre o app
         binding.lblAboutConfigs.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
