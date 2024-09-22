@@ -158,4 +158,6 @@
     <string name="para_excluir_sua_conta_voce_precisa_relogar_nela_lembrando_que_essa_acao_nao_pode_ser_desfeita">To delete your account you need to relog into it, remembering that this action cannot be undone!</string>
     <string name="termos_de_uso">Terms of use</string>
     <string name="politica_de_privacidade">Privacy Policy</string>
+    <string name="a_tarefa_x_ja_deveria_ter_sido_iniciada">The task \"%1$s\" should have already been started!</string>
+    <string name="a_tarefa_x_expirou">Task \"%1$s\" has expired!!</string>
 </resources>

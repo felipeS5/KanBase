@@ -8,6 +8,7 @@ import com.fsmsh.checkpad.activities.edit.ModalBottomSheet;
 import com.fsmsh.checkpad.activities.main.home.FragmentsIniciais;
 import com.fsmsh.checkpad.model.Tarefa;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,6 +19,26 @@ import java.util.TimeZone;
 
 public class DateUtilities {
 
+
+    public static int getRemainingTime(Tarefa tarefa, String s) {
+        LocalDateTime localDateTime = null;
+
+        if (s.equals("start")) {
+            LocalDate localDate = toLocalDate(tarefa.getDateStart());
+            LocalTime localTime = toLocalTime(tarefa.getTimeStart());
+            localDateTime = localDate.atTime(localTime);
+        } else if (s.equals("limit")) {
+            LocalDate localDate = toLocalDate(tarefa.getDateLimit());
+            LocalTime localTime = toLocalTime(tarefa.getTimeLimit());
+            localDateTime = localDate.atTime(localTime);
+        }
+
+        LocalDateTime agora = LocalDateTime.now();
+
+        int tempoRestante = (int) Duration.between(agora, localDateTime).toMinutes();
+
+        return tempoRestante;
+    }
 
     // Daily Sumary
     public static long getNextDailySumaryLong(LocalTime localTime) {
