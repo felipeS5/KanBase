@@ -31,6 +31,8 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
 
     public static final String TAG = "TagsBottomSheet";
 
+    FirebaseHelper firebaseHelper;
+
     View view;
     Button button;
     Button buttonCreate;
@@ -60,6 +62,8 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
             return view;
         }
 
+        firebaseHelper = new FirebaseHelper(getContext());
+
         button = view.findViewById(R.id.tags_select_sheet_buttom);
         buttonCreate = view.findViewById(R.id.tags_create_sheet_buttom);
         chipGroup = view.findViewById(R.id.chipGroup);
@@ -85,7 +89,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
 
                         boolean added = Database.addTag(tagStr.getText().toString());
                         MyPreferences.setSincronizado(false);
-                        FirebaseHelper.atualizarRemoto();
+                        firebaseHelper.atualizarRemoto();
                         criarChips();
 
                         if (added) Toast.makeText(parent, R.string.toast_tag_criada, Toast.LENGTH_SHORT).show();
@@ -189,7 +193,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
             parent.setChipTags();
 
             MyPreferences.setSincronizado(false);
-            FirebaseHelper.atualizarRemoto();
+            firebaseHelper.atualizarRemoto();
             criarChips();
 
             if (removed) Toast.makeText(parent, R.string.tag_removida, Toast.LENGTH_SHORT).show();

@@ -51,6 +51,7 @@ public class FragmentsIniciais extends Fragment {
     }
 
     public void start() {
+        new MyPreferences(getContext());
         tarefas = Database.getTarefas(PROGRESSO);
         autoClassify();
         if (parent!=null) {
@@ -109,7 +110,7 @@ public class FragmentsIniciais extends Fragment {
 
         if (isMovida) {
             MyPreferences.setSincronizado(false);
-            FirebaseHelper.atualizarRemoto();
+            parent.firebaseHelper.atualizarRemoto();
             return true;
         } else {
             return false;

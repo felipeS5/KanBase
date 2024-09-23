@@ -130,7 +130,7 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
 
             parent.setChipTags();
             MyPreferences.setSincronizado(false);
-            FirebaseHelper.atualizarRemoto();
+            parent.parent.firebaseHelper.atualizarRemoto();
             criarChips();
 
             if (removed) Toast.makeText(parent.getContext(), R.string.tag_removida, Toast.LENGTH_SHORT).show();

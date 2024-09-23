@@ -4,8 +4,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
+
+import com.fsmsh.checkpad.activities.edit.EditActivity;
+import com.fsmsh.checkpad.activities.main.MainActivity;
 
 import java.time.LocalTime;
 

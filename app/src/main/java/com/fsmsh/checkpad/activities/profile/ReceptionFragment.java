@@ -3,6 +3,8 @@ package com.fsmsh.checkpad.activities.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ public class ReceptionFragment extends Fragment {
         });
 
         view.findViewById(R.id.btn_logar_google).setOnClickListener(view1 -> {
+            Log.d("TAG", "Tela: "+parent.firebaseHelper.telaAtual);
             Intent intent = parent.firebaseHelper.googleSignInClient.getSignInIntent();
             parent.startActivityForResult(intent, 20);
         });

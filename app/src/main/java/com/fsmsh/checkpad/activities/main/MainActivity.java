@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     private Database database;
-    private FirebaseHelper firebaseHelper;
+    public FirebaseHelper firebaseHelper;
     private MyPreferences myPreferences;
     private View view;
 
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     Fragment fragmentAtual;
     Menu menu;
     boolean hasMenu = false;
+    boolean isRunning = false;
 
 
     @Override
@@ -373,9 +374,18 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     }
 
+    public void recarregar() {
+        if (isRunning) {
+            if (homeAtual != null && fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
+            if (tagsFragment != null && fragmentAtual instanceof TagsFragment) tagsFragment.start();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+
+        isRunning = true;
 
         // Verifica se deve restartar (ao mudar idioma)
         if (MyPreferences.isPendingRestart()) {
@@ -405,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     protected void onPause() {
         super.onPause();
 
-        firebaseHelper.removerListener();
+        isRunning = false;
     }
 
     @Override

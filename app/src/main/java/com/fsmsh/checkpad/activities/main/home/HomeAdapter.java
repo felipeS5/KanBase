@@ -199,7 +199,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MeuVH> {
                     Tarefa tarefa = tarefas.get(position);
                     Database.deleteTarefa(tarefa);
                     MyPreferences.setSincronizado(false);
-                    FirebaseHelper.atualizarRemoto();
 
                     fragmentsIniciais.start();
 
