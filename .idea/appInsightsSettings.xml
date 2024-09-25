@@ -9,8 +9,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.fsmsh.checkpad" />
-                  <option name="mobileSdkAppId" value="1:92035991505:android:f14c77f80c1d559974c2f0" />
+                  <option name="appId" value="com.fsmsh.kanbase" />
+                  <option name="mobileSdkAppId" value="1:92035991505:android:4b4ded7c841b102174c2f0" />
                   <option name="projectId" value="checkpad-85cad" />
                   <option name="projectNumber" value="92035991505" />
                 </ConnectionSetting>

@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Check Pad"
+rootProject.name = "KanBase"
 include(":app")

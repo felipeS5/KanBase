@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.fsmsh.checkpad"
+    namespace = "com.fsmsh.kanbase"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.fsmsh.checkpad"
+        applicationId = "com.fsmsh.kanbase"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -42,7 +42,9 @@ android {
 
 dependencies {
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
+
+    implementation("com.google.firebase:firebase-analytics")
 
     // Declare the dependency for the Cloud Firestore library
     // When using the BoM, you don't specify versions in Firebase library dependencies

@@ -12,7 +12,7 @@
         android:id="@+id/appBarEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.CheckPad.AppBarOverlay"
+        android:theme="@style/Theme.KanBase.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.CheckPad.PopupOverlay" />
+            app:popupTheme="@style/Theme.KanBase.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

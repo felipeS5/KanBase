@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.CheckPad" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.KanBase" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:colorBackground">@color/appBg</item>
@@ -16,33 +16,33 @@
     </style>
 
 
-    <style name="Base.Theme.ICON_TINT" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.ICON_TINT" parent="Base.Theme.KanBase">
         <item name="android:tint">@color/black</item>
     </style>
 
-    <style name="Base.Theme.BUTTONTAGS_NEW" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.BUTTONTAGS_NEW" parent="Base.Theme.KanBase">
         <item name="android:textColor">@color/lightText</item>
         <item name="android:backgroundTint">@color/container</item>
     </style>
 
-    <style name="Base.Theme.BUTTONTAGS_SELECT" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.BUTTONTAGS_SELECT" parent="Base.Theme.KanBase">
         <item name="android:textColor">@color/lightText</item>
         <item name="android:backgroundTint">@color/primary</item>
     </style>
 
-    <style name="Base.Theme.CHECKBOX" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.CHECKBOX" parent="Base.Theme.KanBase">
         <item name="android:background">@drawable/checkbox_selector</item>
     </style>
 
-    <style name="Base.Theme.BGSMALL" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.BGSMALL" parent="Base.Theme.KanBase">
         <item name="android:background">@drawable/bg_small_gray</item>
     </style>
 
-    <style name="Base.Theme.NAVIGTIONVIEW" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.NAVIGTIONVIEW" parent="Base.Theme.KanBase">
         <item name="android:background">@drawable/bg_nav_header</item>
     </style>
 
-    <style name="Base.Theme.NAVIGATIONHEADER" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.NAVIGATIONHEADER" parent="Base.Theme.KanBase">
         <item name="android:background">@drawable/side_nav_bar</item>
     </style>
 
@@ -50,15 +50,15 @@
         <item name="android:background">@drawable/bg_config_white</item>
     </style>
     
-    <style name="Base.Theme.CARD" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.CARD" parent="Base.Theme.KanBase">
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
-    <style name="Base.Theme.BOTTOMNAV" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.BOTTOMNAV" parent="Base.Theme.KanBase">
         <item name="backgroundTint">@color/lightGray2</item>
     </style>
 
-    <style name="Base.Theme.BOTTOMNAVDIV" parent="Base.Theme.CheckPad">
+    <style name="Base.Theme.BOTTOMNAVDIV" parent="Base.Theme.KanBase">
         <item name="android:background">@color/lightGray</item>
     </style>
 
@@ -66,14 +66,14 @@
         <item name="android:popupBackground">@drawable/bg_small_gray</item>
     </style>
 
-    <style name="Theme.CheckPad" parent="Base.Theme.CheckPad" />
+    <style name="Theme.KanBase" parent="Base.Theme.KanBase" />
 
-    <style name="Theme.CheckPad.NoActionBar">
+    <style name="Theme.KanBase.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.CheckPad.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.KanBase.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.CheckPad.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.KanBase.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
