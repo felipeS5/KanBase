@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         // Instancia o firebaseHelper
         firebaseHelper = new FirebaseHelper(this);
 
+        // savedInstance
         if (savedInstanceState == null) { // Caso seja um novo estado de UI
             nFragmentAtual = FRAGMENT_HOME;
             telaHomeAtual = FragmentsIniciais.NOVAS;
@@ -193,6 +194,10 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             telaHomeAtual = savedInstanceState.getInt("telaHomeAtual");
             if (nFragmentAtual == FRAGMENT_HOME) {
                 replaceFragment(new FragmentsIniciais(telaHomeAtual, MainActivity.this), null);
+
+            } else if (nFragmentAtual == FRAGMENT_TAGS) {
+                replaceFragment(new TagsFragment(MainActivity.this), null);
+
             }
         }
 
@@ -238,26 +243,20 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     if (menuItem.getItemId() == R.id.menuClassifyFirs) {
                         myPreferences.salvarPreferenciasClassify("creation", Sort.ORDEM_CRESCENTE);
-                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
-                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
-                        //todo? Ao mudar tema nas tagsFragment o classify deixa de funcionar temporariamente
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLast) {
                         myPreferences.salvarPreferenciasClassify("creation", Sort.ORDEM_DECRESCENTE);
-                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
-                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyMostImportants) {
                         myPreferences.salvarPreferenciasClassify("priority", Sort.ORDEM_CRESCENTE);
-                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
-                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLessImportants) {
                         myPreferences.salvarPreferenciasClassify("priority", Sort.ORDEM_DECRESCENTE);
-                        if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
-                        else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
 
                     }
+
+                    if (nFragmentAtual == FRAGMENT_HOME) homeAtual.start();
+                    else if (nFragmentAtual == FRAGMENT_TAGS) tagsFragment.start();
 
                     return true;
                 }
