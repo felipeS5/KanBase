@@ -2,6 +2,7 @@ package com.fsmsh.checkpad.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -22,7 +23,6 @@ import com.fsmsh.checkpad.util.DateUtilities;
 import com.fsmsh.checkpad.util.FirebaseHelper;
 import com.fsmsh.checkpad.util.Helper;
 import com.fsmsh.checkpad.util.MyPreferences;
-import com.fsmsh.checkpad.util.NotificationHelper;
 import com.fsmsh.checkpad.util.Sort;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,7 +32,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -48,6 +47,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
 
+    public static int FRAGMENT_HOME = 0;
+    public static int FRAGMENT_TAGS = 1;
+
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -59,14 +61,13 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     private MyPreferences myPreferences;
     private View view;
 
-    private int TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
+    private int telaHomeAtual;
+    private int nFragmentAtual;
     private MenuItem menuItemHomeAtual;
     FragmentsIniciais homeAtual;
     TagsFragment tagsFragment;
 
     Fragment fragmentAtual;
-    Menu menu;
-    boolean hasMenu = false;
     boolean isRunning = false;
 
 
@@ -97,20 +98,23 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             }
         });
 
-        //todo Certas ações (como mudar o tema do dispositivo) habilitam o menu inferior e buga o menu options
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 if (menuItem.getItemId() == R.id.nav_home) {
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), null);
+                    replaceFragment(new FragmentsIniciais(telaHomeAtual, MainActivity.this), null);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.VISIBLE);
+
+                    nFragmentAtual = FRAGMENT_HOME;
 
                 } else if (menuItem.getItemId() == R.id.nav_category) {
                     replaceFragment(new TagsFragment(MainActivity.this), null);
                     bottomNavigationView.setVisibility(View.GONE);
                     fab.setVisibility(View.GONE);
+
+                    nFragmentAtual = FRAGMENT_TAGS;
 
                 } else if (menuItem.getItemId() == R.id.nav_config) {
                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
@@ -132,11 +136,6 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        if (savedInstanceState == null) {
-            replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), null);
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -144,26 +143,29 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                     AnimationRes animationRes = null;
 
                     if (menuItem.getItemId() == R.id.item_naoIniciado) {
-                        if (TELA_HOME_ATUAL == FragmentsIniciais.FINALIZADAS)
+                        if (telaHomeAtual == FragmentsIniciais.FINALIZADAS)
                             animationRes = new AnimationRes(false, true);
                         else animationRes = new AnimationRes(false, false);
-                        TELA_HOME_ATUAL = FragmentsIniciais.NOVAS;
+
+                        telaHomeAtual = FragmentsIniciais.NOVAS;
 
                     } else if (menuItem.getItemId() == R.id.item_iniciado) {
-                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS)
+                        if (telaHomeAtual == FragmentsIniciais.NOVAS)
                             animationRes = new AnimationRes(true, false);
                         else animationRes = new AnimationRes(false, false);
-                        TELA_HOME_ATUAL = FragmentsIniciais.INICIADAS;
+
+                        telaHomeAtual = FragmentsIniciais.INICIADAS;
 
                     } else if (menuItem.getItemId() == R.id.item_feitas) {
-                        if (TELA_HOME_ATUAL == FragmentsIniciais.NOVAS)
+                        if (telaHomeAtual == FragmentsIniciais.NOVAS)
                             animationRes = new AnimationRes(true, true);
                         else animationRes = new AnimationRes(true, false);
-                        TELA_HOME_ATUAL = FragmentsIniciais.FINALIZADAS;
+
+                        telaHomeAtual = FragmentsIniciais.FINALIZADAS;
 
                     }
 
-                    replaceFragment(new FragmentsIniciais(TELA_HOME_ATUAL, MainActivity.this), animationRes);
+                    replaceFragment(new FragmentsIniciais(telaHomeAtual, MainActivity.this), animationRes);
                 }
 
                 menuItemHomeAtual = menuItem;
@@ -173,6 +175,26 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         // Instancia o firebaseHelper
         firebaseHelper = new FirebaseHelper(this);
+
+        if (savedInstanceState == null) { // Caso seja um novo estado de UI
+            nFragmentAtual = FRAGMENT_HOME;
+            telaHomeAtual = FragmentsIniciais.NOVAS;
+
+            replaceFragment(new FragmentsIniciais(telaHomeAtual, MainActivity.this), null);
+            navigationView.setCheckedItem(R.id.nav_home);
+
+        } else { // Caso esteja resumindo um estado de UI
+            nFragmentAtual = savedInstanceState.getInt("nFragmentAtual");
+            if (nFragmentAtual == FRAGMENT_TAGS) {
+                bottomNavigationView.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
+            }
+
+            telaHomeAtual = savedInstanceState.getInt("telaHomeAtual");
+            if (nFragmentAtual == FRAGMENT_HOME) {
+                replaceFragment(new FragmentsIniciais(telaHomeAtual, MainActivity.this), null);
+            }
+        }
 
     }
 
@@ -191,24 +213,15 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         if (fragment instanceof FragmentsIniciais) homeAtual = (FragmentsIniciais) fragment;
         else if (fragment instanceof TagsFragment) tagsFragment = (TagsFragment) fragment;
 
-        // Destinado a atualizar o optionsMenu
+        // Destinado a atualizar o optionsMenu ????????????????????
         this.fragmentAtual = fragment;
-        if (hasMenu) onCreateOptionsMenu(menu);
-        hasMenu = true;
 
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu = menu;
-        menu.clear();
-
-        if (fragmentAtual instanceof FragmentsIniciais || fragmentAtual instanceof TagsFragment)
-            getMenuInflater().inflate(R.menu.main, menu);
-        else
-            getMenuInflater().inflate(R.menu.main_tags, menu);
-
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -227,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                         myPreferences.salvarPreferenciasClassify("creation", Sort.ORDEM_CRESCENTE);
                         if (fragmentAtual instanceof FragmentsIniciais) homeAtual.start();
                         else if (fragmentAtual instanceof TagsFragment) tagsFragment.start();
+                        //todo? Ao mudar tema nas tagsFragment o classify deixa de funcionar temporariamente
 
                     } else if (menuItem.getItemId() == R.id.menuClassifyLast) {
                         myPreferences.salvarPreferenciasClassify("creation", Sort.ORDEM_DECRESCENTE);
@@ -416,6 +430,14 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         super.onPause();
 
         isRunning = false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("nFragmentAtual", nFragmentAtual);
+        outState.putInt("telaHomeAtual", telaHomeAtual);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
