@@ -1,9 +1,20 @@
 package com.fsmsh.kanbase.util;
 
-import android.content.Context;
-import android.content.res.Configuration;
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.fsmsh.kanbase.model.Tarefa;
 
@@ -43,6 +54,27 @@ public class Helper {
         }
 
         return new int[]{code0, code1};
+    }
+
+    // Permissões
+    public static void checkPermission(Activity activity) {
+        if (!hasPermission(activity)) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 555);
+        } else {
+            MyPreferences.setPermissionFirstDenied(false);
+        }
+
+    }
+
+    //todo? Colocar uma verificação no main onResume para checar as permissões e mudar o isPermissionFirstDenied
+    public static boolean hasPermission(Context context) {
+        if (ContextCompat.checkSelfPermission( context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+
+        } else {
+            return false;
+
+        }
     }
 
     // System

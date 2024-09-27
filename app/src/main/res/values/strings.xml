@@ -160,4 +160,7 @@
     <string name="politica_de_privacidade">Política de privacidade</string>
     <string name="a_tarefa_x_ja_deveria_ter_sido_iniciada">A tarefa \"%1$s\" já deveria ter sido iniciada!</string>
     <string name="a_tarefa_x_expirou">A tarefa \"%1$s\" expirou!!</string>
+    <string name="notificacao_ligada_mas_permissao_negada">Você ativou a notificação da tarefa, mas negou a permissão de notificação.\n\nDessa maneira não será possível enviar um alerta.</string>
+    <string name="atencao_">Atenção!</string>
+    <string name="entendo">Entendo</string>
 </resources>

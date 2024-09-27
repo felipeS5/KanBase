@@ -18,6 +18,20 @@ public class MyPreferences {
     }
 
 
+    // Permissões
+    public static void setPermissionFirstDenied(boolean estado) {
+        SharedPreferences preferences = context.getSharedPreferences("permission.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("is_permission_denied_first_time", estado);
+        prefEditor.apply();
+    }
+
+    public static boolean isPermissionFirstDenied() {
+        SharedPreferences preferences = context.getSharedPreferences("permission.pref", MODE_PRIVATE);
+        return preferences.getBoolean("is_permission_denied_first_time", false);
+    }
+
     // Resumo diário
         // Sumary No Tasks
     public static void setSumaryNoTasksActive(boolean estado) {

@@ -1,6 +1,7 @@
 package com.fsmsh.kanbase.activities.main;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.fsmsh.kanbase.util.MyPreferences;
 import com.fsmsh.kanbase.util.Sort;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Helper.preConfigs(this);
+        Helper.checkPermission(this);
 
         super.onCreate(savedInstanceState);
         view = getLayoutInflater().inflate(R.layout.activity_main, null);
@@ -436,6 +439,36 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         outState.putInt("telaHomeAtual", telaHomeAtual);
 
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED && !MyPreferences.isPermissionFirstDenied()) {
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+                builder.setTitle("Permissão negada!");
+                builder.setMessage("Sem a permissão de notificação não será possível lhe enviar alertas quando suas tarefas estiverem vencendo.\n\nGostaria de rever sua escolha?");
+
+                builder.setPositiveButton("Dar permissão", (dialogInterface, i) -> {
+                    Helper.checkPermission(this);
+                });
+
+                builder.setNegativeButton("Negar", null);
+
+                builder.show();
+
+            } else {
+                MyPreferences.setPermissionFirstDenied(false);
+            }
+
+            if (grantResult == PackageManager.PERMISSION_DENIED) MyPreferences.setPermissionFirstDenied(true);
+            else MyPreferences.setPermissionFirstDenied(false);
+
+        }
+
     }
 
     @Override

@@ -60,7 +60,7 @@ public class NotificationHelper {
     public void agendarNotificacaoDiaria() {
         // Intent para o BroadcastReceiver
         Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_BROADCAST_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_BROADCAST_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // Pega o tempo em long
         LocalTime localTime = MyPreferences.getDailySumaryLocalTime();
@@ -82,7 +82,7 @@ public class NotificationHelper {
 
         // Criando pendingIntent igual para remover
         Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_BROADCAST_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_BROADCAST_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // Removendo com alarmManager
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -101,7 +101,7 @@ public class NotificationHelper {
                 .setAutoCancel(true); // clear notification when clicked
 
         Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         mBuilder.setContentIntent(pi);
 
         mNotificationManager.notify(DAILY_SUMARY_NOTIFICATION, mBuilder.build());
@@ -122,7 +122,7 @@ public class NotificationHelper {
         if (!tarefa.getDateStart().equals("")) {
             Intent intentIntern = intent;
             intentIntern.putExtra("notifyType", "start");
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeStart(), intentIntern, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeStart(), intentIntern, PendingIntent.FLAG_IMMUTABLE);
 
             // Pega o tempo em long
             LocalDate localDate = DateUtilities.toLocalDate(tarefa.getDateStart());
@@ -144,7 +144,7 @@ public class NotificationHelper {
         if (!tarefa.getDateLimit().equals("")) {
             Intent intentIntern = intent;
             intentIntern.putExtra("notifyType", "limit");
-            PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeLimit(), intentIntern, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, tarefa.getBroadcastCodeLimit(), intentIntern, PendingIntent.FLAG_IMMUTABLE);
 
             // Pega o tempo em long
             LocalDate localDate = DateUtilities.toLocalDate(tarefa.getDateLimit());
@@ -170,10 +170,10 @@ public class NotificationHelper {
     public void removerAgendamento(int codeStart, int codeLimit) {
         // Criando pendingIntent igual para remover
         Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, codeStart, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, codeStart, intent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent intentLimit = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, codeLimit, intentLimit, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentLimit = PendingIntent.getBroadcast(context, codeLimit, intentLimit, PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -193,7 +193,7 @@ public class NotificationHelper {
         Intent intent = new Intent(context, EditActivity.class);
         intent.putExtra("isNovo", false);
         intent.putExtra("id", tarefaID);
-        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         mBuilder.setContentIntent(pi);
 
         mNotificationManager.notify(new Random().nextInt(), mBuilder.build());

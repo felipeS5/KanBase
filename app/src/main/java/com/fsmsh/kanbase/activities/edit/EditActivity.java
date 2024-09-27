@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsmsh.kanbase.R;
+import com.fsmsh.kanbase.activities.main.MainActivity;
 import com.fsmsh.kanbase.databinding.ActivityEditBinding;
 import com.fsmsh.kanbase.model.Tarefa;
 import com.fsmsh.kanbase.util.Database;
@@ -19,6 +20,7 @@ import com.fsmsh.kanbase.util.NotificationHelper;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -223,7 +225,20 @@ public class EditActivity extends AppCompatActivity {
                     else notificationHelper.removerAgendamento(tarefa.getBroadcastCodeStart(), tarefa.getBroadcastCodeLimit());
 
                     myPreferences.setSincronizado(false);
-                    finish();
+
+                    if (MyPreferences.isPermissionFirstDenied()) {
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditActivity.this);
+                        builder.setTitle(R.string.atencao_);
+                        builder.setMessage(R.string.notificacao_ligada_mas_permissao_negada);
+
+                        builder.setPositiveButton(R.string.entendo, (dialogInterface, i) -> finish());
+                        builder.setOnDismissListener(dialogInterface -> finish());
+
+                        builder.show();
+                    } else {
+                        finish();
+                    }
+
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.edit_erro_add_save, acao), Toast.LENGTH_SHORT).show();
                 }
