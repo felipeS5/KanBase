@@ -25,6 +25,7 @@ public class AccountFragment extends Fragment {
     }
 
 
+    //todo Em telas pequenas apresenta problemas
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_account, container, false);

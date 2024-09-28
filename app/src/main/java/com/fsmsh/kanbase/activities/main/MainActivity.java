@@ -460,8 +460,6 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
                 builder.show();
 
-            } else {
-                MyPreferences.setPermissionFirstDenied(false);
             }
 
             if (grantResult == PackageManager.PERMISSION_DENIED) MyPreferences.setPermissionFirstDenied(true);

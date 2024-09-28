@@ -66,7 +66,6 @@ public class Helper {
 
     }
 
-    //todo? Colocar uma verificação no main onResume para checar as permissões e mudar o isPermissionFirstDenied
     public static boolean hasPermission(Context context) {
         if (ContextCompat.checkSelfPermission( context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
             return true;

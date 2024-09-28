@@ -48,6 +48,7 @@ public class GeralFilterBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bottom_sheet_geral_filter, container, false);
 
+        //todo? Em telas pequenas essa tela não está sendo aberta em tamanho máximo
 
         // Verifica se há parent (ao mudar o tema por exemplo)
         if (parent==null) {

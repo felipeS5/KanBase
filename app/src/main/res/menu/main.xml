@@ -12,13 +12,7 @@
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="2"
-        android:title="@string/perfil"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="3"
-        android:title="@string/deslogar"
+        android:title="@string/conta"
         app:showAsAction="never" />
 
 

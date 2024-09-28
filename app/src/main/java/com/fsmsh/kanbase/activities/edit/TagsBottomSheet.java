@@ -80,6 +80,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
                 AlertDialog alertDialog = builder.show();
 
 
+                //todo Impossibilitar criação de tags vazias ou repetidas
                 dialog.findViewById(R.id.btnDialogSalvar).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

@@ -38,6 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarEdit">
 
+        <!--todo Esse edit deve ter somente uma linha -->
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/titulo"
             android:layout_width="match_parent"
@@ -355,6 +356,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
+    <!--todo? Esse fab não deveria ficar em cima do teclado? -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSalvar"
         android:layout_width="wrap_content"
@@ -364,5 +366,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/baseline_save_24" />
+
+    <!--todo Usar scroll nessa tela -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

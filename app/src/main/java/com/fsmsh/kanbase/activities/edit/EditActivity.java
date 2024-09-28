@@ -213,6 +213,7 @@ public class EditActivity extends AppCompatActivity {
 
                 // Salvando localmente
                 boolean addSuccess;
+                //todo Impossibilitar criação de tarefas com nome vasio
                 if (acao.equals("adicionar")) addSuccess = Database.addTarefa(tarefa);
                 else addSuccess = Database.editTarefa(tarefa);
 
@@ -226,7 +227,12 @@ public class EditActivity extends AppCompatActivity {
 
                     myPreferences.setSincronizado(false);
 
-                    if (MyPreferences.isPermissionFirstDenied()) {
+                    boolean hasPermission = Helper.hasPermission(getApplicationContext());
+
+                    if (hasPermission) MyPreferences.setPermissionFirstDenied(false);
+                    else MyPreferences.setPermissionFirstDenied(true);
+
+                    if (!hasPermission && notifyBefore != -1) {
                         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditActivity.this);
                         builder.setTitle(R.string.atencao_);
                         builder.setMessage(R.string.notificacao_ligada_mas_permissao_negada);

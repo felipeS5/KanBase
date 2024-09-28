@@ -123,6 +123,8 @@ public class FirebaseHelper {
                                             usuario.setLoginType("google");
                                             usuario.setFirestoreDocId(auth.getUid());
 
+                                            //todo Quando cria uma nova conta e a conecção é lenta pode ser que os dados não sejam salvos corretamente
+
                                             // Salva os dados no Firestore
                                             firestore.collection("users").document(usuario.getFirestoreDocId())
                                                     .set(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
