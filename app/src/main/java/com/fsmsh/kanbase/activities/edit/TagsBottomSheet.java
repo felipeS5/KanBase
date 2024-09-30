@@ -79,12 +79,25 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
 
                 AlertDialog alertDialog = builder.show();
 
-
-                //todo Impossibilitar criação de tags vazias ou repetidas
                 dialog.findViewById(R.id.btnDialogSalvar).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         EditText tagStr = dialog.findViewById(R.id.txtDialogTag);
+
+                        boolean hasTag = false;
+                        for (String s : Database.getTags()) {
+                            if (tagStr.getText().toString().equals(s)) hasTag = true;
+                        }
+
+                        if (hasTag) {
+                            Toast.makeText(getContext(), R.string.a_tag_ja_existe, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (tagStr.getText().toString().equals("")) {
+                            Toast.makeText(getContext(), R.string.insira_o_nome_da_tag, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                         boolean added = Database.addTag(tagStr.getText().toString());
                         MyPreferences.setSincronizado(false);

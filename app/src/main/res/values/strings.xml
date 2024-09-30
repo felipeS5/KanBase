@@ -163,4 +163,7 @@
     <string name="notificacao_ligada_mas_permissao_negada">Você ativou a notificação da tarefa, mas negou a permissão de notificação.\n\nDessa maneira não será possível enviar um alerta.</string>
     <string name="atencao_">Atenção!</string>
     <string name="entendo">Entendo</string>
+    <string name="a_tag_ja_existe">A tag já existe</string>
+    <string name="insira_o_nome_da_tag">Insira o nome da tag</string>
+    <string name="insira_o_nome_da_sua_tarefa">Insira o nome da tarefa</string>
 </resources>

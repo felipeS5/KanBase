@@ -165,7 +165,7 @@ public class EditActivity extends AppCompatActivity {
         binding.fabSalvar.setOnClickListener(view -> {
 
             if (binding.titulo.getText().toString().equals("")) {
-                Toast.makeText(EditActivity.this, "Insira o nome da sua tarefa", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditActivity.this, R.string.insira_o_nome_da_sua_tarefa, Toast.LENGTH_SHORT).show();
                 return;
             }
 

@@ -160,4 +160,10 @@
     <string name="politica_de_privacidade">Privacy Policy</string>
     <string name="a_tarefa_x_ja_deveria_ter_sido_iniciada">The task \"%1$s\" should have already been started!</string>
     <string name="a_tarefa_x_expirou">Task \"%1$s\" has expired!!</string>
+    <string name="notificacao_ligada_mas_permissao_negada">You have enabled notification for the task, but denied notification permission.\n\nThis way it will not be possible to send you an alert.</string>
+    <string name="atencao_">Attention!</string>
+    <string name="entendo">I understand</string>
+    <string name="a_tag_ja_existe">The tag already exists</string>
+    <string name="insira_o_nome_da_tag">Enter the tag name</string>
+    <string name="insira_o_nome_da_sua_tarefa">Enter the task name</string>
 </resources>
