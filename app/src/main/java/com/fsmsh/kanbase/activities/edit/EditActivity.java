@@ -162,92 +162,93 @@ public class EditActivity extends AppCompatActivity {
     public void salvar(String acao, Tarefa tarefa) {
         adjustCalendar();
 
-        binding.fabSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.fabSalvar.setOnClickListener(view -> {
 
-                if (acao.equals("adicionar")) {
-                    int[] codes = Helper.createNoRepeatedCodes();
-                    tarefa.setBroadcastCodeStart(codes[0]);
-                    tarefa.setBroadcastCodeLimit(codes[1]);
-                }
+            if (binding.titulo.getText().toString().equals("")) {
+                Toast.makeText(EditActivity.this, "Insira o nome da sua tarefa", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                tarefa.setTarefaNome(binding.titulo.getText().toString());
-                tarefa.setDescricao(binding.descricao.getText().toString());
-                tarefa.setPrioridade(prioridade);
+            if (acao.equals("adicionar")) {
+                int[] codes = Helper.createNoRepeatedCodes();
+                tarefa.setBroadcastCodeStart(codes[0]);
+                tarefa.setBroadcastCodeLimit(codes[1]);
+            }
 
-                if (tags.size() != 0) {
-                    String temp = "";
+            tarefa.setTarefaNome(binding.titulo.getText().toString());
+            tarefa.setDescricao(binding.descricao.getText().toString());
+            tarefa.setPrioridade(prioridade);
 
-                    for (String s : tags) {
-                        if (!s.equals("")) {
-                            temp += s + "‖";
-                        }
+            if (tags.size() != 0) {
+                String temp = "";
+
+                for (String s : tags) {
+                    if (!s.equals("")) {
+                        temp += s + "‖";
                     }
-
-                    tarefa.setCategoria(temp);
-
-                } else {
-                    tarefa.setCategoria("");
                 }
 
-                if (dateStart != null) {
-                    tarefa.setDateStart(dateStart.toString());
-                    tarefa.setTimeStart(timeStart.toString());
+                tarefa.setCategoria(temp);
+
+            } else {
+                tarefa.setCategoria("");
+            }
+
+            if (dateStart != null) {
+                tarefa.setDateStart(dateStart.toString());
+                tarefa.setTimeStart(timeStart.toString());
+            } else {
+                tarefa.setDateStart("");
+                tarefa.setTimeStart("");
+            }
+
+            if (dateLimit != null) {
+                tarefa.setDateLimit(dateLimit.toString());
+                tarefa.setTimeLimit(timeLimit.toString());
+            } else {
+                tarefa.setDateLimit("");
+                tarefa.setTimeLimit("");
+            }
+
+            tarefa.setNotifyBefore(notifyBefore);
+
+            tarefa.setNotified(0);
+
+            // Salvando localmente
+            boolean addSuccess;
+            if (acao.equals("adicionar")) addSuccess = Database.addTarefa(tarefa);
+            else addSuccess = Database.editTarefa(tarefa);
+
+            if (addSuccess) {
+                Toast.makeText(getApplicationContext(), getString(R.string.edit_sucesso_add_save, acao), Toast.LENGTH_SHORT).show();
+
+                NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+                notificationHelper.configurarChannel();
+                if (notifyBefore != -1) notificationHelper.agendarNotificação(tarefa);
+                else notificationHelper.removerAgendamento(tarefa.getBroadcastCodeStart(), tarefa.getBroadcastCodeLimit());
+
+                myPreferences.setSincronizado(false);
+
+                boolean hasPermission = Helper.hasPermission(getApplicationContext());
+
+                if (hasPermission) MyPreferences.setPermissionFirstDenied(false);
+                else MyPreferences.setPermissionFirstDenied(true);
+
+                if (!hasPermission && notifyBefore != -1) {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditActivity.this);
+                    builder.setTitle(R.string.atencao_);
+                    builder.setMessage(R.string.notificacao_ligada_mas_permissao_negada);
+
+                    builder.setPositiveButton(R.string.entendo, (dialogInterface, i) -> finish());
+                    builder.setOnDismissListener(dialogInterface -> finish());
+
+                    builder.show();
                 } else {
-                    tarefa.setDateStart("");
-                    tarefa.setTimeStart("");
+                    finish();
                 }
 
-                if (dateLimit != null) {
-                    tarefa.setDateLimit(dateLimit.toString());
-                    tarefa.setTimeLimit(timeLimit.toString());
-                } else {
-                    tarefa.setDateLimit("");
-                    tarefa.setTimeLimit("");
-                }
-
-                tarefa.setNotifyBefore(notifyBefore);
-
-                tarefa.setNotified(0);
-
-                // Salvando localmente
-                boolean addSuccess;
-                //todo Impossibilitar criação de tarefas com nome vasio
-                if (acao.equals("adicionar")) addSuccess = Database.addTarefa(tarefa);
-                else addSuccess = Database.editTarefa(tarefa);
-
-                if (addSuccess) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.edit_sucesso_add_save, acao), Toast.LENGTH_SHORT).show();
-
-                    NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
-                    notificationHelper.configurarChannel();
-                    if (notifyBefore != -1) notificationHelper.agendarNotificação(tarefa);
-                    else notificationHelper.removerAgendamento(tarefa.getBroadcastCodeStart(), tarefa.getBroadcastCodeLimit());
-
-                    myPreferences.setSincronizado(false);
-
-                    boolean hasPermission = Helper.hasPermission(getApplicationContext());
-
-                    if (hasPermission) MyPreferences.setPermissionFirstDenied(false);
-                    else MyPreferences.setPermissionFirstDenied(true);
-
-                    if (!hasPermission && notifyBefore != -1) {
-                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditActivity.this);
-                        builder.setTitle(R.string.atencao_);
-                        builder.setMessage(R.string.notificacao_ligada_mas_permissao_negada);
-
-                        builder.setPositiveButton(R.string.entendo, (dialogInterface, i) -> finish());
-                        builder.setOnDismissListener(dialogInterface -> finish());
-
-                        builder.show();
-                    } else {
-                        finish();
-                    }
-
-                } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.edit_erro_add_save, acao), Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.edit_erro_add_save, acao), Toast.LENGTH_SHORT).show();
             }
         });
     }
