@@ -112,6 +112,7 @@
                 android:id="@+id/txt_nome_cadastro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:hint="@string/nome" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,6 +131,7 @@
                 android:id="@+id/txt_email_cadastro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:hint="@string/e_mail" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,9 +150,11 @@
                 android:id="@+id/txt_senha_cadastro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:hint="@string/senha"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
+<!--todo btn mostrar senha -->
 
         <Button
             android:id="@+id/btn_cadastrar"

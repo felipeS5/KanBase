@@ -69,6 +69,35 @@ public class FirebaseHelper {
     }
 
 
+    public void salvarNovaConta(String nome, String email, String tipo) {
+        Usuario usuario = new Usuario();
+
+        usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
+        usuario.setTags(Database.getTags());
+        usuario.setNome(nome);
+        usuario.setEmail(email);
+        usuario.setLoginType(tipo);
+        usuario.setFirestoreDocId(auth.getUid());
+
+        Database.setUsuario(usuario);
+
+        // Salva os dados no Firestore
+        firestore.collection("users").document(usuario.getFirestoreDocId())
+                .set(usuario).addOnSuccessListener(unused -> {
+
+                    MyPreferences.setAccountSecure(true);
+
+                    if (telaAtual == ACTIVITY_PROFILE) {
+                        ProfileActivity profileActivity = (ProfileActivity) context;
+                        profileActivity.checarUser();
+                    }
+
+                    Toast.makeText(context, R.string.sucesso_ao_cadastrar_usuario, Toast.LENGTH_LONG).show();
+
+                });
+
+    }
+
     public void logarComGoogle(Intent data) {
 
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -114,32 +143,7 @@ public class FirebaseHelper {
                                             }
 
                                         } else {// Caso seja uma nova conta
-                                            Usuario usuario = new Usuario();
-
-                                            usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
-                                            usuario.setTags(Database.getTags());
-                                            usuario.setNome(account.getDisplayName());
-                                            usuario.setEmail(account.getEmail());
-                                            usuario.setLoginType("google");
-                                            usuario.setFirestoreDocId(auth.getUid());
-
-                                            //todo Quando cria uma nova conta e a conecção é lenta pode ser que os dados não sejam salvos corretamente
-
-                                            // Salva os dados no Firestore
-                                            firestore.collection("users").document(usuario.getFirestoreDocId())
-                                                    .set(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void unused) {
-                                                            Toast.makeText(context, R.string.sucesso_ao_cadastrar_usuario, Toast.LENGTH_LONG).show();
-                                                            Database.setUsuario(usuario);
-
-                                                            if (telaAtual == ACTIVITY_PROFILE) {
-                                                                ProfileActivity profileActivity = (ProfileActivity) context;
-                                                                profileActivity.checarUser();
-                                                            }
-
-                                                        }
-                                                    });
+                                            salvarNovaConta(account.getDisplayName(), account.getEmail(), "google");
 
                                         }
                                     }
@@ -210,27 +214,7 @@ public class FirebaseHelper {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(context, R.string.sucesso_ao_cadastrar_usuario, Toast.LENGTH_LONG).show();
-                            Usuario usuario = new Usuario();
-
-                            usuario.setTarefas(Database.getTarefas(Database.PROGRESS_TODOS));
-                            usuario.setTags(Database.getTags());
-                            usuario.setNome(c.getNome());
-                            usuario.setEmail(c.getEmail());
-                            usuario.setLoginType("email");
-                            usuario.setFirestoreDocId(auth.getUid());
-
-                            // Salva os dados no Firestore
-                            firestore.collection("users").document(usuario.getFirestoreDocId())
-                                    .set(usuario);
-
-                            Database.setUsuario(usuario);
-
-                            if (telaAtual == ACTIVITY_PROFILE) {
-                                ProfileActivity profileActivity = (ProfileActivity) context;
-                                profileActivity.checarUser();
-                            }
+                            salvarNovaConta(c.getNome(), c.getEmail(), "email");
 
                         } else {
                             // If sign in fails, return error message
@@ -249,6 +233,7 @@ public class FirebaseHelper {
         if (listenerRegistration != null) removerListener();
 
         auth.signOut();
+        MyPreferences.setAccountSecure(false);
 
         if (telaAtual == ACTIVITY_PROFILE) {
             ProfileActivity profileActivity = (ProfileActivity) context;
@@ -285,6 +270,7 @@ public class FirebaseHelper {
                                     alertDialog.dismiss();
 
                                     if (listenerRegistration != null) removerListener();
+                                    MyPreferences.setAccountSecure(false);
 
                                     firestore.collection("users").document(auth.getUid())
                                             .delete();
@@ -347,6 +333,9 @@ public class FirebaseHelper {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    if (listenerRegistration != null) removerListener();
+                    MyPreferences.setAccountSecure(false);
+
                     firestore.collection("users").document(auth.getUid())
                             .delete();
 
@@ -390,6 +379,7 @@ public class FirebaseHelper {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 MyPreferences.setSincronizado(true);
+                                MyPreferences.setAccountSecure(true);
 
                                 atualizarLocal();
                             }
@@ -405,6 +395,12 @@ public class FirebaseHelper {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                     if (auth.getCurrentUser() != null) {
+
+                        if (!MyPreferences.isAccountSecure()) {
+                            atualizarRemoto();
+                            return;
+                        }
+
                         Usuario usuarioRemoto = value.toObject(Usuario.class);
 
                         Database.setUsuario(usuarioRemoto);

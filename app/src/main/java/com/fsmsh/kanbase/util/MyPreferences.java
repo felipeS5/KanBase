@@ -18,6 +18,20 @@ public class MyPreferences {
     }
 
 
+    // Login
+    public static void setAccountSecure(boolean estado) {
+        SharedPreferences preferences = context.getSharedPreferences("account.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("is_account_secure", estado);
+        prefEditor.apply();
+    }
+
+    public static boolean isAccountSecure() {
+        SharedPreferences preferences = context.getSharedPreferences("account.pref", MODE_PRIVATE);
+        return preferences.getBoolean("is_account_secure", false);
+    }
+
     // Permissões
     public static void setPermissionFirstDenied(boolean estado) {
         SharedPreferences preferences = context.getSharedPreferences("permission.pref", MODE_PRIVATE);
