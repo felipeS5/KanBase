@@ -142,6 +142,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
@@ -154,7 +155,6 @@
                 android:hint="@string/senha"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
-<!--todo btn mostrar senha -->
 
         <Button
             android:id="@+id/btn_cadastrar"

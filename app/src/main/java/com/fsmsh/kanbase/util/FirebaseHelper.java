@@ -2,6 +2,7 @@ package com.fsmsh.kanbase.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,6 +51,8 @@ public class FirebaseHelper {
     private Context context;
     public int telaAtual;
 
+    private AlertDialog alertDialog;
+
     public FirebaseHelper(Context context) {
         this.context = context;
         auth = FirebaseAuth.getInstance();
@@ -88,6 +91,8 @@ public class FirebaseHelper {
                     MyPreferences.setAccountSecure(true);
 
                     if (telaAtual == ACTIVITY_PROFILE) {
+                        if (alertDialog!=null) alertDialog.dismiss();
+
                         ProfileActivity profileActivity = (ProfileActivity) context;
                         profileActivity.checarUser();
                     }
@@ -99,6 +104,14 @@ public class FirebaseHelper {
     }
 
     public void logarComGoogle(Intent data) {
+        ProfileActivity profAct = (ProfileActivity) context;
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        View dialog = profAct.getLayoutInflater().inflate(R.layout.dialog_loading, null);
+        builder.setView(dialog);
+        builder.setCancelable(false);
+
+        alertDialog = builder.show();
 
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
@@ -138,6 +151,8 @@ public class FirebaseHelper {
                                             Toast.makeText(context, R.string.sucesso_ao_logar, Toast.LENGTH_LONG).show();
 
                                             if (telaAtual == ACTIVITY_PROFILE) {
+                                                if (alertDialog!=null) alertDialog.dismiss();
+
                                                 ProfileActivity profileActivity = (ProfileActivity) context;
                                                 profileActivity.checarUser();
                                             }
@@ -150,6 +165,8 @@ public class FirebaseHelper {
                                 });
 
                             } else {
+                                if (alertDialog!=null) alertDialog.dismiss();
+
                                 Toast.makeText(context, context.getString(R.string.erro_2p) + task.getException(), Toast.LENGTH_LONG).show();
                             }
                         }
@@ -162,6 +179,14 @@ public class FirebaseHelper {
     }
 
     public void logar(Credenciais c) {
+        ProfileActivity profAct = (ProfileActivity) context;
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        View dialog = profAct.getLayoutInflater().inflate(R.layout.dialog_loading, null);
+        builder.setView(dialog);
+        builder.setCancelable(false);
+
+        alertDialog = builder.show();
 
         auth.signInWithEmailAndPassword(c.getEmail(), c.getSenha())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -192,6 +217,8 @@ public class FirebaseHelper {
                                     }
 
                                     if (telaAtual == ACTIVITY_PROFILE) {
+                                        if (alertDialog!=null) alertDialog.dismiss();
+
                                         ProfileActivity profileActivity = (ProfileActivity) context;
                                         profileActivity.checarUser();
                                     }
@@ -199,6 +226,8 @@ public class FirebaseHelper {
                             });
 
                         } else {
+                            if (alertDialog!=null) alertDialog.dismiss();
+
                             // If sign in fails, display a message to the user.
                             Toast.makeText(context, context.getString(R.string.erro_2p) + task.getException(), Toast.LENGTH_LONG).show();
                         }
@@ -208,6 +237,14 @@ public class FirebaseHelper {
     }
 
     public void criarConta(Credenciais c) {
+        ProfileActivity profAct = (ProfileActivity) context;
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        View dialog = profAct.getLayoutInflater().inflate(R.layout.dialog_loading, null);
+        builder.setView(dialog);
+        builder.setCancelable(false);
+
+        alertDialog = builder.show();
 
         auth.createUserWithEmailAndPassword(c.getEmail(), c.getSenha())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -217,7 +254,8 @@ public class FirebaseHelper {
                             salvarNovaConta(c.getNome(), c.getEmail(), "email");
 
                         } else {
-                            // If sign in fails, return error message
+                            if (alertDialog!=null) alertDialog.dismiss();
+
                             Toast.makeText(context, context.getString(R.string.erro_2p)+task.getException(), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -253,7 +291,7 @@ public class FirebaseHelper {
                 View dialog = profileActivity.getLayoutInflater().inflate(R.layout.dialog_confirm_exclude_account, null);
                 builder.setView(dialog);
 
-                AlertDialog alertDialog = builder.show();
+                AlertDialog alertDialog2 = builder.show();
 
 
                 dialog.findViewById(R.id.btn_confirmar_exclusao).setOnClickListener(new View.OnClickListener() {
@@ -267,7 +305,7 @@ public class FirebaseHelper {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    alertDialog.dismiss();
+                                    alertDialog2.dismiss();
 
                                     if (listenerRegistration != null) removerListener();
                                     MyPreferences.setAccountSecure(false);
