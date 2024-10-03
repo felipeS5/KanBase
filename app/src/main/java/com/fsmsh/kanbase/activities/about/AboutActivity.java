@@ -30,19 +30,19 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Linkedin
-        findViewById(R.id.imageView7).setOnClickListener(view -> {
+        findViewById(R.id.container_linkedin).setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/felipe-santos-0571ba2b2/"));
             startActivity(intent);
         });
 
         // Github
-        findViewById(R.id.imageView8).setOnClickListener(view -> {
+        findViewById(R.id.container_github).setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/felipeS5"));
             startActivity(intent);
         });
 
         // Site
-        Toast.makeText(this, "Não implementado", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Não implementado", Toast.LENGTH_SHORT).show();
         /*
         findViewById(R.id.imageView7).setOnClickListener(new View.OnClickListener() {
             @Override

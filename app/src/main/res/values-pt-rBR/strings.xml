@@ -166,4 +166,5 @@
     <string name="a_tag_ja_existe">A tag já existe</string>
     <string name="insira_o_nome_da_tag">Insira o nome da tag</string>
     <string name="insira_o_nome_da_sua_tarefa">Insira o nome da tarefa</string>
+    <string name="por_favor_aguarde">Por favor, aguarde</string>
 </resources>
