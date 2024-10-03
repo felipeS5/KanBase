@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsmsh.kanbase.R;
-import com.fsmsh.kanbase.activities.main.MainActivity;
 import com.fsmsh.kanbase.databinding.ActivityEditBinding;
 import com.fsmsh.kanbase.model.Tarefa;
 import com.fsmsh.kanbase.util.Database;
@@ -224,7 +223,7 @@ public class EditActivity extends AppCompatActivity {
 
                 NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
                 notificationHelper.configurarChannel();
-                if (notifyBefore != -1) notificationHelper.agendarNotificação(tarefa);
+                if (notifyBefore != -1) notificationHelper.agendarNotificacao(tarefa);
                 else notificationHelper.removerAgendamento(tarefa.getBroadcastCodeStart(), tarefa.getBroadcastCodeLimit());
 
                 myPreferences.setSincronizado(false);

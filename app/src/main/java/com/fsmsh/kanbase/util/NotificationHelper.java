@@ -110,11 +110,11 @@ public class NotificationHelper {
     // Notificação de tarefa
     public void agendarTarefas() {
         for (Tarefa tarefa : Database.getTarefas(Database.PROGRESS_TODOS)) {
-            if (tarefa.getNotified()==0) agendarNotificação(tarefa);
+            if (tarefa.getNotified()==0) agendarNotificacao(tarefa);
         }
     }
 
-    public void agendarNotificação(Tarefa tarefa) {
+    public void agendarNotificacao(Tarefa tarefa) {
         // Intent para o BroadcastReceiver
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("tarefaID", tarefa.getId());

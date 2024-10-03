@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fsmsh.kanbase.R;
 import com.fsmsh.kanbase.databinding.ActivityAboutBinding;
-import com.fsmsh.kanbase.databinding.ActivitySettingsBinding;
 import com.fsmsh.kanbase.util.Helper;
 
 public class AboutActivity extends AppCompatActivity {

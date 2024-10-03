@@ -469,10 +469,4 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
 }
