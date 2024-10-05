@@ -18,6 +18,47 @@ public class MyPreferences {
     }
 
 
+    // First Open
+    public static void setFirstOpen(boolean estado) {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("first_open", estado);
+        prefEditor.apply();
+    }
+
+    public static boolean isFirstOpen() {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        return preferences.getBoolean("first_open", true);
+    }
+
+    // Tutorial
+    public static void setShowTutorial(boolean estado) {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("show_tutorial", estado);
+        prefEditor.apply();
+    }
+
+    public static boolean showTutorial() {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        return preferences.getBoolean("show_tutorial", false);
+    }
+
+    public static void setFirstTask(boolean estado) {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        prefEditor.putBoolean("is_first_task", estado);
+        prefEditor.apply();
+    }
+
+    public static boolean isFirstTask() {
+        SharedPreferences preferences = context.getSharedPreferences("sys.pref", MODE_PRIVATE);
+        return preferences.getBoolean("is_first_task", true);
+    }
+
     // Login
     public static void setAccountSecure(boolean estado) {
         SharedPreferences preferences = context.getSharedPreferences("account.pref", MODE_PRIVATE);

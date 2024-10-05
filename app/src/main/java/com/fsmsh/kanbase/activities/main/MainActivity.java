@@ -3,7 +3,9 @@ package com.fsmsh.kanbase.activities.main;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.widget.PopupMenu;
@@ -34,6 +36,7 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
     public static int FRAGMENT_HOME = 0;
     public static int FRAGMENT_TAGS = 1;
 
+    private ConstraintLayout tutorial;
+    private ConstraintLayout tutorialInicial;
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -83,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         database = new Database(this);
         myPreferences = new MyPreferences(this);
+        tutorial = findViewById(R.id.container_tutorial);
+        tutorialInicial = findViewById(R.id.container_tutorial_inicial);
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
@@ -94,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tutorialInicial.setVisibility(View.GONE);
+
                 Intent intent = new Intent(getApplicationContext(), EditActivity.class);
                 intent.putExtra("isNovo", true);
                 startActivity(intent);
@@ -423,6 +432,34 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
         }
 
         adjustHeader();
+
+        // Tutorial
+        if (MyPreferences.isFirstOpen()){
+            tutorialInicial.setVisibility(View.VISIBLE);
+
+            tutorialInicial.setOnTouchListener((view1, motionEvent) -> {
+                tutorialInicial.setVisibility(View.GONE);
+                MyPreferences.setFirstOpen(false);
+
+                return true;
+            });
+
+        }
+
+        if (MyPreferences.showTutorial()){
+            tutorial.setVisibility(View.VISIBLE);
+
+            //todo? Adicionar "waiting", precisa ser em outra thread
+            tutorial.setOnTouchListener((view1, motionEvent) -> {
+                tutorial.setVisibility(View.GONE);
+
+                MyPreferences.setShowTutorial(false);
+                MyPreferences.setFirstTask(false);
+
+                return true;
+            });
+
+        }
 
     }
 

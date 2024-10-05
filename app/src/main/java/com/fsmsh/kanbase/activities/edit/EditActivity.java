@@ -230,6 +230,7 @@ public class EditActivity extends AppCompatActivity {
 
                 boolean hasPermission = Helper.hasPermission(getApplicationContext());
 
+                //todo Salvar nova tarefa com o estado do fragment no qual foi adicionada
                 if (hasPermission) MyPreferences.setPermissionFirstDenied(false);
                 else MyPreferences.setPermissionFirstDenied(true);
 
@@ -238,12 +239,12 @@ public class EditActivity extends AppCompatActivity {
                     builder.setTitle(R.string.atencao_);
                     builder.setMessage(R.string.notificacao_ligada_mas_permissao_negada);
 
-                    builder.setPositiveButton(R.string.entendo, (dialogInterface, i) -> finish());
-                    builder.setOnDismissListener(dialogInterface -> finish());
+                    builder.setPositiveButton(R.string.entendo, (dialogInterface, i) -> finalizar());
+                    builder.setOnDismissListener(dialogInterface -> finalizar());
 
                     builder.show();
                 } else {
-                    finish();
+                    finalizar();
                 }
 
             } else {
@@ -406,6 +407,13 @@ public class EditActivity extends AppCompatActivity {
 
         if (!tarefa.getDateStart().equals("")) binding.dateStartConteiner.setVisibility(View.VISIBLE);
         if (!tarefa.getDateLimit().equals("")) binding.dateLimitConteiner.setVisibility(View.VISIBLE);
+    }
+
+    public void finalizar() {
+        if (MyPreferences.isFirstTask()) MyPreferences.setShowTutorial(true);
+        MyPreferences.setFirstOpen(false);
+
+        finish();
     }
 
     @Override

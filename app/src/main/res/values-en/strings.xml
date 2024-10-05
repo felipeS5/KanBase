@@ -167,4 +167,8 @@
     <string name="insira_o_nome_da_tag">Enter the tag name</string>
     <string name="insira_o_nome_da_sua_tarefa">Enter the task name</string>
     <string name="por_favor_aguarde">Please, wait</string>
+    <string name="a_fazer">ToDo</string>
+    <string name="fazendo">Doing</string>
+    <string name="adicione_uma_nova_tarefa_clicando_em_plus">Add a new task by clicking +</string>
+    <string name="para_alterar_o_estado_de_a_fazer_para_fazendo_basta_deslizar_para_o_lado">To change the status from \'ToDo\' to \'Doing\' just swipe to the side</string>
 </resources>

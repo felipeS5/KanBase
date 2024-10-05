@@ -6,13 +6,13 @@
         android:id="@+id/item_naoIniciado"
         android:enabled="true"
         android:icon="@drawable/icon_lightbulb"
-        android:title="@string/novas"
+        android:title="@string/a_fazer"
         android:checkable="true"/>
     <item
         android:id="@+id/item_iniciado"
         android:enabled="true"
         android:icon="@drawable/icon_build"
-        android:title="@string/andamento"
+        android:title="@string/fazendo"
         android:checkable="true"/>
     <item
         android:id="@+id/item_feitas"

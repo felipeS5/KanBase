@@ -167,4 +167,8 @@
     <string name="insira_o_nome_da_tag">Insira o nome da tag</string>
     <string name="insira_o_nome_da_sua_tarefa">Insira o nome da tarefa</string>
     <string name="por_favor_aguarde">Por favor, aguarde</string>
+    <string name="a_fazer">A fazer</string>
+    <string name="fazendo">Fazendo</string>
+    <string name="adicione_uma_nova_tarefa_clicando_em_plus">Adicione uma nova tarefa clicando em +</string>
+    <string name="para_alterar_o_estado_de_a_fazer_para_fazendo_basta_deslizar_para_o_lado">Para alterar o estado de \'A fazer\' para \'Fazendo\' basta deslizar para o lado</string>
 </resources>
