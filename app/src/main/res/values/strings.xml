@@ -171,4 +171,8 @@
     <string name="fazendo">Fazendo</string>
     <string name="adicione_uma_nova_tarefa_clicando_em_plus">Adicione uma nova tarefa clicando em +</string>
     <string name="para_alterar_o_estado_de_a_fazer_para_fazendo_basta_deslizar_para_o_lado">Para alterar o estado de \'A fazer\' para \'Fazendo\' basta deslizar para o lado</string>
+    <string name="sem_a_permissao_de_notificacao_nao_sera_possivel_lhe_enviar_alertas_quando_suas_tarefas_estiverem_vencendo_gostaria_de_rever_sua_escolha">Sem a permissão de notificação não será possível lhe enviar alertas quando suas tarefas estiverem vencendo.\n\nGostaria de rever sua escolha?</string>
+    <string name="permissao_negada">Permissão negada!</string>
+    <string name="dar_permissao">Dar permissão</string>
+    <string name="negar">Negar</string>
 </resources>

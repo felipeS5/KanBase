@@ -49,21 +49,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="@string/not_started"/>
+            android:text="@string/a_fazer"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_filter_started"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="@string/started"/>
+            android:text="@string/fazendo"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_filter_finished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="@string/finished"/>
+            android:text="@string/feitas"/>
 
     </com.google.android.material.chip.ChipGroup>
 

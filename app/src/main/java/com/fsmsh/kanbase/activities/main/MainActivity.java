@@ -486,14 +486,15 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             if (grantResult == PackageManager.PERMISSION_DENIED && !MyPreferences.isPermissionFirstDenied()) {
 
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
-                builder.setTitle("Permissão negada!");
-                builder.setMessage("Sem a permissão de notificação não será possível lhe enviar alertas quando suas tarefas estiverem vencendo.\n\nGostaria de rever sua escolha?");
+                builder.setTitle(R.string.permissao_negada);
+                builder.setMessage(R.string.sem_a_permissao_de_notificacao_nao_sera_possivel_lhe_enviar_alertas_quando_suas_tarefas_estiverem_vencendo_gostaria_de_rever_sua_escolha);
+                builder.setCancelable(false);
 
-                builder.setPositiveButton("Dar permissão", (dialogInterface, i) -> {
+                builder.setPositiveButton(R.string.dar_permissao, (dialogInterface, i) -> {
                     Helper.checkPermission(this);
                 });
 
-                builder.setNegativeButton("Negar", null);
+                builder.setNegativeButton(R.string.negar, null);
 
                 builder.show();
 
