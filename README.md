@@ -4,6 +4,10 @@
 
 Aplicativo Android desenvolvido em **Java** que permite aos usuários gerenciarem suas tarefas de forma simples e eficiente.
 
+## Instalação
+Para instalar o app, vá em [Releases](https://github.com/felipeS5/KanBase/releases) e baixe o APK mais recente do aplicativo.  
+Planejo colocá-lo na Play Store em breve.
+
 ## Destaques
 
 - **Interface simples e funcional**
