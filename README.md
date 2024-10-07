@@ -7,7 +7,9 @@ Aplicativo Android desenvolvido em **Java** que permite aos usuários gerenciare
 ## Destaques
 
 - **Interface simples e funcional**
+- **Envio de notificações**
 - **3 estados de tarefas possíveis**
+- **Resumo diário**
 - **Armazenamento local de tarefas**
 - **Login e sincronização com Firebase**
 
