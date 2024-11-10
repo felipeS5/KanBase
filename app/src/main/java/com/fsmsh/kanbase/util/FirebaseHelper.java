@@ -298,6 +298,11 @@ public class FirebaseHelper {
                     public void onClick(View view) {
                         EditText senha = dialog.findViewById(R.id.txt_senha_dialog_exclude_account);
 
+                        if (senha.getText().toString().equals("")) {
+                            Toast.makeText(context, R.string.insira_sua_senha, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         AuthCredential authCredential = EmailAuthProvider.getCredential(auth.getCurrentUser().getEmail(), senha.getText().toString());
 
                         auth.getCurrentUser().reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
