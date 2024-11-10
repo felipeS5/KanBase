@@ -398,6 +398,13 @@ public class EditActivity extends AppCompatActivity {
             binding.categoryConteiner.setVisibility(View.GONE);
             tags = new ArrayList<>();
         }
+
+        if (dateStart==null && dateLimit==null) { // Remove tbm o notify caso não tenha nenhuma data
+            binding.notifyConteiner.setVisibility(View.GONE);
+            binding.notifyBebore.setText(R.string.notificacoes_desativadas);
+            notifyBefore = -1;
+        }
+
     }
 
     public void checkDetails(Tarefa tarefa) {

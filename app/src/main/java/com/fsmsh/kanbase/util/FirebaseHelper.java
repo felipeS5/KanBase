@@ -110,9 +110,9 @@ public class FirebaseHelper {
         builder.setView(dialog);
         builder.setCancelable(false);
 
-        alertDialog = builder.show();
-
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+        if (task.isSuccessful()) alertDialog = builder.show();
 
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);

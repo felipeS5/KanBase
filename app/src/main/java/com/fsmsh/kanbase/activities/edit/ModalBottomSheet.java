@@ -139,6 +139,12 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
             parent.tags = new ArrayList<>();
         }
 
+        if (parent.dateStart==null && parent.dateLimit==null) { // Remove tbm o notify caso não tenha nenhuma data
+            binding.notifyConteiner.setVisibility(View.GONE);
+            binding.notifyBebore.setText(R.string.notificacoes_desativadas);
+            parent.notifyBefore = -1;
+        }
+
         this.dismiss();
     }
 
